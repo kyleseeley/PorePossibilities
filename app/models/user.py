@@ -1,18 +1,34 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from datetime import datetime
 
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
-    if environment == "production":
+    if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(40), nullable=False, unique=True)
+    firstname = db.Column(db.String(40), nullable=False)
+    lastname = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
+    username = db.Column(db.String(40), nullable=False, unique=True)
+    address = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(35), nullable=False)
+    state = db.Column(db.String(15), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    updatedAt = db.Column(db.DateTime, default=datetime.utcnow)
+
+    appointments = db.relationship('Appointment', back_populates='user')
+
+    reviews = db.relationship('Review', back_populates='user')
+
+    cart = db.relationship('Cart', back_populates='user')
+
+
 
     @property
     def password(self):
@@ -28,6 +44,29 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             'id': self.id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
             'username': self.username,
-            'email': self.email
+            'address': self.address,
+            'city': self.city,
+            'state': self.state
+        }
+    
+    def get_cart(self):
+        if self.cart:
+            return [{
+                'cart': cart.to_dict()
+            } for cart in self.cart]
+        else:
+            return None
+        
+    def get_reviews(self):
+        return {
+            'reviews': [review.to_dict() for review in self.reviews]
+        }
+    
+    def get_appointments(self):
+        return {
+            'appointments': [appointment.to_dict() for appointment in self.appointments]
         }
