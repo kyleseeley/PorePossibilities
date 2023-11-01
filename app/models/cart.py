@@ -13,7 +13,7 @@ class Cart(db.Model):
     serviceId = db.Column(db.Integer(), db.ForeignKey(add_prefix_for_prod('services.id')), nullable=False)
     quantity = db.Column(db.Integer(), nullable=False)
 
-    user = db.relationship('User', back_populates='cart')
+    user = db.relationship('User', back_populates='cart', cascade="all, delete-orphan")
 
     services = db.relationship('Service', back_populates='cart')
 

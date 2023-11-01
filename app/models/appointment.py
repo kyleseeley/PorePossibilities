@@ -15,7 +15,7 @@ class Appointment(db.Model):
     appointmentTime = db.Column(db.Time, nullable=False)
     status = db.Column(db.String(), nullable=False)
 
-    user = db.relationship('User', back_populates='appointments')
+    user = db.relationship('User', back_populates='appointments', cascade="all, delete-orphan")
 
     services = db.relationship('Service', back_populates='appointment')
 
