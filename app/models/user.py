@@ -1,4 +1,4 @@
-from .db import db, environment, SCHEMA, add_prefix_for_prod
+from .db import db, environment, SCHEMA
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(15), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow)
+    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     appointments = db.relationship('Appointment', back_populates='user')
 
