@@ -4,4 +4,7 @@ from .appointment import Appointment
 from .service import Service
 from .blogpost import BlogPost
 from .review import Review
+from .cart import Cart
+from .image import Image
+from .staff import Staff
 from .db import environment, SCHEMA
