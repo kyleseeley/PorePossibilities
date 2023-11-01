@@ -23,7 +23,7 @@ class Appointment(db.Model):
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship(
-        'User', back_populates='appointments', cascade="all, delete-orphan")
+        'User', back_populates='appointments')
 
     services = db.relationship('Service', back_populates='appointment')
 

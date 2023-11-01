@@ -14,9 +14,10 @@ class Review(db.Model):
     review = db.Column(db.String(), nullable=False)
     stars = db.Column(db.Integer(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updatedAt = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    user = db.relationship('User', back_populates='reviews', cascade="all, delete-orphan")
+    user = db.relationship('User', back_populates='reviews')
 
     def to_dict(self):
         return {
