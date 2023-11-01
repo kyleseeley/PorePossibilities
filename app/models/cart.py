@@ -12,6 +12,9 @@ class Cart(db.Model):
         add_prefix_for_prod('users.id')))
     serviceId = db.Column(db.Integer(), db.ForeignKey(add_prefix_for_prod('services.id')), nullable=False)
     quantity = db.Column(db.Integer(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    updatedAt = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', back_populates='cart', cascade="all, delete-orphan")
 

@@ -12,6 +12,9 @@ class BlogPost(db.Model):
     staffId = db.Column(db.Integer, db.ForeignKey(
         add_prefix_for_prod('staffs.id')), nullable=False)
     blog = db.Column(db.String(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    updatedAt = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     staff = db.relationship("Staff", back_populates="blogpost")
 
