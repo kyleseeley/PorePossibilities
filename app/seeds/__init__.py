@@ -23,7 +23,7 @@ def seed():
 
         db.session.commit()
 
-    users_seed()
+    seed_users()
     # Add other seed functions here
 
 
