@@ -20,6 +20,7 @@ def seed():
 
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        
         db.session.commit()
         
     seed_users()
