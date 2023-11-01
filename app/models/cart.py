@@ -1,6 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
+
 class Cart(db.Model):
     __tablename__ = 'carts'
 
@@ -10,13 +11,14 @@ class Cart(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     userId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('users.id')))
-    serviceId = db.Column(db.Integer(), db.ForeignKey(add_prefix_for_prod('services.id')), nullable=False)
+    serviceId = db.Column(db.Integer(), db.ForeignKey(
+        add_prefix_for_prod('services.id')), nullable=False)
     quantity = db.Column(db.Integer(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    user = db.relationship('User', back_populates='cart', cascade="all, delete-orphan")
+    user = db.relationship('User', back_populates='cart')
 
     services = db.relationship('Service', back_populates='cart')
 
