@@ -12,8 +12,10 @@ class Staff(db.Model):
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
     availability = db.Column(db.JSON(), nullable=False)
+    authorized = db.Column(db.BOOLEAN(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updatedAt = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     appointments = db.relationship('Appointment', back_populates='staff')
 

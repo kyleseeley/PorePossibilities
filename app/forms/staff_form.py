@@ -24,6 +24,12 @@ def lastname_data(form, field):
     if len(lastname) < 2:
         raise ValidationError(
             "Please enter in a last name with at least 2 characters")
+    
+def authorized_data(form, field):
+    authorized = field.data
+    if not authorized:
+        raise ValidationError(
+            "Please select a value for authorized")
 
 
 class StaffForm(FlaskForm):
@@ -43,6 +49,7 @@ class StaffForm(FlaskForm):
     lastname = StringField('Last Name', validators=[
                            DataRequired(), lastname_data, Length(min=2)])
     email = EmailField('Email', validators=[DataRequired(), staff_exists])
+    authorized = SelectField('Authorized', validators=[DataRequired(), authorized_data], choices=['True', 'False'])
     monday_availability = SelectField(
         'Monday Availability', choices=time_slots)
     tuesday_availability = SelectField(
