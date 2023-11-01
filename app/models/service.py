@@ -12,6 +12,10 @@ class Service(db.Model):
     price = db.Column(db.Integer(), nullable=False)
     description = db.Column(db.String(), nullable=False)
 
+    appointment = db.relationship('Appointment', back_populates='services')
+
+    cart = db.relationship('Cart', back_populates='services')
+
     def to_dict(self):
         return {
             'id': self.id,
