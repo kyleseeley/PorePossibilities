@@ -20,15 +20,16 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(15), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
-    updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updatedAt = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    appointments = db.relationship('Appointment', back_populates='user')
+    appointments = db.relationship(
+        'Appointment', back_populates='user', cascade="all, delete-orphan")
 
-    reviews = db.relationship('Review', back_populates='user')
+    reviews = db.relationship(
+        'Review', back_populates='user', cascade="all, delete-orphan")
 
     cart = db.relationship('Cart', back_populates='user')
-
-
 
     @property
     def password(self):
@@ -52,7 +53,7 @@ class User(db.Model, UserMixin):
             'city': self.city,
             'state': self.state
         }
-    
+
     def get_cart(self):
         if self.cart:
             return [{
@@ -60,12 +61,12 @@ class User(db.Model, UserMixin):
             } for cart in self.cart]
         else:
             return None
-        
+
     def get_reviews(self):
         return {
             'reviews': [review.to_dict() for review in self.reviews]
         }
-    
+
     def get_appointments(self):
         return {
             'appointments': [appointment.to_dict() for appointment in self.appointments]
