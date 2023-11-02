@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, SelectField, FloatField, EmailField, PasswordField
+from wtforms import StringField, SelectField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import Staff
+import re
 
 
 def staff_exists(form, field):
@@ -38,6 +39,11 @@ def authorized_data(form, field):
         raise ValidationError("Please select a value for authorized")
 
 
+def validate_email(form, field):
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", field.data):
+        raise ValidationError("Invalid email address")
+
+
 class StaffForm(FlaskForm):
     time_slots = [
         '9:00 AM', '9:15 AM', '9:30 AM', '9:45 AM', '10:00 AM',
@@ -54,9 +60,11 @@ class StaffForm(FlaskForm):
                             DataRequired(), firstname_data, Length(min=2)])
     lastname = StringField('Last Name', validators=[
                            DataRequired(), lastname_data, Length(min=2)])
-    email = EmailField('Email', validators=[DataRequired(), staff_exists])
-    authorized = SelectField('Authorized', validators=[
-                             DataRequired(), authorized_data], choices=['True', 'False'])
+    email = StringField('Email', validators=[
+                        DataRequired(), validate_email, staff_exists])
+    password = PasswordField('Password', validators=[DataRequired()])
+    authorized = BooleanField('Authorized', validators=[
+        DataRequired(), authorized_data])
     monday_availability = SelectField(
         'Monday Availability', choices=time_slots)
     tuesday_availability = SelectField(

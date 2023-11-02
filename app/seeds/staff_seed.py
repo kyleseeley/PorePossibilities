@@ -8,6 +8,8 @@ def seed_staff():
         firstname='Astrid',
         lastname='Valles',
         email='astrid@pore.com',
+        password='password',
+        authorized=True,
         availability={
             "Monday": ["9:00 AM - 6:00 PM"],
             "Tuesday": ["9:00 AM - 6:00 PM"],
@@ -16,12 +18,13 @@ def seed_staff():
             "Friday": ["9:00 AM - 6:00 PM"],
             "Saturday": [],
             "Sunday": []
-        },
-        authorized=True)
+        })
     sanam = Staff(
         firstname='Sanam',
         lastname='Nejad',
         email='sanam@pore.com',
+        password='password',
+        authorized=True,
         availability={
             "Monday": ["9:00 AM - 1:00 PM"],
             "Tuesday": ["11:00 AM - 6:00 PM"],
@@ -30,12 +33,13 @@ def seed_staff():
             "Friday": ["12:00 PM - 6:00 PM"],
             "Saturday": ["9:00 AM - 1:00 PM"],
             "Sunday": []
-        },
-        authorized=True)
+        })
     lindsay = Staff(
         firstname='Lindsay',
         lastname='Fischer',
         email='lindsay@pore.com',
+        password='password',
+        authorized=True,
         availability={
             "Monday": [],
             "Tuesday": ["11:00 AM - 6:00 PM"],
@@ -44,8 +48,7 @@ def seed_staff():
             "Friday": ["9:00 AM - 3:00 PM"],
             "Saturday": ["9:00 AM - 1:00 PM"],
             "Sunday": ["9:00 AM - 1:00 PM"]
-        },
-        authorized=False)
+        })
 
     db.session.add(astrid)
     db.session.add(sanam)

@@ -12,8 +12,8 @@ class Staff(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
-    availability = db.Column(db.JSON(), nullable=False)
     authorized = db.Column(db.BOOLEAN(), nullable=False)
+    availability = db.Column(db.JSON(), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
