@@ -12,6 +12,7 @@ class Staff(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
+    email = db.Column(db.String(255), nullable=False, unique=True)
     authorized = db.Column(db.BOOLEAN(), nullable=False)
     availability = db.Column(db.JSON(), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
