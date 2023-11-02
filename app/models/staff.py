@@ -23,6 +23,8 @@ class Staff(db.Model):
 
     blogpost = db.relationship("BlogPost", back_populates="staff")
 
+    companies = db.relationship("Company", back_populates='owner')
+
     @property
     def password(self):
         return self.hashed_password
@@ -39,5 +41,6 @@ class Staff(db.Model):
             'id': self.id,
             'firstname': self.firstname,
             'lastname': self.lastname,
+            'authorized': self.authorized,
             'availability': self.availability
         }

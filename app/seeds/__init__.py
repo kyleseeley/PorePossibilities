@@ -1,10 +1,13 @@
+from app.models.db import db, environment, SCHEMA
+from .images_seed import seed_images, undo_images
+from .blogposts_seed import seed_blogposts, undo_blogposts
+from .company_seed import seed_company, undo_company
+from .reviews_seed import seed_reviews, undo_reviews
+from .services_seed import seed_services, undo_services
 from flask.cli import AppGroup
 from .users_seed import seed_users, undo_users
-from. staff_seed import seed_staff, undo_staff
-from .services_seed import seed_services, undo_services
-from .reviews_seed import seed_reviews, undo_reviews
+from . staff_seed import seed_staff, undo_staff
 
-from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -20,13 +23,37 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
+        undo_staff()
+        undo_services()
+        undo_reviews()
+        undo_company()
+        undo_blogposts()
+        undo_images()
 
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.staffs RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.reviews RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.blogposts RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
 
         db.session.commit()
 
     seed_users()
+    seed_staff()
+    seed_services()
+    seed_reviews()
+    seed_company()
+    seed_blogposts()
+    seed_images()
     # Add other seed functions here
 
 
@@ -34,4 +61,10 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
+    undo_staff()
+    undo_services()
+    undo_reviews()
+    undo_company()
+    undo_blogposts()
+    undo_images()
     # Add other undo functions here

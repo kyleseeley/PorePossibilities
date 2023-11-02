@@ -7,4 +7,5 @@ from .review import Review
 from .cart import Cart
 from .image import Image
 from .staff import Staff
+from .company import Company
 from .db import environment, SCHEMA
