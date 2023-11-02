@@ -8,9 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 review_routes = Blueprint('reviews', __name__, url_prefix="")
 
 
-review_routes.route("/<int:reviewId>", methods=["PUT"])
-
-
+@review_routes.route("/<int:reviewId>", methods=["PUT"])
 @login_required
 def edit_review(reviewId):
     review = Review.query.get(reviewId)
