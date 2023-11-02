@@ -16,3 +16,7 @@ def all_companies():
 @company_routes.route("/<int:companyId>")
 def get_one_company(companyId):
     company = Company.query.filter(Company.id == companyId).first()
+    if not company:
+        return {'error': 'Company not found'}
+
+    return company.to_dict()

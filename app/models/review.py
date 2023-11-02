@@ -22,7 +22,7 @@ class Review(db.Model):
     user = db.relationship('User', back_populates='reviews')
 
     company = db.relationship(
-        'Company', back_populates='reviews', cascade="all, delete-orphan")
+        'Company', back_populates='reviews')
 
     def to_dict(self):
         return {

@@ -26,7 +26,7 @@ class Company(db.Model):
 
     owner = db.relationship("Staff", back_populates='companies')
 
-    reviews = db.relationship('Review', back_populates='company')
+    reviews = db.relationship('Review', back_populates='company', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
