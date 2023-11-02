@@ -1,4 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 
@@ -13,6 +14,7 @@ class Staff(db.Model):
     lastname = db.Column(db.String(40), nullable=False)
     availability = db.Column(db.JSON(), nullable=False)
     authorized = db.Column(db.BOOLEAN(), nullable=False)
+    hashed_password = db.Column(db.String(255), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -20,6 +22,17 @@ class Staff(db.Model):
     appointments = db.relationship('Appointment', back_populates='staff')
 
     blogpost = db.relationship("BlogPost", back_populates="staff")
+
+    @property
+    def password(self):
+        return self.hashed_password
+
+    @password.setter
+    def password(self, password):
+        self.hashed_password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def to_dict(self):
         return {

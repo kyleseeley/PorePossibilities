@@ -11,6 +11,7 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     staffId = db.Column(db.Integer, db.ForeignKey(
         add_prefix_for_prod('staffs.id')), nullable=False)
+    title = db.Column(db.String(), nullable=False)
     blog = db.Column(db.String(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
@@ -22,5 +23,6 @@ class BlogPost(db.Model):
         return {
             'id': self.id,
             'staffId': self.staffId,
+            'title': self.title,
             'blog': self.blog
         }

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3a984d47467b
+Revision ID: 5c6226c0fdc2
 Revises: 
-Create Date: 2023-11-01 18:17:54.974372
+Create Date: 2023-11-01 22:18:43.506002
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = '3a984d47467b'
+revision = '5c6226c0fdc2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -46,6 +46,8 @@ def upgrade():
                         length=40), nullable=False),
                     sa.Column('availability', sa.JSON(), nullable=False),
                     sa.Column('authorized', sa.BOOLEAN(), nullable=False),
+                    sa.Column('hashed_password', sa.String(
+                        length=255), nullable=False),
                     sa.Column('createdAt', sa.DateTime(), nullable=True),
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.PrimaryKeyConstraint('id')
@@ -89,6 +91,7 @@ def upgrade():
     op.create_table('blogposts',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('staffId', sa.Integer(), nullable=False),
+                    sa.Column('title', sa.String(), nullable=False),
                     sa.Column('blog', sa.String(), nullable=False),
                     sa.Column('createdAt', sa.DateTime(), nullable=True),
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),

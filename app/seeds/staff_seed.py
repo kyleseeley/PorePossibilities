@@ -45,7 +45,7 @@ def seed_staff():
             "Saturday": ["9:00 AM - 1:00 PM"],
             "Sunday": ["9:00 AM - 1:00 PM"]
         },
-        authorized=True)
+        authorized=False)
 
     db.session.add(astrid)
     db.session.add(sanam)

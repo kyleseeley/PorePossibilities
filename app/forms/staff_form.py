@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, SelectField, FloatField, EmailField, PasswordField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import Staff
@@ -7,9 +8,14 @@ from app.models import Staff
 def staff_exists(form, field):
     # Checking if user exists
     email = field.data
-    staff = Staff.query.filter(Staff.email == email).first()
-    if staff:
-        raise ValidationError('Email address is already in use.')
+    if current_user.is_authenticated and current_user.email == email:
+        staff = Staff.query.filter(Staff.email == email).all()
+        if len(staff) > 1:
+            raise ValidationError('Email address is already in use.')
+    else:
+        staff = Staff.query.filter(Staff.email == email).first()
+        if staff:
+            raise ValidationError('Email address is already in use.')
 
 
 def firstname_data(form, field):
@@ -29,8 +35,7 @@ def lastname_data(form, field):
 def authorized_data(form, field):
     authorized = field.data
     if not authorized:
-        raise ValidationError(
-            "Please select a value for authorized")
+        raise ValidationError("Please select a value for authorized")
 
 
 class StaffForm(FlaskForm):

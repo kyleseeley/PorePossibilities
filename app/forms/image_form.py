@@ -14,7 +14,7 @@ def url_data(form, field):
     url = field.data
     if not url:
         raise ValidationError(
-            "Please enter in a name")
+            "Please enter in a url")
 
 
 class ImageForm(FlaskForm):
