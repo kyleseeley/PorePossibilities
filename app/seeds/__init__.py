@@ -6,7 +6,7 @@ from .reviews_seed import seed_reviews, undo_reviews
 from .services_seed import seed_services, undo_services
 from flask.cli import AppGroup
 from .users_seed import seed_users, undo_users
-from . staff_seed import seed_staff, undo_staff
+from .staff_seed import seed_staff, undo_staff
 
 
 # Creates a seed group to hold our commands

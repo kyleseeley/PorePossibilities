@@ -10,6 +10,7 @@ def seed_staff():
         email='astrid@pore.com',
         password='password',
         authorized=True,
+        is_owner=True,
         availability={
             "Monday": ["9:00 AM - 6:00 PM"],
             "Tuesday": ["9:00 AM - 6:00 PM"],

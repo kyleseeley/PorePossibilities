@@ -16,6 +16,7 @@ class Staff(db.Model):
     authorized = db.Column(db.BOOLEAN(), nullable=False)
     availability = db.Column(db.JSON(), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
+    is_owner = db.Column(db.Boolean, nullable=False, default=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
