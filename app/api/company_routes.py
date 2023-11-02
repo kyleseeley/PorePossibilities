@@ -13,4 +13,6 @@ def all_companies():
     return {'companies': [company.to_dict() for company in companies]}
 
 
-# @company_routes.route("/")
+@company_routes.route("/<int:companyId>")
+def get_one_company(companyId):
+    company = Company.query.filter(Company.id == companyId).first()
