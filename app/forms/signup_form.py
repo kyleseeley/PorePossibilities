@@ -1,9 +1,9 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, SelectField, PasswordField
-from wtforms.fields.html5 import EmailField
+from wtforms.fields import StringField, SelectField, PasswordField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import User
+import re
 
 
 def user_exists(form, field):
@@ -59,12 +59,18 @@ def state_data(form, field):
         raise ValidationError("Please select a state")
 
 
+def validate_email(form, field):
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", field.data):
+        raise ValidationError("Invalid email address")
+
+
 class SignUpForm(FlaskForm):
     firstname = StringField('First Name', validators=[
                             DataRequired(), firstname_data, Length(min=2)])
     lastname = StringField('Last Name', validators=[
                            DataRequired(), lastname_data, Length(min=2)])
-    email = EmailField('Email', validators=[DataRequired(), user_exists])
+    email = StringField('Email', validators=[
+                        DataRequired(), validate_email, user_exists])
     username = StringField(
         'Username', validators=[DataRequired(), username_exists])
     address = StringField('Address', validators=[DataRequired(), address_data])
