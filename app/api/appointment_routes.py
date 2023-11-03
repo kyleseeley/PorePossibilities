@@ -13,7 +13,7 @@ appointment_routes = Blueprint('appointments', __name__)
 def all_appointments():
     appointments = Appointment.query.all()
     if not appointments:
-        return {'error': 'No appointments available'}
+        return {'error': 'No appointments found'}, 404
     return {'appointments': [appointment.to_dict() for appointment in appointments]}
 
 

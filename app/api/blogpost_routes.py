@@ -12,7 +12,7 @@ blogpost_routes = Blueprint('blogposts', __name__)
 def all_blogposts():
     blogposts = BlogPost.query.all()
     if not blogposts:
-        return {'error': 'No blogposts available'}
+        return {'error': 'No blogposts found'}, 404
     return {'blogposts': [blogpost.to_dict() for blogpost in blogposts]}
 
 

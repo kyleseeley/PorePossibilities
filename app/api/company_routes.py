@@ -12,7 +12,7 @@ company_routes = Blueprint('companies', __name__)
 def all_companies():
     companies = Company.query.all()
     if not companies:
-        return {'error': 'No companies available'}
+        return {'error': 'No companies found'}, 404
     return {'companies': [company.to_dict() for company in companies]}
 
 

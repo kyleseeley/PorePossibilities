@@ -40,7 +40,7 @@ def seed_employees():
         lastname='Fischer',
         email='lindsay@pore.com',
         password='password',
-        authorized=True,
+        authorized=False,
         availability={
             "Monday": [],
             "Tuesday": ["11:00 AM - 6:00 PM"],

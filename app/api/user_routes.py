@@ -10,7 +10,7 @@ user_routes = Blueprint('users', __name__)
 def users():
     users = User.query.all()
     if not users:
-        {'error': 'No users found'}
+        {'error': 'No users found'}, 404
     return {'users': [user.to_dict() for user in users]}
 
 
@@ -19,7 +19,7 @@ def users():
 def one_user(userId):
     user = User.query.get(userId)
     if not user:
-        return {'error': 'User does not exist'}
+        return {'error': 'User does not exist'}, 404
     return user.to_dict()
 
 

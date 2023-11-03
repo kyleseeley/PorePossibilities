@@ -11,7 +11,7 @@ employee_routes = Blueprint('employees', __name__)
 def all_employees():
     employees = Employee.query.all()
     if not employees:
-        return {'error': 'No employees found'}
+        return {'error': 'No employees found'}, 404
     return {'employees': [employee.to_dict() for employee in employees]}
 
 

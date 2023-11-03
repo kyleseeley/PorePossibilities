@@ -13,7 +13,7 @@ def get_one_review(reviewId):
     review = Review.query.filter(Review.id == reviewId)
 
     if not review:
-        return {'message': 'Review not found'}, 404
+        return {'message': 'No reviews found'}, 404
 
     return review.to_dict()
 

@@ -12,7 +12,7 @@ service_routes = Blueprint('services', __name__)
 def all_services():
     services = Service.query.all()
     if not services:
-        return {'error': 'No services available'}
+        return {'error': 'No services found'}, 404
     return {'services': [service.to_dict() for service in services]}
 
 

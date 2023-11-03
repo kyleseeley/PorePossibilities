@@ -12,7 +12,7 @@ image_routes = Blueprint('images', __name__)
 def all_images():
     images = Image.query.all()
     if not images:
-        return {'error': 'No images available'}
+        return {'error': 'No images found'}, 404
     return {'images': [image.to_dict() for image in images]}
 
 
