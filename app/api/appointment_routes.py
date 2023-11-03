@@ -21,7 +21,7 @@ def get_one_appointment(appointmentId):
     appointment = Appointment.query.filter(
         Appointment.id == appointmentId).first()
     if not appointment:
-        return {'error': 'Company not found'}, 404
+        return {'error': 'Appointment not found'}, 404
 
     return appointment.to_dict()
 
@@ -59,7 +59,7 @@ def create_new_appointment():
     form = AppointmentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    if form. validate_on_submit():
+    if form.validate_on_submit():
         data = form.data
 
         if current_user.id != data['userId']:
@@ -80,3 +80,43 @@ def create_new_appointment():
 
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@appointment_routes.route('/<int:appointmentId', methods=['PUT'])
+@login_required
+def update_appointment(appointmentId):
+    appointment = Appointment.query.filter(
+        Appointment.id == appointmentId).first()
+    if not appointment:
+        return {'error': 'Appointment not found'}
+
+    form = AppointmentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+        appointment.userId = data['userId']
+        appointment.serviceId = data['serviceId']
+        appointment.staffId = data['staffId']
+        appointment.appointmentDate = data['appointmentDate']
+        appointment.appointmentTime = data['appointmentTime']
+
+        db.session.commit()
+
+        return appointment.to_dict()
+    else:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
+@appointment_routes.route("/<int:appointmentId>", methods=['DELETE'])
+@login_required
+def delete_appointment(appointmentId):
+    appointment = Appointment.query.filter(
+        Appointment.id == appointmentId).first()
+    if not appointment:
+        return {'error': 'Appointment not found'}, 404
+    if appointment.userId != current_user.id:
+        return {'error': 'Unauthorized'}, 403
+    db.session.delete(appointment)
+    db.session.commit()
+    return {'message': 'Appointment successfully deleted'}
