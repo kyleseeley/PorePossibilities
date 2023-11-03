@@ -12,6 +12,7 @@ from .api.company_routes import company_routes
 from .api.service_routes import service_routes
 from .api.appointment_routes import appointment_routes
 from .api.blogpost_routes import blogpost_routes
+from .api.employee_routes import employee_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -38,6 +39,7 @@ app.register_blueprint(company_routes, url_prefix='/api/companies')
 app.register_blueprint(service_routes, url_prefix='/api/services')
 app.register_blueprint(appointment_routes, url_prefix='/api/appointments')
 app.register_blueprint(blogpost_routes, url_prefix='/api/blogposts')
+app.register_blueprint(employee_routes, url_prefix='/api/employees')
 db.init_app(app)
 Migrate(app, db)
 

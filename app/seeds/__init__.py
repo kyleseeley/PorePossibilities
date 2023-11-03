@@ -6,7 +6,7 @@ from .reviews_seed import seed_reviews, undo_reviews
 from .services_seed import seed_services, undo_services
 from flask.cli import AppGroup
 from .users_seed import seed_users, undo_users
-from .staff_seed import seed_staff, undo_staff
+from .employee_seed import seed_employees, undo_employees
 
 
 # Creates a seed group to hold our commands
@@ -23,7 +23,7 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
-        undo_staff()
+        undo_employees()
         undo_company()
         undo_services()
         undo_reviews()
@@ -33,7 +33,7 @@ def seed():
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.staffs RESTART IDENTITY CASCADE;")
+            f"TRUNCATE table {SCHEMA}.employees RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
         db.session.execute(
@@ -48,7 +48,7 @@ def seed():
         db.session.commit()
 
     seed_users()
-    seed_staff()
+    seed_employees()
     seed_company()
     seed_services()
     seed_reviews()
@@ -61,7 +61,7 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
-    undo_staff()
+    undo_employees()
     undo_company()
     undo_services()
     undo_reviews()

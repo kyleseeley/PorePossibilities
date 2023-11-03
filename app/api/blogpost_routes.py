@@ -29,14 +29,14 @@ def get_one_blogpost(blogpostId):
 @login_required
 def create_blogpost():
     if not current_user.authorized:
-        return {'error': 'Only authorized staff can create a new blogpost'}, 403
+        return {'error': 'Only authorized employees can create a new blogpost'}, 403
 
     form = BlogPostForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
         new_blogpost = BlogPost(
-            staffId=data['staffId'],
+            employeeId=data['employeeId'],
             title=data['title'],
             blog=data['blog'],
         )
@@ -56,13 +56,13 @@ def edit_blogpost(blogpostId):
     if not blogpost:
         return {'error': 'Blogpost not found'}, 404
     if not current_user.authorized:
-        return {'error': 'Only authorized staff can edit a blogpost'}, 403
+        return {'error': 'Only authorized employees can edit a blogpost'}, 403
 
     form = BlogPostForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        blogpost.staffId = data['staffId'],
+        blogpost.employeeId = data['employeeId'],
         blogpost.title = data['title'],
         blogpost.blog = data['blog'],
 
@@ -80,7 +80,7 @@ def delete_blogpost(blogpostId):
     if not blogpost:
         return {'error': 'Blogpost not found'}, 404
     if not current_user.authorized:
-        return {'error': 'Only authorized staff can delete a blogpost'}, 403
+        return {'error': 'Only authorized employees can delete a blogpost'}, 403
 
     db.session.delete(blogpost)
     return {'message': 'Blogpost successfully deleted'}

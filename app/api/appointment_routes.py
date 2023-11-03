@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Appointment, Staff, User, db
+from app.models import Appointment, Employee, User, db
 from app.forms import AppointmentForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -43,7 +43,7 @@ def create_new_appointment():
         new_appointment = Appointment(
             userId=data['userId'],
             serviceId=data['serviceId'],
-            staffId=data['staffId'],
+            employeeId=data['employeeId'],
             appointmentDate=data['appointmentDate'],
             appointmentTime=data['appointmentTime'],
             status=data['status']
@@ -72,7 +72,7 @@ def update_appointment(appointmentId):
         data = form.data
         appointment.userId = data['userId']
         appointment.serviceId = data['serviceId']
-        appointment.staffId = data['staffId']
+        appointment.employeeId = data['employeeId']
         appointment.appointmentDate = data['appointmentDate']
         appointment.appointmentTime = data['appointmentTime']
 

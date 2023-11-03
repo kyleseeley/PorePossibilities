@@ -9,11 +9,11 @@ def service_data(form, field):
         raise ValidationError(
             "Please select the service(s) you would like")
     
-def staff_data(form, field):
-    staffId = field.data
-    if not staffId:
+def employee_data(form, field):
+    employeeId = field.data
+    if not employeeId:
         raise ValidationError(
-            "Please select the staff member you would like")
+            "Please select the employee you would like")
     
 def appointmentDate_data(form, field):
     appointmentDate = field.data
@@ -30,6 +30,6 @@ def appointmentTime_data(form, field):
 
 class AppointmentForm(FlaskForm):
     serviceId = SelectField('Service', validators=[DataRequired()])
-    staffId = SelectField('Staff', validators=[DataRequired()])
+    employeeId = SelectField('Employee', validators=[DataRequired()])
     appointmentDate = DateField('Date', validators=[DataRequired()])
     appointmentTime = TimeField('Time', validators=[DataRequired()])

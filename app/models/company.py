@@ -10,7 +10,7 @@ class Company(db.Model):
 
     id = db.Column(db.Integer(), primary_key=True)
     ownerId = db.Column(db.Integer(), db.ForeignKey(
-        add_prefix_for_prod('staffs.id')), nullable=False)
+        add_prefix_for_prod('employees.id')), nullable=False)
     name = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     phone = db.Column(db.String(), nullable=False, unique=True)
@@ -24,7 +24,7 @@ class Company(db.Model):
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    owner = db.relationship("Staff", back_populates='companies')
+    owner = db.relationship("Employee", back_populates='companies')
 
     reviews = db.relationship('Review', back_populates='company', cascade="all, delete-orphan")
 

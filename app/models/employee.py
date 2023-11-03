@@ -3,8 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
 
-class Staff(db.Model):
-    __tablename__ = 'staffs'
+class Employee(db.Model):
+    __tablename__ = 'employees'
 
     if environment == 'production':
         __table_args__ = {'schema': SCHEMA}
@@ -21,9 +21,9 @@ class Staff(db.Model):
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    appointments = db.relationship('Appointment', back_populates='staff')
+    appointments = db.relationship('Appointment', back_populates='employee')
 
-    blogpost = db.relationship("BlogPost", back_populates="staff")
+    blogpost = db.relationship("BlogPost", back_populates="employee")
 
     companies = db.relationship("Company", back_populates='owner')
 

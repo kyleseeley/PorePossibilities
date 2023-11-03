@@ -2,20 +2,20 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, SelectField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
-from app.models import Staff
+from app.models import Employee
 import re
 
 
-def staff_exists(form, field):
+def employee_exists(form, field):
     # Checking if user exists
     email = field.data
     if current_user.is_authenticated and current_user.email == email:
-        staff = Staff.query.filter(Staff.email == email).all()
-        if len(staff) > 1:
+        employee = Employee.query.filter(Employee.email == email).all()
+        if len(employee) > 1:
             raise ValidationError('Email address is already in use.')
     else:
-        staff = Staff.query.filter(Staff.email == email).first()
-        if staff:
+        employee = Employee.query.filter(Employee.email == email).first()
+        if employee:
             raise ValidationError('Email address is already in use.')
 
 
@@ -44,7 +44,7 @@ def validate_email(form, field):
         raise ValidationError("Invalid email address")
 
 
-class StaffForm(FlaskForm):
+class EmployeeForm(FlaskForm):
     time_slots = [
         '9:00 AM', '9:15 AM', '9:30 AM', '9:45 AM', '10:00 AM',
         '10:15 AM', '10:30 AM', '10:45 AM', '11:00 AM', '11:15 AM',
@@ -61,7 +61,7 @@ class StaffForm(FlaskForm):
     lastname = StringField('Last Name', validators=[
                            DataRequired(), lastname_data, Length(min=2)])
     email = StringField('Email', validators=[
-                        DataRequired(), validate_email, staff_exists])
+                        DataRequired(), validate_email, employee_exists])
     password = PasswordField('Password', validators=[DataRequired()])
     authorized = BooleanField('Authorized', validators=[
         DataRequired(), authorized_data])

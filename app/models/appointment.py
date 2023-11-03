@@ -13,8 +13,8 @@ class Appointment(db.Model):
         add_prefix_for_prod('users.id')), nullable=False)
     serviceId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('services.id')), nullable=False)
-    staffId = db.Column(db.Integer(), db.ForeignKey(
-        add_prefix_for_prod('staffs.id')), nullable=False)
+    employeeId = db.Column(db.Integer(), db.ForeignKey(
+        add_prefix_for_prod('employees.id')), nullable=False)
     appointmentDate = db.Column(db.Date, nullable=False)
     appointmentTime = db.Column(db.Time, nullable=False)
     status = db.Column(db.String(), nullable=False)
@@ -27,14 +27,14 @@ class Appointment(db.Model):
 
     services = db.relationship('Service', back_populates='appointment')
 
-    staff = db.relationship('Staff', back_populates='appointments')
+    employee = db.relationship('Employee', back_populates='appointments')
 
     def to_dict(self):
         return {
             'id': self.id,
             'userId': self.userId,
             'serviceId': self.serviceId,
-            'staffId': self.staffId,
+            'employeeId': self.employeeId,
             'appointmentDate': self.appointmentDate,
             'appointmentTime': self.appointmentTime,
             'status': self.status

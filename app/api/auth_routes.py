@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, session, request
-from app.models import User, Staff, db
+from app.models import User, Employee, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -41,10 +41,11 @@ def login():
             login_user(user)
             return user.to_dict()
 
-        staff = Staff.query.filter(Staff.email == form.data['email']).first()
-        if staff:
-            login_user(staff)
-            return staff.to_dict()
+        employee = Employee.query.filter(
+            Employee.email == form.data['email']).first()
+        if employee:
+            login_user(employee)
+            return employee.to_dict()
 
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 

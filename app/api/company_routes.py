@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Review, Staff, User, Cart, Company, Service, db
+from app.models import Review, Employee, User, Cart, Company, Service, db
 from app.forms import CompanyForm, ReviewForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -136,8 +136,8 @@ def post_review(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
         return {'error': 'Company does not exist'}, 404
-    if isinstance(current_user, Staff):
-        return {'error': 'Staff members cannot post reviews.'}, 403
+    if isinstance(current_user, Employee):
+        return {'error': 'Employees cannot post reviews.'}, 403
 
     existing_review = Review.query.filter(
         Review.companyId == companyId, Review.userId == current_user.id).first()

@@ -1,10 +1,10 @@
-from app.models import db, Staff, environment, SCHEMA
+from app.models import db, Employee, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
 # Adds a demo user, you can add other users here if you want
-def seed_staff():
-    astrid = Staff(
+def seed_employees():
+    astrid = Employee(
         firstname='Astrid',
         lastname='Valles',
         email='astrid@pore.com',
@@ -20,7 +20,7 @@ def seed_staff():
             "Saturday": [],
             "Sunday": []
         })
-    sanam = Staff(
+    sanam = Employee(
         firstname='Sanam',
         lastname='Nejad',
         email='sanam@pore.com',
@@ -35,7 +35,7 @@ def seed_staff():
             "Saturday": ["9:00 AM - 1:00 PM"],
             "Sunday": []
         })
-    lindsay = Staff(
+    lindsay = Employee(
         firstname='Lindsay',
         lastname='Fischer',
         email='lindsay@pore.com',
@@ -63,11 +63,11 @@ def seed_staff():
 # incrementing primary key, CASCADE deletes any dependent entities.  With
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
-def undo_staff():
+def undo_employees():
     if environment == "production":
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.staffs RESTART IDENTITY CASCADE;")
+            f"TRUNCATE table {SCHEMA}.employees RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM staffs"))
+        db.session.execute(text("DELETE FROM employees"))
 
     db.session.commit()
