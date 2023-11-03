@@ -132,7 +132,7 @@ def company_reviews(companyId):
 
 @company_routes.route('/<int:companyId>/reviews', methods=['POST'])
 @login_required
-def post_review(companyId):
+def create_review(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
         return {'error': 'Company does not exist'}, 404

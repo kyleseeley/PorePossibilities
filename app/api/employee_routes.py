@@ -34,7 +34,7 @@ def get_appointments_by_employee(employeeId):
         Appointment.id == employeeId).all()
     if not appointments:
         return {'error': 'Employee does not have appointments'}
-    
+
     return {'employee_appointments': [appointment.to_dict() for appointment in appointments]}
 
 
@@ -63,9 +63,9 @@ def create_employee():
 
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-    
 
-@employee_routes.route('/', methods=['PUT'])
+
+@employee_routes.route('/<int:employeeId>', methods=['PUT'])
 @login_required
 def edit_employee(employeeId):
     employee = Employee.query.filter(Employee.id == employeeId).first()
@@ -78,19 +78,19 @@ def edit_employee(employeeId):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        data.firstname=data['firstname'],
-        data.lastname=data['lastname'],
-        data.email=data['email'],
-        data.authorized=data['authorized'],
-        data.availability=data['availability'],
-        data.password=data['password'],
+        data.firstname = data['firstname'],
+        data.lastname = data['lastname'],
+        data.email = data['email'],
+        data.authorized = data['authorized'],
+        data.availability = data['availability'],
+        data.password = data['password'],
 
         db.session.commit()
         return employee.to_dict()
 
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-    
+
 
 @employee_routes.route('/<int:employeeId>', methods=['DELETE'])
 @login_required

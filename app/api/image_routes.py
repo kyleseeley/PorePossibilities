@@ -48,7 +48,7 @@ def create_image():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@image_routes.route('/<int:<imageId>', methods=['PUT'])
+@image_routes.route('/<int:imageId>', methods=['PUT'])
 @login_required
 def edit_image(imageId):
     image = Image.query.filter(Image.id == imageId).first()
