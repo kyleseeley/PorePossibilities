@@ -64,6 +64,12 @@ def validate_email(form, field):
         raise ValidationError("Invalid email address")
 
 
+def phone_data(form, field):
+    phone = field.data
+    if not re.match(r'^\d{10}$', phone):
+        raise ValidationError("Phone number must be a 10-digit number")
+
+
 class SignUpForm(FlaskForm):
     firstname = StringField('First Name', validators=[
                             DataRequired(), firstname_data, Length(min=2)])
@@ -71,6 +77,7 @@ class SignUpForm(FlaskForm):
                            DataRequired(), lastname_data, Length(min=2)])
     email = StringField('Email', validators=[
                         DataRequired(), validate_email, user_exists])
+    phone = StringField('Phone', validators=[DataRequired(), phone_data])
     username = StringField(
         'Username', validators=[DataRequired(), username_exists])
     address = StringField('Address', validators=[DataRequired(), address_data])

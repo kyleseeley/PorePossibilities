@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, EmailField
+from wtforms import SelectField, StringField
 from wtforms.validators import DataRequired, ValidationError, NumberRange, Length
 import re
 
@@ -43,7 +43,7 @@ def state_data(form, field):
 class CompanyForm(FlaskForm):
     name = StringField('Name', validators=[
                        DataRequired(), Length(max=50), name_data])
-    email = EmailField('Email', validators=[DataRequired(), validate_email])
+    email = StringField('Email', validators=[DataRequired(), validate_email])
     phone = StringField('Phone', validators=[DataRequired(), phone_data])
     address = StringField('Address', validators=[DataRequired(), address_data])
     city = StringField('City', validators=[DataRequired(), city_data])

@@ -6,11 +6,13 @@ from sqlalchemy.sql import text
 def seed_reviews():
     review1 = Review(
         userId=1,
+        companyId=1,
         review='This place is fantastic!! Astrid took fantastic care of me. I am definitely coming back.',
         stars=5
     )
     review2 = Review(
         userId=2,
+        companyId=1,
         review='My skin was red for a week afterwards and I had some pain. A friendly staff though',
         stars=2
     )

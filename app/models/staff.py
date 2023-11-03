@@ -43,6 +43,8 @@ class Staff(db.Model):
             'id': self.id,
             'firstname': self.firstname,
             'lastname': self.lastname,
+            'email': self.email,
             'authorized': self.authorized,
-            'availability': self.availability
+            'availability': self.availability,
+            'is_owner': self.is_owner
         }

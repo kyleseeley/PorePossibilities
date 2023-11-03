@@ -28,15 +28,19 @@ class Company(db.Model):
 
     reviews = db.relationship('Review', back_populates='company', cascade="all, delete-orphan")
 
+    cart = db.relationship('Cart', back_populates='company')
+
     def to_dict(self):
         return {
             'id': self.id,
             'ownerId': self.ownerId,
             'name': self.name,
             'email': self.email,
+            'phone': self.phone,
             'address': self.address,
             'city': self.city,
             'state': self.state,
+            'zipCode': self.zipCode,
             'starRating': self.starRating,
             'numReviews': self.numReviews
         }
