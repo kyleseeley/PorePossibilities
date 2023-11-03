@@ -5,16 +5,16 @@ from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
 
 
-company_routes = Blueprint('companies', __name__, url_prefix="")
+company_routes = Blueprint('companies', __name__)
 
 
-@company_routes.route("/")
+@company_routes.route('/')
 def all_companies():
     companies = Company.query.all()
     return {'companies': [company.to_dict() for company in companies]}
 
 
-@company_routes.route("/<int:companyId>")
+@company_routes.route('/<int:companyId>')
 def get_one_company(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
@@ -23,7 +23,7 @@ def get_one_company(companyId):
     return company.to_dict()
 
 
-@company_routes.route("/", methods=['POST'])
+@company_routes.route('/', methods=['POST'])
 @login_required
 def post_company():
     if not current_user.is_owner:
@@ -52,27 +52,27 @@ def post_company():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@company_routes.route("/", methods=['PUT'])
+@company_routes.route('/<int:companyId>', methods=['PUT'])
 @login_required
 def update_company(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
         return {'error': 'Company not found'}, 404
     if not current_user.is_owner:
-        return {'error': 'Only the owner can update a company'}, 403
+        return {'error': 'Only the owner can edit a company'}, 403
 
     form = CompanyForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
         company.ownerId = current_user.id,
-        company.name = data['name'],
-        company.email = data['email'],
-        company.phone = data['phone'],
-        company.address = data['address'],
-        company.city = data['city'],
-        company.state = data['state'],
-        company.zipCode = data['zipCode'],
+        company.name = data['name']
+        company.email = data['email']
+        company.phone = data['phone']
+        company.address = data['address']
+        company.city = data['city']
+        company.state = data['state']
+        company.zipCode = data['zipCode']
 
         db.session.commit()
         return company.to_dict()
@@ -81,7 +81,7 @@ def update_company(companyId):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@company_routes.route("/<int:companyId>", methods=['DELETE'])
+@company_routes.route('/<int:companyId>', methods=['DELETE'])
 @login_required
 def delete_company(companyId):
     company = Company.query.filter(Company.id == companyId).first()
@@ -94,7 +94,7 @@ def delete_company(companyId):
     return {'message': 'Company successfully deleted'}
 
 
-@company_routes.route("/<int:companyId>/reviews")
+@company_routes.route('/<int:companyId>/reviews')
 def company_reviews(companyId):
     company = Company.query.filter(Company.id == companyId).first()
 
@@ -109,18 +109,18 @@ def company_reviews(companyId):
     )
 
     if not reviews:
-        return {"message": "This company has no reviews."}
+        return {'message': 'This company has no reviews.'}
 
     reviews_data = [
         {
-            "id": review.id,
-            "userId": user.id,
-            "companyId": review.companyId,
-            "review": review.review,
-            "stars": review.stars,
-            "firstname": user.firstname,
-            "lastname": user.lastname,
-            "createdAt": review.createdAt
+            'id': review.id,
+            'userId': user.id,
+            'companyId': review.companyId,
+            'review': review.review,
+            'stars': review.stars,
+            'firstname': user.firstname,
+            'lastname': user.lastname,
+            'createdAt': review.createdAt
         }
         for review, user in reviews
     ]
@@ -128,19 +128,19 @@ def company_reviews(companyId):
     return {'reviews': reviews_data}
 
 
-@company_routes.route("/<int:companyId>/reviews", methods=['POST'])
+@company_routes.route('/<int:companyId>/reviews', methods=['POST'])
 @login_required
 def post_review(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
-        return {"error": "Restaurant does not exist!"}, 404
+        return {'error': 'Restaurant does not exist!'}, 404
     if isinstance(current_user, Staff):
-        return {"error": "Staff members cannot post reviews."}, 403
+        return {'error': 'Staff members cannot post reviews.'}, 403
 
     existing_review = Review.query.filter(
         Review.companyId == companyId, Review.userId == current_user.id).first()
     if existing_review:
-        return {"error": "You already have a review for this company."}, 403
+        return {'error': 'You already have a review for this company.'}, 403
     form = ReviewForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
@@ -149,8 +149,8 @@ def post_review(companyId):
         new_review = Review(
             userId=current_user.id,
             companyId=companyId,
-            review=data["review"],
-            stars=data["stars"]
+            review=data['review'],
+            stars=data['stars']
         )
 
         db.session.add(new_review)
@@ -179,17 +179,17 @@ def post_shoppingCart(companyId):
 
     user = User.query.filter(User.id == current_user.id).first()
     if not user:
-        return {"error": "User not found"}
+        return {'error': 'User not found'}
 
     service_id = request.json.get('service_id')
     quantity = request.json.get('quantity')
     if service_id is None or quantity is None:
-        return {"error": "Both 'service_id' and 'quantity' must be provided in the request"}
+        return {'error': 'Both \'service_id\' and \'quantity\' must be provided in the request'}
 
     service = Service.query.get(service_id)
 
     if service is None:
-        return {"error": "Service not found"}
+        return {'error': 'Service not found'}
 
     new_cart = Cart(
         userId=current_user.id,

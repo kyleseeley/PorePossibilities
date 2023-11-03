@@ -23,7 +23,7 @@ def user(userId):
     """
     user = User.query.get(id)
     if not user:
-        return {"error": "User does not exist"}
+        return {'error': 'User does not exist'}
     return user.to_dict()
 
 
@@ -32,7 +32,7 @@ def user(userId):
 def get_user_reviews(userId):
     reviews = Review.query.filter(Review.userId == userId).all()
     if not reviews:
-        return {"error": "User does not have any reviews"}, 404
+        return {'error': 'User does not have any reviews'}, 404
 
     review_list = [review.to_dict() for review in reviews]
 
