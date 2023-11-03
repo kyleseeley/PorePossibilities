@@ -12,6 +12,8 @@ appointment_routes = Blueprint('appointments', __name__)
 @login_required
 def all_appointments():
     appointments = Appointment.query.all()
+    if not appointments:
+        return {'error': 'No appointments available'}
     return {'appointments': [appointment.to_dict() for appointment in appointments]}
 
 
@@ -24,33 +26,6 @@ def get_one_appointment(appointmentId):
         return {'error': 'Appointment not found'}, 404
 
     return appointment.to_dict()
-
-
-@appointment_routes.route('/<int:userId')
-@login_required
-def get_user_appointments(userId):
-    user = User.query.get(userId)
-
-    if not user:
-        return {'error': 'User not found'}
-
-    appointments = Appointment.query.filter(Appointment.userId == userId).all()
-
-    return {'user_appointments': [appointment.to_dict() for appointment in appointments]}
-
-
-@appointment_routes.route('/<int:staffId')
-@login_required
-def get_staff_appointments(staffId):
-    staff = Staff.query.get(staffId)
-
-    if not staff:
-        return {'error': 'Staff not found'}
-
-    appointments = Appointment.query.filter(
-        Appointment.staffId == staffId).all()
-
-    return {'staff_appointments': [appointment.to_dict() for appointment in appointments]}
 
 
 @appointment_routes.route('/', methods=['POST'])

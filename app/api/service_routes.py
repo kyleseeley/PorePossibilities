@@ -11,6 +11,8 @@ service_routes = Blueprint('services', __name__)
 @service_routes.route('/')
 def all_services():
     services = Service.query.all()
+    if not services:
+        return {'error': 'No services available'}
     return {'services': [service.to_dict() for service in services]}
 
 
@@ -18,7 +20,7 @@ def all_services():
 def get_one_service(serviceId):
     service = Service.query.filter(Service.id == serviceId).first()
     if not service:
-        return {'error': 'Company not found'}, 404
+        return {'error': 'Service not found'}, 404
 
     return service.to_dict()
 
@@ -80,7 +82,7 @@ def delete_service(serviceId):
     if not service:
         return {'error': 'Service not found'}, 404
     if not current_user.is_owner:
-        return {'error': 'Only the owner can edit a service'}, 403
+        return {'error': 'Only the owner can delete a service'}, 403
 
     db.session.delete(service)
     return {'message': 'Service successfully deleted'}

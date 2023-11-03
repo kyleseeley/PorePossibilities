@@ -8,13 +8,25 @@ from .auth_routes import validation_errors_to_error_messages
 review_routes = Blueprint('reviews', __name__)
 
 
+@review_routes.route('/<int:reviewId>')
+def get_one_review(reviewId):
+    review = Review.query.filter(Review.id == reviewId)
+
+    if not review:
+        return {'message': 'Review not found'}, 404
+
+    return review.to_dict()
+
+
 @review_routes.route('/<int:reviewId>', methods=['PUT'])
 @login_required
 def edit_review(reviewId):
     review = Review.query.get(reviewId)
 
-    if review is None or review.userId != current_user.id:
-        return jsonify({'error': 'Review not found or user does not have permission to edit this review'}), 404
+    if review is None:
+        return {'error': 'Review not found'}, 404
+    if review.userId != current_user.id:
+        return {'error': 'User does not have permission to edit this review'}, 404
 
     form = ReviewForm()
 
@@ -36,7 +48,7 @@ def edit_review(reviewId):
 
         db.session.commit()
 
-        return jsonify(review.to_dict())
+        return review.to_dict()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
@@ -47,10 +59,10 @@ def delete_review(reviewId):
     review = Review.query.get(reviewId)
 
     if review is None:
-        return jsonify({'error': 'Review not found'}), 404
+        return {'error': 'Review not found'}, 404
 
     if review.userId != current_user.id:
-        return jsonify({'error': 'User does not have permission to delete this review'}), 403
+        return {'error': 'User does not have permission to delete this review'}, 403
 
     company = Company.query.get(review.company)
 
@@ -68,14 +80,4 @@ def delete_review(reviewId):
 
     db.session.commit()
 
-    return jsonify({'message': 'Review deleted successfully'})
-
-
-@review_routes.route('/<int:reviewId>')
-def get_one_review(reviewId):
-    review = Review.query.get(reviewId)
-
-    if review is not None:
-        return jsonify(review.to_dict())
-    else:
-        return jsonify({'message': 'Review not found'}), 404
+    return {'message': 'Review deleted successfully'}

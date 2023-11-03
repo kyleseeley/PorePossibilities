@@ -11,6 +11,8 @@ company_routes = Blueprint('companies', __name__)
 @company_routes.route('/')
 def all_companies():
     companies = Company.query.all()
+    if not companies:
+        return {'error': 'No companies available'}
     return {'companies': [company.to_dict() for company in companies]}
 
 
@@ -25,7 +27,7 @@ def get_one_company(companyId):
 
 @company_routes.route('/', methods=['POST'])
 @login_required
-def post_company():
+def create_company():
     if not current_user.is_owner:
         return {'error': 'Only the owner can create a new company'}, 403
 
@@ -133,7 +135,7 @@ def company_reviews(companyId):
 def post_review(companyId):
     company = Company.query.filter(Company.id == companyId).first()
     if not company:
-        return {'error': 'Restaurant does not exist!'}, 404
+        return {'error': 'Company does not exist'}, 404
     if isinstance(current_user, Staff):
         return {'error': 'Staff members cannot post reviews.'}, 403
 
@@ -170,9 +172,9 @@ def post_review(companyId):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@company_routes.route('/<int:companyId>/shopping-cart', methods=['POST'])
+@company_routes.route('/<int:companyId>/cart', methods=['POST'])
 @login_required
-def post_shoppingCart(companyId):
+def post_Cart(companyId):
     cart = current_user.get_cart(companyId)
     if cart:
         return cart.to_dict()

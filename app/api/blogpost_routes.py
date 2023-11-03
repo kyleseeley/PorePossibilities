@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import BlogPost, Staff, User, Cart, Company, Service, db
+from app.models import BlogPost, db
 from app.forms import BlogPostForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -11,6 +11,8 @@ blogpost_routes = Blueprint('blogposts', __name__)
 @blogpost_routes.route('/')
 def all_blogposts():
     blogposts = BlogPost.query.all()
+    if not blogposts:
+        return {'error': 'No blogposts available'}
     return {'blogposts': [blogpost.to_dict() for blogpost in blogposts]}
 
 
@@ -25,9 +27,9 @@ def get_one_blogpost(blogpostId):
 
 @blogpost_routes.route('/', methods=['POST'])
 @login_required
-def post_blogpost():
+def create_blogpost():
     if not current_user.authorized:
-        return {'error': 'Only the authorized staff can create a new blogpost'}, 403
+        return {'error': 'Only authorized staff can create a new blogpost'}, 403
 
     form = BlogPostForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -54,7 +56,7 @@ def edit_blogpost(blogpostId):
     if not blogpost:
         return {'error': 'Blogpost not found'}, 404
     if not current_user.authorized:
-        return {'error': 'Only the authorized staff can edit a blogpost'}, 403
+        return {'error': 'Only authorized staff can edit a blogpost'}, 403
 
     form = BlogPostForm()
     form['csrf_token'].data = request.cookies['csrf_token']

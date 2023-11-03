@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required
-from app.models import User, Review
+from app.models import User, Review, Appointment
 
 user_routes = Blueprint('users', __name__)
 
@@ -8,20 +8,16 @@ user_routes = Blueprint('users', __name__)
 @user_routes.route('/')
 @login_required
 def users():
-    """
-    Query for all users and returns them in a list of user dictionaries
-    """
     users = User.query.all()
+    if not users:
+        {'error': 'No users found'}
     return {'users': [user.to_dict() for user in users]}
 
 
 @user_routes.route('/<int:userId>')
 @login_required
-def user(userId):
-    """
-    Query for a user by id and returns that user in a dictionary
-    """
-    user = User.query.get(id)
+def one_user(userId):
+    user = User.query.get(userId)
     if not user:
         return {'error': 'User does not exist'}
     return user.to_dict()
@@ -36,4 +32,16 @@ def get_user_reviews(userId):
 
     review_list = [review.to_dict() for review in reviews]
 
-    return jsonify({'reviews': review_list})
+    return {'user reviews': review_list}
+
+
+@user_routes.route('/<int:userId>/appointments')
+@login_required
+def get_user_appointments(userId):
+    appointments = Appointment.query.filter(Appointment.userId == userId).all()
+    if not appointments:
+        return {'error': 'User does not have any appointments'}, 404
+
+    appointment_list = [appointment.to_dict() for appointment in appointments]
+
+    return {'user appointments': appointment_list}
