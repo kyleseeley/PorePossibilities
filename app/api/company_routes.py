@@ -94,7 +94,7 @@ def delete_company(companyId):
     return {'message': 'Company successfully deleted'}
 
 
-@company_routes.route("/<int:companyId/reviews")
+@company_routes.route("/<int:companyId>/reviews")
 def company_reviews(companyId):
     company = Company.query.filter(Company.id == companyId).first()
 
