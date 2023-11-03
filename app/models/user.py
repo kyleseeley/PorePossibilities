@@ -53,7 +53,7 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'address': self.address,
             'city': self.city,
-            'state': self.state
+            'state': self.state,
         }
 
     def get_cart(self):
