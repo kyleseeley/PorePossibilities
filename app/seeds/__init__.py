@@ -24,9 +24,9 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_staff()
+        undo_company()
         undo_services()
         undo_reviews()
-        undo_company()
         undo_blogposts()
         undo_images()
 
@@ -48,8 +48,8 @@ def seed():
         db.session.commit()
 
     seed_users()
-    seed_company()
     seed_staff()
+    seed_company()
     seed_services()
     seed_reviews()
     seed_blogposts()
@@ -62,9 +62,9 @@ def seed():
 def undo():
     undo_users()
     undo_staff()
+    undo_company()
     undo_services()
     undo_reviews()
-    undo_company()
     undo_blogposts()
     undo_images()
     # Add other undo functions here
