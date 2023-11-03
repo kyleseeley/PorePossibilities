@@ -128,7 +128,7 @@ def company_reviews(companyId):
     return {'reviews': reviews_data}
 
 
-@company_routes.routes("/<int:companyId>/reviews", methods=['POST'])
+@company_routes.route("/<int:companyId>/reviews", methods=['POST'])
 @login_required
 def post_review(companyId):
     company = Company.query.filter(Company.id == companyId).first()
