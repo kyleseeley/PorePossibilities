@@ -31,6 +31,8 @@ def seed():
         undo_images()
 
         db.session.execute(
+            f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
+        db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.staffs RESTART IDENTITY CASCADE;")
@@ -39,8 +41,6 @@ def seed():
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.reviews RESTART IDENTITY CASCADE;")
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
-        db.session.execute(
             f"TRUNCATE table {SCHEMA}.blogposts RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
@@ -48,10 +48,10 @@ def seed():
         db.session.commit()
 
     seed_users()
+    seed_company()
     seed_staff()
     seed_services()
     seed_reviews()
-    seed_company()
     seed_blogposts()
     seed_images()
     # Add other seed functions here
