@@ -57,7 +57,7 @@ def create_new_appointment():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@appointment_routes.route('/<int:appointmentId', methods=['PUT'])
+@appointment_routes.route('/<int:appointmentId>', methods=['PUT'])
 @login_required
 def update_appointment(appointmentId):
     appointment = Appointment.query.filter(

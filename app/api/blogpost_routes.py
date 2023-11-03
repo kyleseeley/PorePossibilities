@@ -49,7 +49,7 @@ def create_blogpost():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@blogpost_routes.route('/<int:<blogpostId>', methods=['PUT'])
+@blogpost_routes.route('/<int:blogpostId>', methods=['PUT'])
 @login_required
 def edit_blogpost(blogpostId):
     blogpost = BlogPost.query.filter(BlogPost.id == blogpostId).first()
