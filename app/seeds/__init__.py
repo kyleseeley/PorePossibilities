@@ -31,11 +31,11 @@ def seed():
         undo_images()
 
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
-        db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.staffs RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
         db.session.execute(
