@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: ffdb981a2913
+Revision ID: 40124d562c0c
 Revises: 
-Create Date: 2023-11-03 12:36:40.015643
+Create Date: 2023-11-03 21:11:23.340082
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = 'ffdb981a2913'
+revision = '40124d562c0c'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,6 +62,7 @@ def upgrade():
                     sa.Column('lastname', sa.String(
                         length=40), nullable=False),
                     sa.Column('email', sa.String(length=255), nullable=False),
+                    sa.Column('phone', sa.String(length=13), nullable=False),
                     sa.Column('username', sa.String(
                         length=40), nullable=False),
                     sa.Column('address', sa.String(
@@ -74,6 +75,7 @@ def upgrade():
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.PrimaryKeyConstraint('id'),
                     sa.UniqueConstraint('email'),
+                    sa.UniqueConstraint('phone'),
                     sa.UniqueConstraint('username')
                     )
     op.create_table('appointments',
