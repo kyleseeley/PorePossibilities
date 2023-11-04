@@ -4,6 +4,7 @@ from wtforms.fields import StringField, SelectField, PasswordField
 from wtforms.validators import DataRequired, Email, ValidationError, Length
 from app.models import User
 import re
+import phonenumbers
 
 
 def user_exists(form, field):
@@ -66,8 +67,22 @@ def validate_email(form, field):
 
 def phone_data(form, field):
     phone = field.data
-    if not re.match(r'^\d{10}$', phone):
-        raise ValidationError("Phone number must be a 10-digit number")
+    try:
+        parsed_phone = phonenumbers.parse(phone, "US")
+        print('parsed phone', parsed_phone)
+        print("valid or not", phonenumbers.is_valid_number(parsed_phone))
+        if not phonenumbers.is_valid_number(parsed_phone):
+            raise ValidationError("Invalid phone number")
+
+    except phonenumbers.phonenumberutil.NumberParseException:
+        raise ValidationError("Invalid phone number format")
+
+# def phone_data(form, field):
+#     phone = field.data
+#     pattern = r'^\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})$'
+
+#     if not re.match(pattern, phone):
+#         raise ValidationError("Invalid phone number")
 
 
 class SignUpForm(FlaskForm):
@@ -77,7 +92,7 @@ class SignUpForm(FlaskForm):
                            DataRequired(), lastname_data, Length(min=2)])
     email = StringField('Email', validators=[
                         DataRequired(), validate_email, user_exists])
-    phone = StringField('Phone', validators=[DataRequired(), phone_data])
+    phone = StringField('Phone', validators=[DataRequired()])
     username = StringField(
         'Username', validators=[DataRequired(), username_exists])
     address = StringField('Address', validators=[DataRequired(), address_data])

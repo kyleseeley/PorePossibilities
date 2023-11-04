@@ -40,13 +40,14 @@ def login():
         user = User.query.filter(User.email == form.data['email']).first()
         employee = Employee.query.filter(
             Employee.email == form.data['email']).first()
-        print('user', user)
-        print('employee', employee)
+
         if user:
+            session['user_type'] = 'user'
             login_user(user)
             return user.to_dict()
 
         if employee:
+            session['user_type'] = 'employee'
             login_user(employee)
             return employee.to_dict()
 
@@ -59,6 +60,7 @@ def logout():
     Logs a user out
     """
     logout_user()
+    session.clear()
     return {'message': 'User logged out'}
 
 
@@ -74,6 +76,7 @@ def sign_up():
             firstname=form.data['firstname'],
             lastname=form.data['lastname'],
             email=form.data['email'],
+            phone=form.data['phone'],
             username=form.data['username'],
             address=form.data['address'],
             city=form.data['city'],
