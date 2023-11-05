@@ -64,7 +64,7 @@ def update_appointment(appointmentId):
     if not appointment:
         return {'error': 'Appointment not found'}
 
-    form = AppointmentForm()
+    form = AppointmentForm(obj=appointment)
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():

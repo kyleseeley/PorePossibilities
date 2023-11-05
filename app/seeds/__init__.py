@@ -26,8 +26,8 @@ def seed():
         undo_users()
         undo_employees()
         undo_company()
-        undo_appointments()
         undo_services()
+        undo_appointments()
         undo_reviews()
         undo_blogposts()
         undo_images()
@@ -39,9 +39,9 @@ def seed():
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
         db.session.execute(
-            f"TRUNCATE table {SCHEMA}.appointments RESTART IDENTITY CASCADE;")
-        db.session.execute(
             f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.appointments RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.reviews RESTART IDENTITY CASCADE;")
         db.session.execute(
@@ -54,8 +54,8 @@ def seed():
     seed_users()
     seed_employees()
     seed_company()
-    seed_appointments()
     seed_services()
+    seed_appointments()
     seed_reviews()
     seed_blogposts()
     seed_images()
@@ -67,9 +67,9 @@ def seed():
 def undo():
     undo_users()
     undo_employees()
+    undo_services()
     undo_appointments()
     undo_company()
-    undo_services()
     undo_reviews()
     undo_blogposts()
     undo_images()

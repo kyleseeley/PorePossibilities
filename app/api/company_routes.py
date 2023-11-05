@@ -63,7 +63,7 @@ def update_company(companyId):
     if not current_user.is_owner:
         return {'error': 'Only the owner can edit a company'}, 403
 
-    form = CompanyForm()
+    form = CompanyForm(obj=company)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data

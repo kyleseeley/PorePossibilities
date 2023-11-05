@@ -59,7 +59,7 @@ def edit_service(serviceId):
     if not current_user.is_owner:
         return {'error': 'Only the owner can edit a service'}, 403
 
-    form = ServiceForm()
+    form = ServiceForm(obj=service)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data

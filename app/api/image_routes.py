@@ -57,7 +57,7 @@ def edit_image(imageId):
     if not current_user.is_owner:
         return {'error': 'Only the owner can edit a image'}, 403
 
-    form = ImageForm()
+    form = ImageForm(obj=image)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data

@@ -28,7 +28,7 @@ def edit_review(reviewId):
     if review.userId != current_user.id:
         return {'error': 'User does not have permission to edit this review'}, 404
 
-    form = ReviewForm()
+    form = ReviewForm(obj=review)
 
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():

@@ -103,7 +103,7 @@ def edit_employee(employeeId):
     if not current_user.is_owner:
         return {'error': 'Only the owner can edit an employee'}, 403
 
-    form = EmployeeForm()
+    form = EmployeeForm(obj=employee)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data

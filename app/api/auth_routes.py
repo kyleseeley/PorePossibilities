@@ -18,7 +18,7 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@auth_routes.route('')
+@auth_routes.route('/')
 def authenticate():
     if current_user.is_authenticated:
         if isinstance(current_user, User):

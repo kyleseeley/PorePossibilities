@@ -58,7 +58,7 @@ def edit_blogpost(blogpostId):
     if not current_user.authorized:
         return {'error': 'Only authorized employees can edit a blogpost'}, 403
 
-    form = BlogPostForm()
+    form = BlogPostForm(obj=blogpost)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data

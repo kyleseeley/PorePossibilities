@@ -14,6 +14,7 @@ from .api.appointment_routes import appointment_routes
 from .api.blogpost_routes import blogpost_routes
 from .api.employee_routes import employee_routes
 from .api.cart_routes import cart_routes
+from .api.session_routes import session_routes
 from .seeds import seed_commands
 from .config import Config
 
@@ -47,6 +48,7 @@ app.register_blueprint(appointment_routes, url_prefix='/api/appointments')
 app.register_blueprint(blogpost_routes, url_prefix='/api/blogposts')
 app.register_blueprint(employee_routes, url_prefix='/api/employees')
 app.register_blueprint(cart_routes, url_prefix='/api/cart')
+app.register_blueprint(session_routes, url_prefix='/api/session')
 db.init_app(app)
 Migrate(app, db)
 
