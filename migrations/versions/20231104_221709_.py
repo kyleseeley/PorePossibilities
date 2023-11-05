@@ -81,6 +81,39 @@ def upgrade():
                     sa.UniqueConstraint('phone'),
                     sa.UniqueConstraint('username')
                     )
+    op.create_table('companies',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('ownerId', sa.Integer(), nullable=False),
+                    sa.Column('name', sa.String(length=40), nullable=False),
+                    sa.Column('email', sa.String(length=255), nullable=False),
+                    sa.Column('phone', sa.String(), nullable=False),
+                    sa.Column('address', sa.String(), nullable=False),
+                    sa.Column('city', sa.String(length=35), nullable=False),
+                    sa.Column('state', sa.String(length=15), nullable=False),
+                    sa.Column('zipCode', sa.String(length=5), nullable=False),
+                    sa.Column('starRating', sa.Float(), nullable=True),
+                    sa.Column('numReviews', sa.Integer(), nullable=True),
+                    sa.Column('createdAt', sa.DateTime(), nullable=True),
+                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
+                    sa.ForeignKeyConstraint(['ownerId'], ['employees.id'], ),
+                    sa.PrimaryKeyConstraint('id'),
+                    sa.UniqueConstraint('address'),
+                    sa.UniqueConstraint('email'),
+                    sa.UniqueConstraint('phone')
+                    )
+    op.create_table('services',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('type', sa.String(), nullable=False),
+                    sa.Column('name', sa.String(), nullable=False),
+                    sa.Column('price', sa.Integer(), nullable=False),
+                    sa.Column('description', sa.String(), nullable=False),
+                    sa.Column('appointmentId', sa.Integer(), nullable=True),
+                    sa.Column('createdAt', sa.DateTime(), nullable=True),
+                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
+                    sa.ForeignKeyConstraint(
+                        ['appointmentId'], ['appointments.id'], ),
+                    sa.PrimaryKeyConstraint('id')
+                    )
     op.create_table('appointments',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('userId', sa.Integer(), nullable=False),
@@ -105,26 +138,6 @@ def upgrade():
                         ['employeeId'], ['employees.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
-    op.create_table('companies',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('ownerId', sa.Integer(), nullable=False),
-                    sa.Column('name', sa.String(length=40), nullable=False),
-                    sa.Column('email', sa.String(length=255), nullable=False),
-                    sa.Column('phone', sa.String(), nullable=False),
-                    sa.Column('address', sa.String(), nullable=False),
-                    sa.Column('city', sa.String(length=35), nullable=False),
-                    sa.Column('state', sa.String(length=15), nullable=False),
-                    sa.Column('zipCode', sa.String(length=5), nullable=False),
-                    sa.Column('starRating', sa.Float(), nullable=True),
-                    sa.Column('numReviews', sa.Integer(), nullable=True),
-                    sa.Column('createdAt', sa.DateTime(), nullable=True),
-                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(['ownerId'], ['employees.id'], ),
-                    sa.PrimaryKeyConstraint('id'),
-                    sa.UniqueConstraint('address'),
-                    sa.UniqueConstraint('email'),
-                    sa.UniqueConstraint('phone')
-                    )
     op.create_table('reviews',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('userId', sa.Integer(), nullable=True),
@@ -135,19 +148,6 @@ def upgrade():
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.ForeignKeyConstraint(['companyId'], ['companies.id'], ),
                     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
-                    sa.PrimaryKeyConstraint('id')
-                    )
-    op.create_table('services',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('type', sa.String(), nullable=False),
-                    sa.Column('name', sa.String(), nullable=False),
-                    sa.Column('price', sa.Integer(), nullable=False),
-                    sa.Column('description', sa.String(), nullable=False),
-                    sa.Column('appointmentId', sa.Integer(), nullable=True),
-                    sa.Column('createdAt', sa.DateTime(), nullable=True),
-                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(
-                        ['appointmentId'], ['appointments.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_table('carts',
