@@ -111,7 +111,34 @@ def edit_employee(employeeId):
         data.lastname = data['lastname'],
         data.email = data['email'],
         data.authorized = data['authorized'],
-        data.availability = data['availability'],
+        employee.monday_start = datetime.strptime(
+            data['monday_start'], '%I:%M %p').time() if data['monday_start'] else None
+        employee.monday_end = datetime.strptime(
+            data['monday_end'], '%I:%M %p').time() if data['monday_end'] else None
+        employee.tuesday_start = datetime.strptime(
+            data['tuesday_start'], '%I:%M %p').time() if data['tuesday_start'] else None
+        employee.tuesday_end = datetime.strptime(
+            data['tuesday_end'], '%I:%M %p').time() if data['tuesday_end'] else None
+        employee.wednesday_start = datetime.strptime(
+            data['wednesday_start'], '%I:%M %p').time() if data['wednesday_start'] else None
+        employee.wednesday_end = datetime.strptime(
+            data['wednesday_end'], '%I:%M %p').time() if data['wednesday_end'] else None
+        employee.thursday_start = datetime.strptime(
+            data['thursday_start'], '%I:%M %p').time() if data['thursday_start'] else None
+        employee.thursday_end = datetime.strptime(
+            data['thursday_end'], '%I:%M %p').time() if data['thursday_end'] else None
+        employee.friday_start = datetime.strptime(
+            data['friday_start'], '%I:%M %p').time() if data['friday_start'] else None
+        employee.friday_end = datetime.strptime(
+            data['friday_end'], '%I:%M %p').time() if data['friday_end'] else None
+        employee.saturday_start = datetime.strptime(
+            data['saturday_start'], '%I:%M %p').time() if data['saturday_start'] else None
+        employee.saturday_end = datetime.strptime(
+            data['saturday_end'], '%I:%M %p').time() if data['saturday_end'] else None
+        employee.sunday_start = datetime.strptime(
+            data['sunday_start'], '%I:%M %p').time() if data['sunday_start'] else None
+        employee.sunday_end = datetime.strptime(
+            data['sunday_end'], '%I:%M %p').time() if data['sunday_end'] else None
         data.password = data['password'],
 
         db.session.commit()
