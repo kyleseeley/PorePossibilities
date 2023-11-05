@@ -101,19 +101,6 @@ def upgrade():
                     sa.UniqueConstraint('email'),
                     sa.UniqueConstraint('phone')
                     )
-    op.create_table('services',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('type', sa.String(), nullable=False),
-                    sa.Column('name', sa.String(), nullable=False),
-                    sa.Column('price', sa.Integer(), nullable=False),
-                    sa.Column('description', sa.String(), nullable=False),
-                    sa.Column('appointmentId', sa.Integer(), nullable=True),
-                    sa.Column('createdAt', sa.DateTime(), nullable=True),
-                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(
-                        ['appointmentId'], ['appointments.id'], ),
-                    sa.PrimaryKeyConstraint('id')
-                    )
     op.create_table('appointments',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('userId', sa.Integer(), nullable=False),
@@ -125,6 +112,19 @@ def upgrade():
                     sa.ForeignKeyConstraint(
                         ['employeeId'], ['employees.id'], ),
                     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+                    sa.PrimaryKeyConstraint('id')
+                    )
+    op.create_table('services',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('type', sa.String(), nullable=False),
+                    sa.Column('name', sa.String(), nullable=False),
+                    sa.Column('price', sa.Integer(), nullable=False),
+                    sa.Column('description', sa.String(), nullable=False),
+                    sa.Column('appointmentId', sa.Integer(), nullable=True),
+                    sa.Column('createdAt', sa.DateTime(), nullable=True),
+                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
+                    sa.ForeignKeyConstraint(
+                        ['appointmentId'], ['appointments.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_table('blogposts',
@@ -167,14 +167,15 @@ def upgrade():
                     )
     # ### end Alembic commands ###
     if environment == "production":
+        op.execute(f"ALTER TABLE companies SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE employees SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE images SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE appointments SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE services SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE reviews SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE employees SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE carts SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE blogposts SET SCHEMA {SCHEMA};")
-        op.execute(f"ALTER TABLE appointments SET SCHEMA {SCHEMA};")
 
 
 def downgrade():
