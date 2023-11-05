@@ -7,6 +7,7 @@ from .services_seed import seed_services, undo_services
 from flask.cli import AppGroup
 from .users_seed import seed_users, undo_users
 from .employee_seed import seed_employees, undo_employees
+from .appointments_seed import seed_appointments, undo_appointments
 
 
 # Creates a seed group to hold our commands
@@ -29,6 +30,7 @@ def seed():
         undo_reviews()
         undo_blogposts()
         undo_images()
+        undo_appointments()
 
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
@@ -44,6 +46,8 @@ def seed():
             f"TRUNCATE table {SCHEMA}.blogposts RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.appointments RESTART IDENTITY CASCADE;")
 
         db.session.commit()
 
@@ -54,6 +58,7 @@ def seed():
     seed_reviews()
     seed_blogposts()
     seed_images()
+    seed_appointments()
     # Add other seed functions here
 
 
@@ -67,4 +72,5 @@ def undo():
     undo_reviews()
     undo_blogposts()
     undo_images()
+    undo_appointments()
     # Add other undo functions here

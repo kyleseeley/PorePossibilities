@@ -46,7 +46,6 @@ def create_new_appointment():
             employeeId=data['employeeId'],
             appointmentDate=data['appointmentDate'],
             appointmentTime=data['appointmentTime'],
-            status=data['status']
         )
 
         db.session.add(new_appointment)

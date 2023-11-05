@@ -13,11 +13,13 @@ class Service(db.Model):
     name = db.Column(db.String(), nullable=False)
     price = db.Column(db.Integer(), nullable=False)
     description = db.Column(db.String(), nullable=False)
+    appointmentId = db.Column(db.Integer(), db.ForeignKey('appointments.id'))
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    appointment = db.relationship('Appointment', back_populates='services')
+    appointment = db.relationship(
+        'Appointment', back_populates='services')
 
     cart = db.relationship('Cart', back_populates='services')
 
