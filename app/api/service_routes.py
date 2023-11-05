@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 service_routes = Blueprint('services', __name__)
 
 
-@service_routes.route('/')
+@service_routes.route('')
 def all_services():
     services = Service.query.all()
     if not services:

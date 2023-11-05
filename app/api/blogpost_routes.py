@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 blogpost_routes = Blueprint('blogposts', __name__)
 
 
-@blogpost_routes.route('/')
+@blogpost_routes.route('')
 def all_blogposts():
     blogposts = BlogPost.query.all()
     if not blogposts:

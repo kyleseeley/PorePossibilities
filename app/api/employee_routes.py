@@ -3,11 +3,12 @@ from flask_login import current_user, login_required
 from app.models import Employee, Appointment, db
 from app.forms import EmployeeForm
 from .auth_routes import validation_errors_to_error_messages
+from datetime import datetime
 
 employee_routes = Blueprint('employees', __name__)
 
 
-@employee_routes.route('/')
+@employee_routes.route('')
 def all_employees():
     employees = Employee.query.all()
     if not employees:
@@ -38,7 +39,7 @@ def get_appointments_by_employee(employeeId):
     return {'employee_appointments': [appointment.to_dict() for appointment in appointments]}
 
 
-@employee_routes.route('/', methods=['POST'])
+@employee_routes.route('', methods=['POST'])
 @login_required
 def create_employee():
     if not current_user.is_owner:
@@ -48,12 +49,40 @@ def create_employee():
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
+
         new_employee = Employee(
             firstname=data['firstname'],
             lastname=data['lastname'],
             email=data['email'],
             authorized=data['authorized'],
-            availability=data['availability'],
+            monday_start=datetime.strptime(
+                data['monday_start'], '%I:%M %p').time() if data['monday_start'] else None,
+            monday_end=datetime.strptime(
+                data['monday_end'], '%I:%M %p').time() if data['monday_end'] else None,
+            tuesday_start=datetime.strptime(
+                data['tuesday_start'], '%I:%M %p').time() if data['tuesday_start'] else None,
+            tuesday_end=datetime.strptime(
+                data['tuesday_end'], '%I:%M %p').time() if data['tuesday_end'] else None,
+            wednesday_start=datetime.strptime(
+                data['wednesday_start'], '%I:%M %p').time() if data['wednesday_start'] else None,
+            wednesday_end=datetime.strptime(
+                data['wednesday_end'], '%I:%M %p').time() if data['wednesday_end'] else None,
+            thursday_start=datetime.strptime(
+                data['thursday_start'], '%I:%M %p').time() if data['thursday_start'] else None,
+            thursday_end=datetime.strptime(
+                data['thursday_end'], '%I:%M %p').time() if data['thursday_end'] else None,
+            friday_start=datetime.strptime(
+                data['friday_start'], '%I:%M %p').time() if data['friday_start'] else None,
+            friday_end=datetime.strptime(
+                data['friday_end'], '%I:%M %p').time() if data['friday_end'] else None,
+            saturday_start=datetime.strptime(
+                data['saturday_start'], '%I:%M %p').time() if data['saturday_start'] else None,
+            saturday_end=datetime.strptime(
+                data['saturday_end'], '%I:%M %p').time() if data['saturday_end'] else None,
+            sunday_start=datetime.strptime(
+                data['sunday_start'], '%I:%M %p').time() if data['sunday_start'] else None,
+            sunday_end=datetime.strptime(
+                data['sunday_end'], '%I:%M %p').time() if data['sunday_end'] else None,
             password=data['password'],
         )
 

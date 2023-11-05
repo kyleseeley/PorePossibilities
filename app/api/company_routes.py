@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 company_routes = Blueprint('companies', __name__)
 
 
-@company_routes.route('/')
+@company_routes.route('')
 def all_companies():
     companies = Company.query.all()
     if not companies:

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 40124d562c0c
+Revision ID: 1e3fc4a4c144
 Revises: 
-Create Date: 2023-11-03 21:11:23.340082
+Create Date: 2023-11-04 17:05:58.596590
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = '40124d562c0c'
+revision = '1e3fc4a4c144'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,7 +27,20 @@ def upgrade():
                         length=40), nullable=False),
                     sa.Column('email', sa.String(length=255), nullable=False),
                     sa.Column('authorized', sa.BOOLEAN(), nullable=False),
-                    sa.Column('availability', sa.JSON(), nullable=False),
+                    sa.Column('monday_start', sa.Time(), nullable=True),
+                    sa.Column('monday_end', sa.Time(), nullable=True),
+                    sa.Column('tuesday_start', sa.Time(), nullable=True),
+                    sa.Column('tuesday_end', sa.Time(), nullable=True),
+                    sa.Column('wednesday_start', sa.Time(), nullable=True),
+                    sa.Column('wednesday_end', sa.Time(), nullable=True),
+                    sa.Column('thursday_start', sa.Time(), nullable=True),
+                    sa.Column('thursday_end', sa.Time(), nullable=True),
+                    sa.Column('friday_start', sa.Time(), nullable=True),
+                    sa.Column('friday_end', sa.Time(), nullable=True),
+                    sa.Column('saturday_start', sa.Time(), nullable=True),
+                    sa.Column('saturday_end', sa.Time(), nullable=True),
+                    sa.Column('sunday_start', sa.Time(), nullable=True),
+                    sa.Column('sunday_end', sa.Time(), nullable=True),
                     sa.Column('hashed_password', sa.String(
                         length=255), nullable=False),
                     sa.Column('is_owner', sa.Boolean(), nullable=False),
@@ -62,7 +75,7 @@ def upgrade():
                     sa.Column('lastname', sa.String(
                         length=40), nullable=False),
                     sa.Column('email', sa.String(length=255), nullable=False),
-                    sa.Column('phone', sa.String(length=13), nullable=False),
+                    sa.Column('phone', sa.String(length=15), nullable=False),
                     sa.Column('username', sa.String(
                         length=40), nullable=False),
                     sa.Column('address', sa.String(

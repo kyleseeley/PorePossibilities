@@ -77,13 +77,6 @@ def phone_data(form, field):
     except phonenumbers.phonenumberutil.NumberParseException:
         raise ValidationError("Invalid phone number format")
 
-# def phone_data(form, field):
-#     phone = field.data
-#     pattern = r'^\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})$'
-
-#     if not re.match(pattern, phone):
-#         raise ValidationError("Invalid phone number")
-
 
 class SignUpForm(FlaskForm):
     firstname = StringField('First Name', validators=[

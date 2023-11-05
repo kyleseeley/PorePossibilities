@@ -1,5 +1,6 @@
 from app.models import db, Employee, environment, SCHEMA
 from sqlalchemy.sql import text
+from datetime import datetime
 
 
 # Adds a demo user, you can add other users here if you want
@@ -11,45 +12,60 @@ def seed_employees():
         password='password',
         authorized=True,
         is_owner=True,
-        availability={
-            "Monday": ["9:00 AM - 6:00 PM"],
-            "Tuesday": ["9:00 AM - 6:00 PM"],
-            "Wednesday": ["9:00 AM - 6:00 PM"],
-            "Thursday": ["9:00 AM - 6:00 PM"],
-            "Friday": ["9:00 AM - 6:00 PM"],
-            "Saturday": [],
-            "Sunday": []
-        })
+        monday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        monday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        tuesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        tuesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        wednesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        wednesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        thursday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        thursday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        friday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        friday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        saturday_start=None,
+        saturday_end=None,
+        sunday_start=None,
+        sunday_end=None)
     sanam = Employee(
         firstname='Sanam',
         lastname='Nejad',
         email='sanam@pore.com',
         password='password',
         authorized=True,
-        availability={
-            "Monday": ["9:00 AM - 1:00 PM"],
-            "Tuesday": ["11:00 AM - 6:00 PM"],
-            "Wednesday": [],
-            "Thursday": ["9:00 AM - 3:00 PM"],
-            "Friday": ["12:00 PM - 6:00 PM"],
-            "Saturday": ["9:00 AM - 1:00 PM"],
-            "Sunday": []
-        })
+        monday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        monday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        tuesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        tuesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        wednesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        wednesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        thursday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        thursday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        friday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        friday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        saturday_start=None,
+        saturday_end=None,
+        sunday_start=None,
+        sunday_end=None)
     lindsay = Employee(
         firstname='Lindsay',
         lastname='Fischer',
         email='lindsay@pore.com',
         password='password',
         authorized=False,
-        availability={
-            "Monday": [],
-            "Tuesday": ["11:00 AM - 6:00 PM"],
-            "Wednesday": ["9:00 AM - 2:00 PM"],
-            "Thursday": [],
-            "Friday": ["9:00 AM - 3:00 PM"],
-            "Saturday": ["9:00 AM - 1:00 PM"],
-            "Sunday": ["9:00 AM - 1:00 PM"]
-        })
+        monday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        monday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        tuesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        tuesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        wednesday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        wednesday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        thursday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        thursday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        friday_start=datetime.strptime("9:00 AM", '%I:%M %p').time(),
+        friday_end=datetime.strptime("6:00 PM", '%I:%M %p').time(),
+        saturday_start=None,
+        saturday_end=None,
+        sunday_start=None,
+        sunday_end=None)
 
     db.session.add(astrid)
     db.session.add(sanam)

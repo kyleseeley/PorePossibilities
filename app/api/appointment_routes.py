@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 appointment_routes = Blueprint('appointments', __name__)
 
 
-@appointment_routes.route('/')
+@appointment_routes.route('')
 @login_required
 def all_appointments():
     appointments = Appointment.query.all()

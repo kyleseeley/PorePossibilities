@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 image_routes = Blueprint('images', __name__)
 
 
-@image_routes.route('/')
+@image_routes.route('')
 def all_images():
     images = Image.query.all()
     if not images:

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, SelectField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Email, ValidationError, Length
+from wtforms.validators import DataRequired, ValidationError, Length, Optional
 from app.models import Employee
 import re
 
@@ -33,12 +33,6 @@ def lastname_data(form, field):
             "Please enter in a last name with at least 2 characters")
 
 
-def authorized_data(form, field):
-    authorized = field.data
-    if not authorized:
-        raise ValidationError("Please select a value for authorized")
-
-
 def validate_email(form, field):
     if not re.match(r"[^@]+@[^@]+\.[^@]+", field.data):
         raise ValidationError("Invalid email address")
@@ -53,7 +47,7 @@ class EmployeeForm(FlaskForm):
         '2:00 PM', '2:15 PM', '2:30 PM', '2:45 PM', '3:00 PM',
         '3:15 PM', '3:30 PM', '3:45 PM', '4:00 PM', '4:15 PM',
         '4:30 PM', '4:45 PM', '5:00 PM', '5:15 PM', '5:30 PM',
-        '5:45 PM', '6:00 PM'
+        '5:45 PM', '6:00 PM', 'Off'
     ]
 
     firstname = StringField('First Name', validators=[
@@ -64,18 +58,52 @@ class EmployeeForm(FlaskForm):
                         DataRequired(), validate_email, employee_exists])
     password = PasswordField('Password', validators=[DataRequired()])
     authorized = BooleanField('Authorized', validators=[
-        DataRequired(), authorized_data])
-    monday_availability = SelectField(
-        'Monday Availability', choices=time_slots)
-    tuesday_availability = SelectField(
-        'Tuesday Availability', choices=time_slots)
-    wednesday_availability = SelectField(
-        'Wednesday Availability', choices=time_slots)
-    thursday_availability = SelectField(
-        'Thursday Availability', choices=time_slots)
-    friday_availability = SelectField(
-        'Friday Availability', choices=time_slots)
-    saturday_availability = SelectField(
-        'Saturday Availability', choices=time_slots)
-    sunday_availability = SelectField(
-        'Sunday Availability', choices=time_slots)
+        Optional()])
+    monday_start = SelectField('Monday Start', validators=[
+        Optional()], choices=time_slots)
+    monday_end = SelectField('Monday End', validators=[
+        Optional()], choices=time_slots)
+    tuesday_start = SelectField('Tuesday Start', validators=[
+        Optional()], choices=time_slots)
+    tuesday_end = SelectField('Tuesday End', validators=[
+        Optional()], choices=time_slots)
+    wednesday_start = SelectField('Wednesday Start', validators=[
+        Optional()], choices=time_slots)
+    wednesday_end = SelectField('Wednesday End', validators=[
+        Optional()], choices=time_slots)
+    thursday_start = SelectField('Thursday Start', validators=[
+        Optional()], choices=time_slots)
+    thursday_end = SelectField('Thursday End', validators=[
+        Optional()], choices=time_slots)
+    friday_start = SelectField('Friday Start', validators=[
+        Optional()], choices=time_slots)
+    friday_end = SelectField('Friday End', validators=[
+        Optional()], choices=time_slots)
+    saturday_start = SelectField('Saturday Start', validators=[
+        Optional()], choices=time_slots)
+    saturday_end = SelectField('Saturday End', validators=[
+        Optional()], choices=time_slots)
+    sunday_start = SelectField('Sunday Start', validators=[
+        Optional()], choices=time_slots)
+    sunday_end = SelectField('Sunday End', validators=[
+        Optional()], choices=time_slots)
+
+    def validate_start_end_times(self):
+        for day in ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]:
+            start_time_field = getattr(self, f"{day}_start")
+            end_time_field = getattr(self, f"{day}_end")
+
+            if start_time_field.data == 'Off' and end_time_field.data == 'Off':
+                start_time_field.data = None
+                end_time_field.data = None
+            elif start_time_field.data == 'Off' or end_time_field.data == 'Off':
+                self.errors[f"{day}_start"] = [
+                    "Both start and end times must be 'Off'"]
+
+    def validate(self):
+        if not super().validate():
+            return False
+
+        self.validate_start_end_times()
+
+        return True
