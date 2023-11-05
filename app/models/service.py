@@ -13,7 +13,8 @@ class Service(db.Model):
     name = db.Column(db.String(), nullable=False)
     price = db.Column(db.Integer(), nullable=False)
     description = db.Column(db.String(), nullable=False)
-    appointmentId = db.Column(db.Integer(), db.ForeignKey('appointments.id'))
+    appointmentId = db.Column(db.Integer(), db.ForeignKey(
+        add_prefix_for_prod('appointments.id')))
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

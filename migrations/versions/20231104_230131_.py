@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 7bd86a573fdc
+Revision ID: b2f2102dc3eb
 Revises: 
-Create Date: 2023-11-04 22:17:09.367811
+Create Date: 2023-11-04 23:01:31.775664
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = '7bd86a573fdc'
+revision = 'b2f2102dc3eb'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -81,6 +81,30 @@ def upgrade():
                     sa.UniqueConstraint('phone'),
                     sa.UniqueConstraint('username')
                     )
+    op.create_table('appointments',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('userId', sa.Integer(), nullable=False),
+                    sa.Column('employeeId', sa.Integer(), nullable=False),
+                    sa.Column('appointmentDate', sa.Date(), nullable=False),
+                    sa.Column('appointmentTime', sa.Time(), nullable=False),
+                    sa.Column('createdAt', sa.DateTime(), nullable=True),
+                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
+                    sa.ForeignKeyConstraint(
+                        ['employeeId'], ['employees.id'], ),
+                    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+                    sa.PrimaryKeyConstraint('id')
+                    )
+    op.create_table('blogposts',
+                    sa.Column('id', sa.Integer(), nullable=False),
+                    sa.Column('employeeId', sa.Integer(), nullable=False),
+                    sa.Column('title', sa.String(), nullable=False),
+                    sa.Column('blog', sa.String(), nullable=False),
+                    sa.Column('createdAt', sa.DateTime(), nullable=True),
+                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
+                    sa.ForeignKeyConstraint(
+                        ['employeeId'], ['employees.id'], ),
+                    sa.PrimaryKeyConstraint('id')
+                    )
     op.create_table('companies',
                     sa.Column('id', sa.Integer(), nullable=False),
                     sa.Column('ownerId', sa.Integer(), nullable=False),
@@ -101,16 +125,15 @@ def upgrade():
                     sa.UniqueConstraint('email'),
                     sa.UniqueConstraint('phone')
                     )
-    op.create_table('appointments',
+    op.create_table('reviews',
                     sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('userId', sa.Integer(), nullable=False),
-                    sa.Column('employeeId', sa.Integer(), nullable=False),
-                    sa.Column('appointmentDate', sa.Date(), nullable=False),
-                    sa.Column('appointmentTime', sa.Time(), nullable=False),
+                    sa.Column('userId', sa.Integer(), nullable=True),
+                    sa.Column('companyId', sa.Integer(), nullable=True),
+                    sa.Column('review', sa.String(), nullable=False),
+                    sa.Column('stars', sa.Integer(), nullable=False),
                     sa.Column('createdAt', sa.DateTime(), nullable=True),
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(
-                        ['employeeId'], ['employees.id'], ),
+                    sa.ForeignKeyConstraint(['companyId'], ['companies.id'], ),
                     sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
@@ -125,29 +148,6 @@ def upgrade():
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.ForeignKeyConstraint(
                         ['appointmentId'], ['appointments.id'], ),
-                    sa.PrimaryKeyConstraint('id')
-                    )
-    op.create_table('blogposts',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('employeeId', sa.Integer(), nullable=False),
-                    sa.Column('title', sa.String(), nullable=False),
-                    sa.Column('blog', sa.String(), nullable=False),
-                    sa.Column('createdAt', sa.DateTime(), nullable=True),
-                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(
-                        ['employeeId'], ['employees.id'], ),
-                    sa.PrimaryKeyConstraint('id')
-                    )
-    op.create_table('reviews',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('userId', sa.Integer(), nullable=True),
-                    sa.Column('companyId', sa.Integer(), nullable=True),
-                    sa.Column('review', sa.String(), nullable=False),
-                    sa.Column('stars', sa.Integer(), nullable=False),
-                    sa.Column('createdAt', sa.DateTime(), nullable=True),
-                    sa.Column('updatedAt', sa.DateTime(), nullable=True),
-                    sa.ForeignKeyConstraint(['companyId'], ['companies.id'], ),
-                    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_table('carts',
