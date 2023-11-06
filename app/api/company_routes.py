@@ -93,6 +93,7 @@ def delete_company(companyId):
         return {'error': 'Only the owner can delete a company'}, 403
 
     db.session.delete(company)
+    db.session.commit()
     return {'message': 'Company successfully deleted'}
 
 

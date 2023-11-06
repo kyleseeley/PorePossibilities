@@ -81,4 +81,5 @@ def delete_image(imageId):
         return {'error': 'Only the owner can delete a image'}, 403
 
     db.session.delete(image)
+    db.session.commit()
     return {'message': 'Image successfully deleted'}

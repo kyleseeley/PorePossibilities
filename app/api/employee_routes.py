@@ -158,4 +158,5 @@ def delete_employee(employeeId):
         return {'error': 'Only the owner can delete an employee'}, 403
 
     db.session.delete(employee)
+    db.session.commit()
     return {'message': 'Employee successfully deleted'}

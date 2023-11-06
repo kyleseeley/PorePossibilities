@@ -25,7 +25,7 @@ def get_one_service(serviceId):
     return service.to_dict()
 
 
-@service_routes.route('/', methods=['POST'])
+@service_routes.route('', methods=['POST'])
 @login_required
 def create_new_service():
     if not current_user.is_owner:
@@ -85,4 +85,5 @@ def delete_service(serviceId):
         return {'error': 'Only the owner can delete a service'}, 403
 
     db.session.delete(service)
+    db.session.commit()
     return {'message': 'Service successfully deleted'}

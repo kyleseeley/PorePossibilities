@@ -83,4 +83,5 @@ def delete_blogpost(blogpostId):
         return {'error': 'Only authorized employees can delete a blogpost'}, 403
 
     db.session.delete(blogpost)
+    db.session.commit()
     return {'message': 'Blogpost successfully deleted'}
