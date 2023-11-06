@@ -6,6 +6,7 @@ from datetime import datetime
 def seed_appointments():
     appointment1 = Appointment(
         userId=1,
+        companyId=1,
         employeeId=2,
         appointmentDate=datetime(2023, 11, 29),
         appointmentTimeStr="9:00 AM",
@@ -19,7 +20,8 @@ def seed_appointments():
 
     appointment2 = Appointment(
         userId=2,
-        employeeId=2,
+        companyId=1,
+        employeeId=3,
         appointmentDate=datetime(2023, 11, 16),
         appointmentTimeStr="11:00 AM",
     )

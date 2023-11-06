@@ -28,34 +28,6 @@ def get_one_appointment(appointmentId):
     return appointment.to_dict()
 
 
-@appointment_routes.route('/', methods=['POST'])
-@login_required
-def create_new_appointment():
-    form = AppointmentForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    if form.validate_on_submit():
-        data = form.data
-
-        if current_user.id != data['userId']:
-            return {'error': 'You are not authorized to create an appointment for this user'}, 403
-
-        new_appointment = Appointment(
-            userId=data['userId'],
-            serviceId=data['serviceId'],
-            employeeId=data['employeeId'],
-            appointmentDate=data['appointmentDate'],
-            appointmentTime=data['appointmentTime'],
-        )
-
-        db.session.add(new_appointment)
-        db.session.commit()
-        return new_appointment.to_dict()
-
-    else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
-
 @appointment_routes.route('/<int:appointmentId>', methods=['PUT'])
 @login_required
 def update_appointment(appointmentId):

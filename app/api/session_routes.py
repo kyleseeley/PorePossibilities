@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from app.forms import SignUpForm
+from app.forms import SignUpForm, AppointmentForm
 from flask_login import login_required, current_user
-from app.models import User, db
+from app.models import User, Appointment, Company, Employee, db
 from .auth_routes import validation_errors_to_error_messages
 from datetime import datetime
 
@@ -49,7 +49,7 @@ def get_user_appointments():
         return {'error': 'User not found'}, 404
 
 
-@session_routes.route('/userInfo', methods=['PUT'])
+@session_routes.route('/user', methods=['PUT'])
 @login_required
 def updateUserInfo():
     user = User.query.get(current_user.id)
@@ -71,7 +71,7 @@ def updateUserInfo():
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@session_routes.route('/userInfo', methods=['DELETE'])
+@session_routes.route('/user', methods=['DELETE'])
 @login_required
 def deleteUser():
     user = User.query.get(current_user.id)
@@ -80,3 +80,47 @@ def deleteUser():
     db.session.delete(user)
     db.session.commit()
     return {'message': 'Deleted successfully'}
+
+
+@session_routes.route('<int:companyId>/appointments', methods=['POST'])
+@login_required
+def create_new_appointment(companyId):
+    company = Company.query.get(companyId)
+    if not company:
+        return {'error': 'Company does not exist'}, 404
+
+    if not isinstance(current_user, User):
+        return {'error': 'Only users can create appointments'}, 403
+
+    form = AppointmentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    print(f"Form data: {form.data}")
+
+    if form.validate_on_submit():
+        data = form.data
+
+        if current_user.id != data['userId']:
+            return {'error': 'You are not authorized to create an appointment for this user'}, 403
+
+        cart_services = current_user.cart.services
+
+        employee_choices = [
+            (str(employee.id), f"{employee.firstname} {employee.lastname[0]}") for employee in Employee.query.all()]
+
+        form.employeeId.choices = employee_choices
+
+        new_appointment = Appointment(
+            userId=current_user.id,
+            employeeId=int(data['employeeId']),
+            appointmentDate=data['appointmentDate'],
+            appointmentTime=data['appointmentTime'],
+        )
+        new_appointment.services = cart_services
+
+        db.session.add(new_appointment)
+        db.session.commit()
+        return new_appointment.to_dict()
+
+    else:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401

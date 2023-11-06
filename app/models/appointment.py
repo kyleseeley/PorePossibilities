@@ -11,6 +11,8 @@ class Appointment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     userId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('users.id')), nullable=False)
+    companyId = db.Column(db.Integer(), db.ForeignKey(
+        add_prefix_for_prod('companies.id')))
     employeeId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('employees.id')), nullable=False)
     appointmentDate = db.Column(db.Date, nullable=False)
@@ -27,10 +29,13 @@ class Appointment(db.Model):
 
     employee = db.relationship('Employee', back_populates='appointments')
 
+    company = db.relationship('Company', back_populates='appointments')
+
     def to_dict(self):
         return {
             'id': self.id,
             'userId': self.userId,
+            'companyId': self.companyId,
             'employeeId': self.employeeId,
             'appointmentDate': self.appointmentDate,
             'appointmentTime': self.appointmentTime.strftime('%I:%M %p'),

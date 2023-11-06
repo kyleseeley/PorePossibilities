@@ -1,13 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, DateField, SelectMultipleField
+from wtforms import SelectField, DateField
 from wtforms.validators import DataRequired, ValidationError
-
-
-def service_data(form, field):
-    serviceId = field.data
-    if not serviceId:
-        raise ValidationError(
-            "Please select the service(s) you would like")
 
 
 def employee_data(form, field):
@@ -32,8 +25,6 @@ def appointmentTime_data(form, field):
 
 
 class AppointmentForm(FlaskForm):
-    serviceId = SelectMultipleField(
-        'Service', validators=[DataRequired()], coerce=int)
     employeeId = SelectField('Employee', validators=[DataRequired()])
     appointmentDate = DateField('Date', validators=[DataRequired()])
     appointmentTime = SelectField('Time', validators=[DataRequired()], choices=[
