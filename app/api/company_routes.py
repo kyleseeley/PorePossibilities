@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Review, Employee, User, Cart, Company, Service, db
+from app.models import Review, Employee, User, Cart, Company, Service, Appointment, db
 from app.forms import CompanyForm, ReviewForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -212,3 +212,17 @@ def post_Cart(companyId):
     db.session.commit()
 
     return new_cart.to_dict()
+
+
+@company_routes.route('/<int:companyId>/appointments')
+@login_required
+def all_appointments(companyId):
+    company = Company.query.get(companyId)  # Get the company by ID
+    if not company:
+        return {'error': 'Company not found'}, 404
+
+    appointments = Appointment.query.filter_by(companyId=companyId).all()
+    if not appointments:
+        return {'error': 'No appointments found for this company'}, 404
+
+    return {'appointments': [appointment.to_dict() for appointment in appointments]}

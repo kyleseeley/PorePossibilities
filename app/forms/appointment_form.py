@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, DateField
+from wtforms import SelectField, DateField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 
 
@@ -25,7 +25,7 @@ def appointmentTime_data(form, field):
 
 
 class AppointmentForm(FlaskForm):
-    employeeId = SelectField('Employee', validators=[DataRequired()])
+    employeeId = IntegerField('Employee', validators=[DataRequired()])
     appointmentDate = DateField('Date', validators=[DataRequired()])
     appointmentTime = SelectField('Time', validators=[DataRequired()], choices=[
         '9:00 AM', '9:15 AM', '9:30 AM', '9:45 AM', '10:00 AM',

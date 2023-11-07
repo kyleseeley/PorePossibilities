@@ -64,14 +64,14 @@ def delete_review(reviewId):
     if review.userId != current_user.id:
         return {'error': 'User does not have permission to delete this review'}, 403
 
-    company = Company.query.get(review.company)
+    company = review.company
 
     db.session.delete(review)
     db.session.commit()
 
-    reviews = Review.query.filter_by(company=company.id).all()
-    num_reviews = len(reviews)
-    total_stars = sum(review.stars for review in reviews)
+    reviews_data = company.get_reviews()
+    num_reviews = len(reviews_data['reviews'])
+    total_stars = sum(review['stars'] for review in reviews_data['reviews'])
     avg_rating = total_stars / num_reviews if num_reviews > 0 else 0
 
     # Update the restaurant record with the new numReviews and starRating

@@ -95,8 +95,6 @@ def create_new_appointment(companyId):
     form = AppointmentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print(f"Form data: {form.data}")
-
     if form.validate_on_submit():
         data = form.data
 
@@ -105,14 +103,10 @@ def create_new_appointment(companyId):
 
         cart_services = current_user.cart.services
 
-        employee_choices = [
-            (str(employee.id), f"{employee.firstname} {employee.lastname[0]}") for employee in Employee.query.all()]
-
-        form.employeeId.choices = employee_choices
-
         new_appointment = Appointment(
             userId=current_user.id,
-            employeeId=int(data['employeeId']),
+            employeeId=data['employeeId'],
+            companyId=companyId,
             appointmentDate=data['appointmentDate'],
             appointmentTime=data['appointmentTime'],
         )

@@ -23,25 +23,25 @@ def get_one_user(userId):
     return user.to_dict()
 
 
-# @user_routes.route('/<int:userId>/reviews')
-# @login_required
-# def get_user_reviews(userId):
-#     reviews = Review.query.filter(Review.userId == userId).all()
-#     if not reviews:
-#         return {'error': 'User does not have any reviews'}, 404
+@user_routes.route('/<int:userId>/reviews')
+@login_required
+def get_user_reviews(userId):
+    reviews = Review.query.filter(Review.userId == userId).all()
+    if not reviews:
+        return {'error': 'User does not have any reviews'}, 404
 
-#     review_list = [review.to_dict() for review in reviews]
+    review_list = [review.to_dict() for review in reviews]
 
-#     return {'user reviews': review_list}
+    return {'user reviews': review_list}
 
 
-# @user_routes.route('/<int:userId>/appointments')
-# @login_required
-# def get_user_appointments(userId):
-#     appointments = Appointment.query.filter(Appointment.userId == userId).all()
-#     if not appointments:
-#         return {'error': 'User does not have any appointments'}, 404
+@user_routes.route('/<int:userId>/appointments')
+@login_required
+def get_user_appointments(userId):
+    appointments = Appointment.query.filter(Appointment.userId == userId).all()
+    if not appointments:
+        return {'error': 'User does not have any appointments'}, 404
 
-#     appointment_list = [appointment.to_dict() for appointment in appointments]
+    appointment_list = [appointment.to_dict() for appointment in appointments]
 
-#     return {'user appointments': appointment_list}
+    return {'user appointments': appointment_list}

@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 514ffd42ff17
+Revision ID: fdb35b018cf9
 Revises: 
-Create Date: 2023-11-05 21:53:20.182131
+Create Date: 2023-11-06 18:29:56.483164
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = '514ffd42ff17'
+revision = 'fdb35b018cf9'
 down_revision = None
 branch_labels = None
 depends_on = None
