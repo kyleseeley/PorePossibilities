@@ -1,11 +1,25 @@
 from flask import Blueprint, jsonify, request
-from app.models import Employee, User, Cart, Company, Service, db
-from app.forms import CartForm
+from app.models import Employee, User, Cart, CartItem, Company, Service, db
+from app.forms import CartItemForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
 
 
 cart_routes = Blueprint('carts', __name__)
+
+
+@cart_routes.route("/<int:cartId>", methods=["DELETE"])
+@login_required
+def delete_shoppingCart(cartId):
+    cart = Cart.query.get(cartId)
+    if not cart:
+        return {'error': 'Cart does not exist'}, 404
+    if cart.userId != current_user.id:
+        return {'error': 'Unauthorized'}, 401
+    db.session.delete(cart)
+    db.session.commit()
+
+    return jsonify({"message": "Cart deleted successfully"})
 
 
 @cart_routes.route('/<int:userId>')
@@ -24,7 +38,7 @@ def update_cart(userId):
     if not cart:
         return {'error': 'No cart associated with this user'}
 
-    form = CartForm()
+    form = Cart()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -72,7 +86,7 @@ def remove_from_cart(userId):
     if not cart:
         return {'error': 'No cart associated with this user'}
 
-    form = CartForm()
+    form = CartItemForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
@@ -94,3 +108,46 @@ def remove_from_cart(userId):
 
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+
+
+@cart_routes.route('/<int:userId>/add', methods=['POST'])
+@login_required
+def add_to_cart(userId):
+    user = User.query.get(userId)
+    if not user:
+        return {'error': 'User does not exist'}, 404
+
+    data = request.get_json()
+
+    if 'serviceId' not in data or 'quantity' not in data:
+        return {'error': 'Please provide both serviceId and quantity'}, 400
+
+    serviceId = data['serviceId']
+    service = Service.query.get(serviceId)
+    if service is None:
+        return {'error': 'Service not found'}, 404
+
+    quantity = data['quantity']
+    if quantity <= 0:
+        return {'error': 'Quantity must be greater than 0'}, 400
+
+    service_price = service.price
+    service_total = service_price * quantity
+
+    cart = Cart.query.filter_by(userId=current_user.id).first()
+    if cart is None:
+        cart = Cart(userId=current_user.id)
+        db.session.add(cart)
+
+    # Add the service to the cart
+    cart_item = CartItem(
+        cart=cart,
+        service=service,
+        quantity=quantity,
+        serviceTotal=service_total
+    )
+
+    db.session.add(cart_item)
+    db.session.commit()
+
+    return {'message': 'Service added to cart successfully'}

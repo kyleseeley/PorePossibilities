@@ -10,7 +10,7 @@ def validateQuantity(form, field):
             "Please enter an amount for the item.")
 
 
-class CartForm(FlaskForm):
+class CartItemForm(FlaskForm):
     serviceId = SelectField('Service', validators=[DataRequired()])
     quantity = SelectField("Quantity", validators=[
         DataRequired(), validateQuantity,], choices=[1, 2, 3, 4, 5])

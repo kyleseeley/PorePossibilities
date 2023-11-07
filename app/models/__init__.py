@@ -8,4 +8,5 @@ from .cart import Cart
 from .image import Image
 from .employee import Employee
 from .company import Company
+from .cartitem import CartItem
 from .db import environment, SCHEMA

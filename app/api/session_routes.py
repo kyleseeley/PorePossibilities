@@ -85,6 +85,10 @@ def deleteUser():
 @session_routes.route('<int:companyId>/appointments', methods=['POST'])
 @login_required
 def create_new_appointment(companyId):
+    user = User.query.get(current_user.id)
+    if not user:
+        return {'error': 'User not found'}, 404
+
     company = Company.query.get(companyId)
     if not company:
         return {'error': 'Company does not exist'}, 404
@@ -98,13 +102,10 @@ def create_new_appointment(companyId):
     if form.validate_on_submit():
         data = form.data
 
-        if current_user.id != data['userId']:
-            return {'error': 'You are not authorized to create an appointment for this user'}, 403
-
         cart_services = current_user.cart.services
 
         new_appointment = Appointment(
-            userId=current_user.id,
+            userId=user.id,
             employeeId=data['employeeId'],
             companyId=companyId,
             appointmentDate=data['appointmentDate'],
