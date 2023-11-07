@@ -24,6 +24,8 @@ class Service(db.Model):
 
     cart = db.relationship('Cart', back_populates='services')
 
+    cart_items = db.relationship('CartItem', back_populates='service')
+
     def to_dict(self):
         return {
             'id': self.id,

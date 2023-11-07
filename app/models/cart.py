@@ -13,13 +13,19 @@ class Cart(db.Model):
         add_prefix_for_prod('users.id')))
     companyId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('companies.id')))
+    serviceId = db.Column(db.Integer(), db.ForeignKey(
+        add_prefix_for_prod('services.id')))
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user = db.relationship('User', back_populates='cart')
+
     company = db.relationship('Company', back_populates='cart')
+
     cart_items = db.relationship('CartItem', back_populates='cart')
+
+    services = db.relationship('Service', back_populates='cart')
 
     def to_dict(self):
         return {

@@ -17,6 +17,7 @@ class CartItem(db.Model):
     serviceTotal = db.Column(db.Integer(), nullable=False)
 
     cart = db.relationship('Cart', back_populates='cart_items')
+    
     service = db.relationship('Service', back_populates='cart_items')
 
     def to_dict(self):
