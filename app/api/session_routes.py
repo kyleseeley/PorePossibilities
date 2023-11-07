@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from app.forms import SignUpForm, AppointmentForm
 from flask_login import login_required, current_user
-from app.models import User, Appointment, Company, Employee, db
+from app.models import User, Appointment, Company, Employee, Cart, db
 from .auth_routes import validation_errors_to_error_messages
 from datetime import datetime
 

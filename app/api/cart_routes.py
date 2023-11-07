@@ -10,7 +10,7 @@ cart_routes = Blueprint('carts', __name__)
 
 @cart_routes.route("/<int:cartId>", methods=["DELETE"])
 @login_required
-def delete_shoppingCart(cartId):
+def delete_cart(cartId):
     cart = Cart.query.get(cartId)
     if not cart:
         return {'error': 'Cart does not exist'}, 404
@@ -45,6 +45,8 @@ def update_cart(userId):
         data = form.data
         serviceId = data['serviceId']
         quantity = data['quantity']
+        if not isinstance(quantity, int) or quantity <= 0:
+            return {'error': 'Invalid quantity provided'}, 400
 
         service = Service.query.get(serviceId)
         if not service:
@@ -84,7 +86,7 @@ def update_cart(userId):
 def remove_from_cart(userId):
     cart = Cart.query.filter(Cart.userId == userId).first()
     if not cart:
-        return {'error': 'No cart associated with this user'}
+        return {'error': 'No cart associated with this user'}, 404
 
     form = CartItemForm()
     form['csrf_token'].data = request.cookies['csrf_token']
@@ -102,6 +104,10 @@ def remove_from_cart(userId):
         cart.cartTotal -= cart_item.serviceTotal
 
         db.session.delete(cart_item)
+
+        if not cart.cart_items:
+            db.session.delete(cart)
+
         db.session.commit()
 
         return {'message': 'Item removed from the cart'}
@@ -139,13 +145,21 @@ def add_to_cart(userId):
         cart = Cart(userId=current_user.id)
         db.session.add(cart)
 
-    # Add the service to the cart
-    cart_item = CartItem(
-        cart=cart,
-        service=service,
-        quantity=quantity,
-        serviceTotal=service_total
-    )
+    # Check if the service is already in the cart
+    cart_item = CartItem.query.filter(
+        CartItem.cartId == cart.id, CartItem.serviceId == serviceId).first()
+
+    if cart_item:
+        cart_item.quantity += quantity
+        cart_item.serviceTotal = service_price * cart_item.quantity
+    else:
+        cart_item = CartItem(
+            cartId=cart.id,
+            serviceId=serviceId,
+            quantity=quantity,
+            price=service_price,
+            serviceTotal=service_total,
+        )
 
     db.session.add(cart_item)
     db.session.commit()
