@@ -25,7 +25,7 @@ def get_one_image(imageId):
     return image.to_dict()
 
 
-@image_routes.route('/', methods=['POST'])
+@image_routes.route('', methods=['POST'])
 @login_required
 def create_image():
     if not current_user.is_owner:
@@ -37,7 +37,7 @@ def create_image():
         data = form.data
         new_image = Image(
             name=data['name'],
-            imageUrl=data['imageUrl'],
+            imageFile=data['imageFile'],
         )
 
         db.session.add(new_image)

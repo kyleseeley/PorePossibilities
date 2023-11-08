@@ -8,7 +8,7 @@ from .auth_routes import validation_errors_to_error_messages
 cartItem_routes = Blueprint('cartItem', __name__)
 
 
-@cartItem_routes.route('/<int:shoppingCartItemId>', methods=["PUT"])
+@cartItem_routes.route('/<int:cartItemId>', methods=["PUT"])
 @login_required
 def update_cartItem(cartItemId):
     if not current_user:
@@ -32,25 +32,25 @@ def update_cartItem(cartItemId):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@cartItem_routes.route('/<int:cartItemId>', methods=["DELETE"])
-@login_required
-def delete_cartItem(cartItemId):
-    if not current_user:
-        return {'error': 'Unauthorized: User is not logged in'}, 401
-    cartItem = CartItem.query.filter(CartItem.id == cartItemId).first()
-    if not cartItem:
-        return {'error': 'Cart item not found'}, 404
-    cart = Cart.query.get(cartItem.cartId)
-    cart_dict = current_user.get_cart(cart.companyId)
+# @cartItem_routes.route('/<int:cartItemId>', methods=["DELETE"])
+# @login_required
+# def delete_cartItem(cartItemId):
+#     if not current_user:
+#         return {'error': 'Unauthorized: User is not logged in'}, 401
+#     cartItem = CartItem.query.filter(CartItem.id == cartItemId).first()
+#     if not cartItem:
+#         return {'error': 'Cart item not found'}, 404
+#     cart = Cart.query.get(cartItem.cartId)
+#     cart_dict = current_user.get_cart(cart.companyId)
 
-    if len(cart_dict['items']) == 1:
-        db.session.delete(cart)
-    else:
+#     if len(cart_dict['items']) == 1:
+#         db.session.delete(cart)
+#     else:
 
-        itemDetails = cartItem.to_dict()
-        cart.total -= itemDetails['price'] * cartItem.quantity
+#         itemDetails = cartItem.to_dict()
+#         cart.total -= itemDetails['price'] * cartItem.quantity
 
-    db.session.delete(cartItem)
-    db.session.commit()
+#     db.session.delete(cartItem)
+#     db.session.commit()
 
-    return {"message": "Successfully deleted"}
+#     return {"message": "Successfully deleted"}

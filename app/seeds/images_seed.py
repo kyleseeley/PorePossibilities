@@ -6,23 +6,23 @@ from sqlalchemy.sql import text
 def seed_images():
     image1 = Image(
         name='Signature',
-        imageUrl='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-8.jpg',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-8.jpg',
     )
     image2 = Image(
         name='Botanical Beaute',
-        imageUrl='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-30.jpg',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-30.jpg',
     )
     image3 = Image(
         name='Everything Laser',
-        imageUrl='https://skintheore.com/cdn/shop/files/SkinTheore-90.jpg',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-90.jpg',
     )
     image4 = Image(
         name='Microneedling',
-        imageUrl='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-55.jpg',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-55.jpg',
     )
     image5 = Image(
         name='NanoGlow Renewel',
-        imageUrl='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-20.jpg',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-20.jpg',
     )
 
     db.session.add(image1)

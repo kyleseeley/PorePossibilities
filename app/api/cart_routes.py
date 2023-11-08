@@ -8,13 +8,13 @@ from .auth_routes import validation_errors_to_error_messages
 cart_routes = Blueprint('carts', __name__)
 
 
-@cart_routes.route("/<int:cartId>", methods=["DELETE"])
+@cart_routes.route('/<int:companyId>/<int:userId>', methods=['DELETE'])
 @login_required
-def delete_cart(cartId):
-    cart = Cart.query.get(cartId)
+def delete_cart(companyId, userId):
+    cart = Cart.query.get(userId)
     if not cart:
         return {'error': 'Cart does not exist'}, 404
-    if cart.userId != current_user.id:
+    if cart.userId != current_user.id or cart.companyId != companyId:
         return {'error': 'Unauthorized'}, 401
     db.session.delete(cart)
     db.session.commit()
@@ -22,69 +22,70 @@ def delete_cart(cartId):
     return jsonify({"message": "Cart deleted successfully"})
 
 
-@cart_routes.route('/<int:userId>')
+@cart_routes.route('/<int:companyId>/<int:userId>')
 @login_required
-def get_user_cart(userId):
-    cart_items = Cart.query.filter(Cart.userId == userId).all()
+def get_user_cart(companyId, userId):
+    cart_items = Cart.query.filter(
+        Cart.companyId == companyId, Cart.userId == userId).all()
     if not cart_items:
         return {'message': 'User has no items in the cart'}, 404
     return {'cart_items': [cart_item.to_dict() for cart_item in cart_items]}
 
 
-@cart_routes.route('/<int:userId>/update', methods=['POST'])
+@cart_routes.route('/<int:companyId>/<int:userId>/update', methods=['POST'])
 @login_required
-def update_cart(userId):
-    cart = Cart.query.filter(Cart.userId == userId).first()
+def update_cart(companyId, userId):
+    cart = Cart.query.filter(Cart.companyId == companyId,
+                             Cart.userId == userId).first()
     if not cart:
         return {'error': 'No cart associated with this user'}
 
-    form = Cart()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    data = request.get_json()
+    if 'serviceId' not in data or 'quantity' not in data:
+        return {'error': 'Please provide both serviceId and quantity'}, 400
 
-    if form.validate_on_submit():
-        data = form.data
-        serviceId = data['serviceId']
-        quantity = data['quantity']
-        if not isinstance(quantity, int) or quantity <= 0:
-            return {'error': 'Invalid quantity provided'}, 400
+    serviceId = data['serviceId']
+    quantity = data['quantity']
 
-        service = Service.query.get(serviceId)
-        if not service:
-            return {'error': 'Service not found'}, 404
+    if not isinstance(quantity, int) or quantity <= 0:
+        return {'error': 'Invalid quantity provided'}, 400
 
-        cart_item = Cart.query.filter(
-            Cart.userId == userId, Cart.serviceId == serviceId).first()
+    service = Service.query.get(serviceId)
+    if not service:
+        return {'error': 'Service not found'}, 404
 
-        if cart_item:
-            cart_item.quantity += quantity
-            cart_item.serviceTotal = service.price * cart_item.quantity
-        else:
-            cart_item = Cart(
-                userId=userId,
-                companyId=service.companyId,
-                serviceId=serviceId,
-                quantity=quantity,
-                serviceTotal=service.price * quantity,
-            )
+    cart_item = CartItem.query.filter(
+        CartItem.cartId == cart.id, CartItem.serviceId == serviceId).first()
 
-        db.session.add(cart_item)
-        db.session.commit()
-
-        cart_items = Cart.query.filter(Cart.userId == userId).all()
-        total = sum(cart_item.serviceTotal for cart_item in cart_items)
-        cart.cartTotal = total
-
-        db.session.commit()
-
-        return cart_item.to_dict()
+    if cart_item:
+        cart_item.quantity = quantity  # Update quantity directly
+        cart_item.serviceTotal = service.price * quantity
     else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+        cart_item = CartItem(
+            cartId=cart.id,
+            serviceId=serviceId,
+            quantity=quantity,
+            price=service.price,
+            serviceTotal=service.price * quantity,
+        )
+
+    db.session.add(cart_item)
+    db.session.commit()
+
+    cart_items = CartItem.query.filter(CartItem.cartId == cart.id)
+    total = sum(cart_item.serviceTotal for cart_item in cart_items)
+    cart.cartTotal = total
+
+    db.session.commit()
+
+    return cart_item.to_dict()
 
 
-@cart_routes.route('/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])
+@cart_routes.route('/<int:companyId>/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])
 @login_required
-def remove_from_cart(userId, serviceId):
-    cart = Cart.query.filter(Cart.userId == userId).first()
+def remove_from_cart(companyId, userId, serviceId):
+    cart = Cart.query.filter(Cart.companyId == companyId,
+                             Cart.userId == userId).first()
     if not cart:
         return {'error': 'No cart associated with this user'}, 404
 
@@ -101,16 +102,14 @@ def remove_from_cart(userId, serviceId):
     if not cart.cart_items:
         db.session.delete(cart)
 
-    cart_total = cart.calculate_cart_total()
-
     db.session.commit()
 
     return {'message': 'Item removed from the cart'}
 
 
-@cart_routes.route('/<int:userId>/add', methods=['POST'])
+@cart_routes.route('/<int:companyId>/<int:userId>/add', methods=['POST'])
 @login_required
-def add_to_cart(userId, companyId):
+def add_to_cart(companyId, userId):
     user = User.query.get(userId)
     if not user:
         return {'error': 'User does not exist'}, 404
@@ -136,7 +135,8 @@ def add_to_cart(userId, companyId):
     if cart is None:
         company = Company.query.get(companyId)
         if company:
-            cart = Cart(userId=current_user.id, companyId=company.id)
+            cart = Cart(companyId=company.id,
+                        userId=current_user.id, cartTotal=0)
             db.session.add(cart)
         else:
             return {'error': 'Company not found for the service'}, 404
@@ -158,6 +158,9 @@ def add_to_cart(userId, companyId):
         )
 
     db.session.add(cart_item)
+    db.session.commit()
+
+    cart.cartTotal = cart.calculate_cart_total()
     db.session.commit()
 
     return {'message': 'Service added to cart successfully'}
