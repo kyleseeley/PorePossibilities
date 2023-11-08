@@ -24,7 +24,7 @@ def get_current_user():
 
 @session_routes.route("/reviews")
 @login_required
-def get_user_reviews():
+def get_current_user_reviews():
     user = User.query.get(current_user.id)
     if user:
         return user.get_reviews()
@@ -34,7 +34,7 @@ def get_user_reviews():
 
 @session_routes.route('/cart')
 @login_required
-def get_user_cart():
+def get_current_user_cart():
     user = User.query.get(current_user.id)
     if user:
         return user.get_cart()
@@ -44,7 +44,7 @@ def get_user_cart():
 
 @session_routes.route('/appointments')
 @login_required
-def get_user_appointments():
+def get_current_user_appointments():
     user = User.query.get(current_user.id)
     if user:
         return user.get_appointments()
@@ -105,7 +105,10 @@ def create_new_appointment(companyId):
     if form.validate_on_submit():
         data = form.data
 
-        cart_services = current_user.cart.services
+        cart_services = current_user.cart.services if current_user.cart else []
+
+        if not cart_services:
+            return {'error': 'Cart is empty. Please add services to the cart before creating an appointment.'}, 400
 
         new_appointment = Appointment(
             userId=user.id,

@@ -5,10 +5,10 @@ from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
 
 
-blogpost_routes = Blueprint('blogposts', __name__)
+blogPost_routes = Blueprint('blogposts', __name__)
 
 
-@blogpost_routes.route('')
+@blogPost_routes.route('')
 def all_blogposts():
     blogposts = BlogPost.query.all()
     if not blogposts:
@@ -16,7 +16,7 @@ def all_blogposts():
     return {'blogposts': [blogpost.to_dict() for blogpost in blogposts]}
 
 
-@blogpost_routes.route('/<int:blogpostId>')
+@blogPost_routes.route('/<int:blogpostId>')
 def get_one_blogpost(blogpostId):
     blogpost = BlogPost.query.filter(BlogPost.id == blogpostId).first()
     if not blogpost:
@@ -25,7 +25,7 @@ def get_one_blogpost(blogpostId):
     return blogpost.to_dict()
 
 
-@blogpost_routes.route('/', methods=['POST'])
+@blogPost_routes.route('/', methods=['POST'])
 @login_required
 def create_blogpost():
     if not current_user.authorized:
@@ -49,7 +49,7 @@ def create_blogpost():
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@blogpost_routes.route('/<int:blogpostId>', methods=['PUT'])
+@blogPost_routes.route('/<int:blogpostId>', methods=['PUT'])
 @login_required
 def edit_blogpost(blogpostId):
     blogpost = BlogPost.query.filter(BlogPost.id == blogpostId).first()
@@ -73,7 +73,7 @@ def edit_blogpost(blogpostId):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 
-@blogpost_routes.route('/<int:blogpostId>', methods=['DELETE'])
+@blogPost_routes.route('/<int:blogpostId>', methods=['DELETE'])
 @login_required
 def delete_blogpost(blogpostId):
     blogpost = BlogPost.query.filter(BlogPost.id == blogpostId).first()

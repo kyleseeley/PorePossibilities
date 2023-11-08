@@ -25,7 +25,7 @@ def get_one_user(userId):
 
 @user_routes.route('/<int:userId>/reviews')
 @login_required
-def get_user_reviews(userId):
+def get_reviews_by_user(userId):
     reviews = Review.query.filter(Review.userId == userId).all()
     if not reviews:
         return {'error': 'User does not have any reviews'}, 404
@@ -37,7 +37,7 @@ def get_user_reviews(userId):
 
 @user_routes.route('/<int:userId>/appointments')
 @login_required
-def get_user_appointments(userId):
+def get_appointments_by_user(userId):
     appointments = Appointment.query.filter(Appointment.userId == userId).all()
     if not appointments:
         return {'error': 'User does not have any appointments'}, 404

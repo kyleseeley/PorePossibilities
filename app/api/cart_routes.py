@@ -81,44 +81,34 @@ def update_cart(userId):
         return {'errors': validation_errors_to_error_messages(form.errors)}, 400
 
 
-@cart_routes.route('/<int:userId>/remove', methods=['DELETE'])
+@cart_routes.route('/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])
 @login_required
-def remove_from_cart(userId):
+def remove_from_cart(userId, serviceId):
     cart = Cart.query.filter(Cart.userId == userId).first()
     if not cart:
         return {'error': 'No cart associated with this user'}, 404
 
-    form = CartItemForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
+    cart_item = CartItem.query.filter(
+        CartItem.cartId == cart.id, CartItem.serviceId == serviceId).first()
 
-    if form.validate_on_submit():
-        data = form.data
-        serviceId = data['serviceId']
+    if not cart_item:
+        return {'error': 'Item not found in the cart'}, 404
 
-        cart_item = Cart.query.filter(
-            Cart.userId == userId, Cart.serviceId == serviceId).first()
+    cart.cartTotal -= cart_item.serviceTotal
 
-        if not cart_item:
-            return {'error': 'Item not found in the cart'}, 404
+    db.session.delete(cart_item)
 
-        cart.cartTotal -= cart_item.serviceTotal
+    if not cart.cart_items:
+        db.session.delete(cart)
 
-        db.session.delete(cart_item)
+    db.session.commit()
 
-        if not cart.cart_items:
-            db.session.delete(cart)
-
-        db.session.commit()
-
-        return {'message': 'Item removed from the cart'}
-
-    else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 400
+    return {'message': 'Item removed from the cart'}
 
 
 @cart_routes.route('/<int:userId>/add', methods=['POST'])
 @login_required
-def add_to_cart(userId):
+def add_to_cart(userId, companyId):
     user = User.query.get(userId)
     if not user:
         return {'error': 'User does not exist'}, 404
@@ -142,8 +132,12 @@ def add_to_cart(userId):
 
     cart = Cart.query.filter_by(userId=current_user.id).first()
     if cart is None:
-        cart = Cart(userId=current_user.id)
-        db.session.add(cart)
+        company = Company.query.get(companyId)
+        if company:
+            cart = Cart(userId=current_user.id, companyId=company.id)
+            db.session.add(cart)
+        else:
+            return {'error': 'Company not found for the service'}, 404
 
     # Check if the service is already in the cart
     cart_item = CartItem.query.filter(
