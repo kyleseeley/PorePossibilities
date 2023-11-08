@@ -22,6 +22,8 @@ def price_data(form, field):
     if not price:
         raise ValidationError(
             "Please enter in a price for the service")
+    if price < 0:
+        raise ValidationError("Price must be a positive number")
 
 
 def description_data(form, field):

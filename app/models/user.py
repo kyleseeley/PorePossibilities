@@ -2,6 +2,10 @@ from .db import db, environment, SCHEMA
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
+import pytz
+
+
+mountain_timezone = pytz.timezone('US/Mountain')
 
 
 class User(db.Model, UserMixin):
@@ -20,9 +24,9 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(35), nullable=False)
     state = db.Column(db.String(15), nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     appointments = db.relationship(
         'Appointment', back_populates='user', cascade="all, delete-orphan")

@@ -2,6 +2,10 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
+import pytz
+
+
+mountain_timezone = pytz.timezone('US/Mountain')
 
 
 class Employee(db.Model, UserMixin):
@@ -31,9 +35,9 @@ class Employee(db.Model, UserMixin):
     sunday_end = db.Column(db.Time)
     hashed_password = db.Column(db.String(255), nullable=False)
     is_owner = db.Column(db.Boolean, nullable=False, default=False)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     appointments = db.relationship('Appointment', back_populates='employee')
 

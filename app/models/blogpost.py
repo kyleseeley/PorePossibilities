@@ -1,5 +1,9 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+import pytz
+
+
+mountain_timezone = pytz.timezone('US/Mountain')
 
 
 class BlogPost(db.Model):
@@ -13,9 +17,9 @@ class BlogPost(db.Model):
         add_prefix_for_prod('employees.id')), nullable=False)
     title = db.Column(db.String(), nullable=False)
     blog = db.Column(db.String(), nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     employee = db.relationship("Employee", back_populates="blogpost")
 

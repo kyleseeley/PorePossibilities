@@ -1,5 +1,9 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+import pytz
+
+
+mountain_timezone = pytz.timezone('US/Mountain')
 
 
 class Service(db.Model):
@@ -15,9 +19,9 @@ class Service(db.Model):
     description = db.Column(db.String(), nullable=False)
     appointmentId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('appointments.id')))
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     appointment = db.relationship(
         'Appointment', back_populates='services')
@@ -34,3 +38,15 @@ class Service(db.Model):
             'price': self.price,
             'description': self.description
         }
+
+    def get_appointments(self):
+        if self.appointment:
+            return [appointment.to_dict() for appointment in self.appointment]
+        else:
+            return []
+
+    def get_cart_items(self):
+        if self.cart_items:
+            return [cart_item.to_dict() for cart_item in self.cart_items]
+        else:
+            return []

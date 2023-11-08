@@ -1,5 +1,9 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
+import pytz
+
+
+mountain_timezone = pytz.timezone('US/Mountain')
 
 
 class Company(db.Model):
@@ -20,9 +24,9 @@ class Company(db.Model):
     zipCode = db.Column(db.String(5), nullable=False)
     starRating = db.Column(db.Float())
     numReviews = db.Column(db.Integer())
-    createdAt = db.Column(db.DateTime, default=datetime.utcnow)
+    createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+        db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     owner = db.relationship("Employee", back_populates='companies')
 

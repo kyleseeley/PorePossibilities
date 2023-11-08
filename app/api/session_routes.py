@@ -13,8 +13,11 @@ session_routes = Blueprint('current', __name__)
 @login_required
 def get_current_user():
     user = User.query.get(current_user.id)
+    employee = Employee.query.get(current_user.id)
     if user:
         return user.to_dict()
+    elif employee:
+        return employee.to_dict()
     else:
         return {'error': 'User not found'}, 404
 

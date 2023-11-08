@@ -17,7 +17,7 @@ class CartItem(db.Model):
     serviceTotal = db.Column(db.Integer(), nullable=False)
 
     cart = db.relationship('Cart', back_populates='cart_items')
-    
+
     service = db.relationship('Service', back_populates='cart_items')
 
     def to_dict(self):
@@ -29,3 +29,6 @@ class CartItem(db.Model):
             'price': self.price,
             'serviceTotal': self.serviceTotal
         }
+
+    def get_service_total(self):
+        return self.quantity * self.price

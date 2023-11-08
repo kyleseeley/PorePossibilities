@@ -123,7 +123,8 @@ def company_reviews(companyId):
             'stars': review.stars,
             'firstname': user.firstname,
             'lastname': user.lastname,
-            'createdAt': review.createdAt
+            'createdAt': review.createdAt,
+            'updatedAt': review.updatedAt
         }
         for review, user in reviews
     ]
