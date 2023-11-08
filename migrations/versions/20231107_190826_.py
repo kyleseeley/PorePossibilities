@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 5e7ad14e81d9
+Revision ID: bf2816c8be96
 Revises: 
-Create Date: 2023-11-07 17:29:56.064297
+Create Date: 2023-11-07 19:08:26.125495
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = '5e7ad14e81d9'
+revision = 'bf2816c8be96'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -157,6 +157,7 @@ def upgrade():
                     sa.Column('userId', sa.Integer(), nullable=True),
                     sa.Column('companyId', sa.Integer(), nullable=True),
                     sa.Column('serviceId', sa.Integer(), nullable=True),
+                    sa.Column('cartTotal', sa.Integer(), nullable=False),
                     sa.Column('createdAt', sa.DateTime(), nullable=True),
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.ForeignKeyConstraint(['companyId'], ['companies.id'], ),

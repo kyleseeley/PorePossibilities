@@ -101,6 +101,8 @@ def remove_from_cart(userId, serviceId):
     if not cart.cart_items:
         db.session.delete(cart)
 
+    cart_total = cart.calculate_cart_total()
+
     db.session.commit()
 
     return {'message': 'Item removed from the cart'}

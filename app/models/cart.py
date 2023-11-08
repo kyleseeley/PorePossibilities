@@ -19,6 +19,7 @@ class Cart(db.Model):
         add_prefix_for_prod('companies.id')))
     serviceId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('services.id')))
+    cartTotal = db.Column(db.Integer(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
         db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
