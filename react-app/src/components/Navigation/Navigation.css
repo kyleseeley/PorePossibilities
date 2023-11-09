@@ -5,3 +5,107 @@
 .hidden {
   display: none;
 }
+
+.navigation-menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 10px;
+  border-bottom: solid lightgray 1px;
+  background-color: purple;
+}
+
+/* Style for navigation links */
+/* .navigation-menu li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 18px;
+  transition: color 0.2s;
+} */
+
+.navigation-home {
+  text-decoration: none;
+  color: white;
+  font-family: Brush Script MT;
+  font-size: 40px;
+}
+
+.navigation-menu li a:hover {
+  color: #007bff;
+}
+
+/* Style for the profile button container */
+.profile-button-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the profile button icon */
+.profile-button i {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Style for the dropdown menu */
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* display: none; */
+  list-style-type: none;
+  padding: 0;
+  z-index: 2;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-button-container:hover .profile-dropdown {
+  display: block;
+}
+
+.profile-dropdown li {
+  padding: 5px;
+  white-space: nowrap;
+  margin: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.user-info {
+  margin-bottom: 8px;
+  border-bottom: solid lightgray 1px;
+}
+
+.logout-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: lightskyblue;
+  transition: background-color 0.2s;
+  border-radius: 30px;
+  padding: 10px 10px;
+}
+
+.logout-container {
+  display: flex;
+  justify-content: center;
+}
+
+.logout-link:hover {
+  background-color: #007bff;
+  cursor: pointer;
+}

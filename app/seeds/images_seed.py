@@ -24,12 +24,27 @@ def seed_images():
         name='NanoGlow Renewel',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-20.jpg',
     )
+    image6 = Image(
+        name='Home Page',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-96.jpg'
+    )
+    image7 = Image(
+        name='Astrid doing work',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-13.jpg'
+    )
+    image8 = Image(
+        name='Laser Treatment',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-88'
+    )
 
     db.session.add(image1)
     db.session.add(image2)
     db.session.add(image3)
     db.session.add(image4)
     db.session.add(image5)
+    db.session.add(image6)
+    db.session.add(image7)
+    db.session.add(image8)
     db.session.commit()
 
 
