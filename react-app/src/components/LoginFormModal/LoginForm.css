@@ -1,8 +1,7 @@
 /* LoginFormPage.css */
 
 .login-container {
-  /* border-radius: 10px;
-  background-color: lavender;
+  background-color: lightsteelblue;
   padding: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   width: 200px;
@@ -10,7 +9,8 @@
   text-align: center;
   max-height: 30%;
   overflow-y: auto;
-  z-index: 100; */
+  z-index: 100;
+  border-radius: 20px;
 }
 
 .login-title {
@@ -22,7 +22,7 @@
 }
 
 .email-input-container,
-.login-input-container {
+.password-input-container {
   text-align: center;
   margin-bottom: 10px;
   display: flex;
@@ -31,13 +31,12 @@
 }
 
 /* Input fields */
-.email-input,
-.password-input {
+.login-input {
   width: 80%;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  text-align: center; */
   margin: 0 auto;
   padding: 5px;
 }
@@ -93,7 +92,7 @@
 
 .demo-link {
   display: inline-block;
-  color: #ff9999;
+  color: white;
   text-decoration: underline;
   cursor: pointer;
   text-align: center;

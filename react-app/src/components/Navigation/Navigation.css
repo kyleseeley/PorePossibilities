@@ -1,5 +1,6 @@
 .profile-dropdown {
   position: absolute;
+  padding: 0;
 }
 
 .hidden {
@@ -13,8 +14,8 @@
   justify-content: space-between;
   margin: 0;
   padding: 10px;
-  border-bottom: solid lightgray 1px;
-  background-color: purple;
+  border-bottom: solid gray 5px;
+  background-color: darkviolet;
 }
 
 /* Style for navigation links */
@@ -38,6 +39,15 @@
   color: #007bff;
 }
 
+.search-bar-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Style for the profile button container */
 .profile-button-container {
   position: relative;
@@ -50,6 +60,7 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
+  background-color: white;
 }
 
 /* Style for the profile button icon */
@@ -68,9 +79,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* display: none; */
   list-style-type: none;
-  padding: 0;
+  /* padding: 0; */
+  padding: 7px;
   z-index: 2;
   cursor: pointer;
   display: flex;
@@ -83,9 +94,14 @@
 }
 
 .profile-dropdown li {
-  padding: 5px;
   white-space: nowrap;
-  margin: 5px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-button {
+  width: 40px;
 }
 
 .hidden {
@@ -97,6 +113,19 @@
   border-bottom: solid lightgray 1px;
 }
 
+.my-appointments-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid lightgray 1px;
+  cursor: pointer;
+}
+
+.my-appointments {
+  font-weight: normal;
+  margin-bottom: 8px;
+}
+
 .logout-link {
   display: flex;
   justify-content: center;
@@ -105,12 +134,12 @@
   background-color: lightskyblue;
   transition: background-color 0.2s;
   border-radius: 30px;
-  padding: 10px 10px;
+  padding: 10px;
+  margin: 0;
 }
 
 .logout-container {
-  display: flex;
-  justify-content: center;
+  padding-top: 7px;
 }
 
 .logout-link:hover {

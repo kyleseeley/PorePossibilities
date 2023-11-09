@@ -12,10 +12,8 @@ const removeUser = () => ({
   type: REMOVE_USER,
 });
 
-const initialState = { user: null };
-
 export const authenticate = () => async (dispatch) => {
-  const response = await fetch("/api/auth/", {
+  const response = await csrfFetch("/api/auth", {
     headers: {
       "Content-Type": "application/json",
     },
@@ -31,7 +29,7 @@ export const authenticate = () => async (dispatch) => {
 };
 
 export const login = (email, password) => async (dispatch) => {
-  const response = await fetch("/api/auth/login", {
+  const response = await csrfFetch("/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -44,10 +42,12 @@ export const login = (email, password) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
+    console.log("data1", data);
     dispatch(setUser(data));
     return null;
   } else if (response.status < 500) {
     const data = await response.json();
+    console.log("data2", data);
     if (data.errors) {
       return data.errors;
     }
@@ -71,7 +71,7 @@ export const logout = () => async (dispatch) => {
 export const signUp =
   (firstname, lastname, email, username, address, city, state, password) =>
   async (dispatch) => {
-    const response = await fetch("/api/auth/signup", {
+    const response = await csrfFetch("/api/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export const signUp =
   };
 
 export const restoreUserThunk = () => async (dispatch) => {
-  const response = await csrfFetch("/api/session/");
+  const response = await csrfFetch("/api/session");
   const data = await response.json();
   dispatch(setUser(data));
   return response;
@@ -136,7 +136,9 @@ export const deleteUserThunk = () => async (dispatch) => {
   return response;
 };
 
-export default function reducer(state = initialState, action) {
+const initialState = { user: null };
+
+export default function sessionReducer(state = initialState, action) {
   switch (action.type) {
     case SET_USER:
       return { user: action.payload };

@@ -24,11 +24,15 @@ function LoginFormModal() {
   const handleDemoUserLogIn = (e) => {
     e.preventDefault();
 
-    dispatch(login("demo@aa.io", "password")).catch(async (res) => {
-      const data = await res.json();
-      if (data && data.errors) setErrors(data.errors);
-    });
+    dispatch(login("demo@aa.io", "password"))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
   };
+
+  const isButtonDisabled = email.length < 4 || password.length < 6;
 
   return (
     <div className="login-container">
@@ -38,7 +42,7 @@ function LoginFormModal() {
           <label className="email-input-label">
             Email
             <input
-              className="email-input"
+              className="login-input"
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -50,7 +54,7 @@ function LoginFormModal() {
           <label className="password-input-label">
             Password
             <input
-              className="password-input"
+              className="login-input"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -67,7 +71,11 @@ function LoginFormModal() {
             </ul>
           </div>
         )}
-        <button className="submit-button" type="submit">
+        <button
+          className="submit-button"
+          type="submit"
+          disabled={isButtonDisabled}
+        >
           Log In
         </button>
         <div>
