@@ -34,7 +34,7 @@ function Navigation({ isLoaded }) {
   return (
     <ul className="navigation-menu">
       <NavLink exact to="/" className="navigation-home">
-        <i className="fa-solid fa-house-tsunami"></i>
+        <i className="fa-solid fa-spa"></i>
         {"  "}
         Pore Possibilities
       </NavLink>

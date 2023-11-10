@@ -1,0 +1,22 @@
+.main-image img {
+  aspect-ratio: 16/9;
+  width: 100%;
+  animation-name: fade-out;
+  animation-iteration-count: infinite;
+  animation-duration: 8s;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

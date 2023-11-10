@@ -25,14 +25,19 @@ def seed_images():
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-20.jpg',
     )
     image6 = Image(
-        name='Home Page',
+        name='Home Page 1',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-96.jpg'
     )
+
     image7 = Image(
+        name='Home Page 2',
+        imageFile='https://skintheore.com/cdn/shop/files/pexels-polina-kovaleva-6543620.jpg'
+    )
+    image8 = Image(
         name='Astrid doing work',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-13.jpg'
     )
-    image8 = Image(
+    image9 = Image(
         name='Laser Treatment',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-88'
     )
@@ -45,6 +50,7 @@ def seed_images():
     db.session.add(image6)
     db.session.add(image7)
     db.session.add(image8)
+    db.session.add(image9)
     db.session.commit()
 
 

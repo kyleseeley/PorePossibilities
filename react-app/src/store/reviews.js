@@ -68,7 +68,7 @@ export const createNewReview = (reviewData) => async (dispatch) => {
 
     const responseData = await response.json();
     dispatch(createReview(responseData.review));
-    dispatch(fetchReviews(responseData.restaurantId));
+    dispatch(fetchReviews(responseData.companyId));
   } catch (error) {
     console.log("Error creating a new review", error);
   }

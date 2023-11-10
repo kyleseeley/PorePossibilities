@@ -17,14 +17,14 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
-@auth_routes.route('/')
+@auth_routes.route('')
 def authenticate():
     if current_user.is_authenticated:
         if isinstance(current_user, User):
             return current_user.to_dict()
         elif isinstance(current_user, Employee):
             return current_user.to_dict()
-    return {'errors': ['Unauthorized']}
+    return {'errors': ['Unauthorized']}, 403
 
 
 @auth_routes.route('/login', methods=['POST'])
@@ -35,7 +35,6 @@ def login():
     form = LoginForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
-        # Add the user to the session, we are logged in!
         user = User.query.filter(User.email == form.data['email']).first()
         employee = Employee.query.filter(
             Employee.email == form.data['email']).first()
