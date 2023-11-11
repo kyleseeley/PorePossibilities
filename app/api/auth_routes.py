@@ -64,11 +64,12 @@ def logout():
 
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
-    """
-    Creates a new user and logs them in
-    """
     form = SignUpForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
+    print('CSRF Token:', form['csrf_token'].data)
+    print('Form Data:', form.data)
+
     if form.validate_on_submit():
         user = User(
             firstname=form.data['firstname'],
@@ -85,6 +86,9 @@ def sign_up():
         db.session.commit()
         login_user(user)
         return user.to_dict()
+    else:
+        print('Form Errors:', form.errors)
+
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 
 

@@ -35,6 +35,8 @@ class Review(db.Model):
             'companyId': self.companyId,
             'review': self.review,
             'stars': self.stars,
-            'createdAt': self.createdAt,
-            'updatedAt': self.updatedAt
+            'firstname': self.user.firstname,
+            'lastname': self.user.lastname,
+            'createdAt': self.createdAt.astimezone(mountain_timezone).strftime('%a, %d %b %Y %H:%M:%S %Z'),
+            'updatedAt': self.updatedAt.astimezone(mountain_timezone).strftime('%a, %d %b %Y %H:%M:%S %Z') if self.updatedAt else None
         }

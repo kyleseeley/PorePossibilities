@@ -10,9 +10,10 @@ import LandingPage from "./components/LandingPage";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(true);
-  // useEffect(() => {
-  //   dispatch(authenticate()).then(() => setIsLoaded(true));
-  // }, [dispatch]);
+  useEffect(() => {
+    // dispatch(authenticate()).then(() => setIsLoaded(true));
+    dispatch(authenticate());
+  }, [dispatch]);
 
   return (
     <>

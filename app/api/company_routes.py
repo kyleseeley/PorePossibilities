@@ -114,20 +114,7 @@ def company_reviews(companyId):
     if not reviews:
         return {'message': 'This company has no reviews.'}
 
-    reviews_data = [
-        {
-            'id': review.id,
-            'userId': user.id,
-            'companyId': review.companyId,
-            'review': review.review,
-            'stars': review.stars,
-            'firstname': user.firstname,
-            'lastname': user.lastname,
-            'createdAt': review.createdAt,
-            'updatedAt': review.updatedAt
-        }
-        for review, user in reviews
-    ]
+    reviews_data = [review.to_dict() for review, user in reviews]
 
     return {'reviews': reviews_data}
 
