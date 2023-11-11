@@ -49,14 +49,12 @@ export const fetchAllImages = () => async (dispatch) => {
 export const fetchImageById = (imageId) => async (dispatch) => {
   try {
     const response = await csrfFetch(`/api/images/${imageId}`);
-    console.log("response", response);
 
     if (!response.ok) {
       throw new Error("Error fetching image");
     }
 
     const responseData = await response.json();
-    console.log("responseData", responseData);
     dispatch(fetchOneImage(responseData));
   } catch (error) {
     console.log("Error fetching image", error);

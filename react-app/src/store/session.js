@@ -42,12 +42,10 @@ export const login = (email, password) => async (dispatch) => {
 
   if (response.ok) {
     const data = await response.json();
-    console.log("data1", data);
     dispatch(setUser(data));
     return null;
   } else if (response.status < 500) {
     const data = await response.json();
-    console.log("data2", data);
     if (data.errors) {
       return data.errors;
     }
@@ -69,7 +67,17 @@ export const logout = () => async (dispatch) => {
 };
 
 export const signUp =
-  (firstname, lastname, email, username, address, city, state, password) =>
+  (
+    firstname,
+    lastname,
+    email,
+    phone,
+    username,
+    address,
+    city,
+    state,
+    password
+  ) =>
   async (dispatch) => {
     const response = await csrfFetch("/api/auth/signup", {
       method: "POST",
@@ -80,6 +88,7 @@ export const signUp =
         firstname,
         lastname,
         email,
+        phone,
         username,
         address,
         city,

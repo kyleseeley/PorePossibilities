@@ -1,22 +1,136 @@
+.separator-line {
+  width: 100%;
+  height: 2px;
+  background-color: gray; /* Set the color of the line */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .main-image img {
   aspect-ratio: 16/9;
   width: 100%;
-  animation-name: fade-out;
-  animation-iteration-count: infinite;
-  animation-duration: 8s;
+  animation: fade-out 8s infinite;
 }
 
 @keyframes fade-out {
   0% {
     opacity: 0;
   }
-  10% {
+  20% {
     opacity: 1;
   }
-  90% {
+  80% {
     opacity: 1;
   }
   100% {
     opacity: 0;
   }
+}
+
+.reviews-container {
+  /* background-color: plum; */
+  /* background-color: rgba(221, 160, 221, 0.8); */
+}
+
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.review-title {
+  padding-left: 2rem;
+  padding-bottom: 0;
+  font-family: Brush Script MT;
+  font-size: 40px;
+  margin: 0;
+  color: plum;
+}
+
+.review-name {
+  font-weight: bold;
+}
+
+.review-time {
+  color: gray;
+}
+
+.reviews-list {
+  list-style-type: none;
+}
+
+.review-item:not(:last-child) {
+  border-bottom: 1px solid grey;
+  padding-bottom: 3px;
+}
+
+.leave-review-button {
+  max-width: 200px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 200px;
+}
+
+.edit-review-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.leave-review-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-review-button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.button-container {
+  padding: 7px;
+}
+
+.leave-review-button,
+.edit-review-button,
+.delete-review-button {
+  padding: 10px 20px;
+}
+
+.yes-button {
+  background-color: green;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.no-button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.button-container {
+  text-align: center;
 }

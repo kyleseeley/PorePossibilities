@@ -1,83 +1,274 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import { signUp } from "../../store/session";
 import "./SignupForm.css";
 
+const states = [
+  "Alabama",
+  "Alaska",
+  "Arizona",
+  "Arkansas",
+  "California",
+  "Colorado",
+  "Connecticut",
+  "Delaware",
+  "Florida",
+  "Georgia",
+  "Hawaii",
+  "Idaho",
+  "Illinois",
+  "Indiana",
+  "Iowa",
+  "Kansas",
+  "Kentucky",
+  "Louisiana",
+  "Maine",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Mississippi",
+  "Missouri",
+  "Montana",
+  "Nebraska",
+  "Nevada",
+  "New Hampshire",
+  "New Jersey",
+  "New Mexico",
+  "New York",
+  "North Carolina",
+  "North Dakota",
+  "Ohio",
+  "Oklahoma",
+  "Oregon",
+  "Pennsylvania",
+  "Rhode Island",
+  "South Carolina",
+  "South Dakota",
+  "Tennessee",
+  "Texas",
+  "Utah",
+  "Vermont",
+  "Virginia",
+  "Washington",
+  "West Virginia",
+  "Wisconsin",
+  "Wyoming",
+];
+
 function SignupFormModal() {
-	const dispatch = useDispatch();
-	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState([]);
-	const { closeModal } = useModal();
+  const dispatch = useDispatch();
+  const sessionUser = useSelector((state) => state.session.user);
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastNAme] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const { closeModal } = useModal();
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		if (password === confirmPassword) {
-			const data = await dispatch(signUp(username, email, password));
-			if (data) {
-				setErrors(data);
-			} else {
-				closeModal();
-			}
-		} else {
-			setErrors([
-				"Confirm Password field must be the same as the Password field",
-			]);
-		}
-	};
+  const isButtonDisabled =
+    !firstname ||
+    !lastname ||
+    !email ||
+    !phone ||
+    !username ||
+    !address ||
+    !city ||
+    !state ||
+    !password ||
+    !confirmPassword ||
+    username.length < 4 ||
+    password.length < 6;
 
-	return (
-		<>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
-				<ul>
-					{errors.map((error, idx) => (
-						<li key={idx}>{error}</li>
-					))}
-				</ul>
-				<label>
-					Email
-					<input
-						type="text"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Username
-					<input
-						type="text"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Password
-					<input
-						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						required
-					/>
-				</label>
-				<label>
-					Confirm Password
-					<input
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-						required
-					/>
-				</label>
-				<button type="submit">Sign Up</button>
-			</form>
-		</>
-	);
+  if (sessionUser) return <Redirect to="/" />;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password === confirmPassword) {
+      const data = await dispatch(
+        signUp(
+          firstname,
+          lastname,
+          email,
+          phone,
+          username,
+          address,
+          city,
+          state,
+          password
+        )
+      );
+      if (data) {
+        setErrors(data);
+      } else {
+        closeModal();
+      }
+    } else {
+      setErrors([
+        "Confirm Password field must be the same as the Password field",
+      ]);
+    }
+  };
+
+  return (
+    <div className="signup-container">
+      <h1 className="signup-title">Sign Up</h1>
+      <form onSubmit={handleSubmit}>
+        {/* <ul>
+          {errors.map((error, idx) => (
+            <li key={idx}>{error}</li>
+          ))}
+        </ul> */}
+        <div className="input-container">
+          <label className="signup-input-label">
+            First Name
+            <input
+              className="signup-input"
+              type="text"
+              value={firstname}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.firstname && (
+            <p className="error-message">{errors.firstname}</p>
+          )}
+          <label className="signup-input-label">
+            Last Name
+            <input
+              className="signup-input"
+              type="text"
+              value={lastname}
+              onChange={(e) => setLastNAme(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.lastname && (
+            <p className="error-message">{errors.lastname}</p>
+          )}
+          <label className="signup-input-label">
+            Email
+            <input
+              className="signup-input"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.email && <p className="error-message">{errors.email}</p>}
+          <label className="signup-input-label">
+            Phone Number
+            <input
+              className="signup-input"
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.phone && <p className="error-message">{errors.phone}</p>}
+          <label className="signup-input-label">
+            Username
+            <input
+              className="signup-input"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.username && (
+            <p className="error-message">{errors.username}</p>
+          )}
+          <label className="signup-input-label">
+            Address
+            <input
+              className="signup-input"
+              type="text"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.address && <p className="error-message">{errors.address}</p>}
+          <label className="signup-input-label">
+            City
+            <input
+              className="signup-input"
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.city && <p className="error-message">{errors.city}</p>}
+          <label className="signup-input-label">
+            State
+            <select
+              className="signup-input"
+              defaultValue=""
+              onChange={(e) => {
+                setState(e.target.value);
+              }}
+              required
+            >
+              <option value="" disabled>
+                Please select an option...
+              </option>
+              {states.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
+          </label>
+          {errors?.state && <p className="error-message">{errors.state}</p>}
+          <label className="signup-input-label">
+            Password
+            <input
+              className="signup-input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.password && (
+            <p className="error-message">{errors.password}</p>
+          )}
+          <label className="signup-input-label">
+            Confirm Password
+            <input
+              className="signup-input"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </label>
+          {errors?.confirmPassword && (
+            <p className="error-message">{errors.confirmPassword}</p>
+          )}
+          <button
+            type="submit"
+            className="submit-button"
+            // disabled={isButtonDisabled}
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+  );
 }
 
 export default SignupFormModal;
