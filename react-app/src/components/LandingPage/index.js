@@ -21,9 +21,11 @@ const LandingPage = () => {
   const { setModalContent } = useModal();
   const { closeModal } = useModal();
 
+  console.log("reviews", reviews);
+
   const hasLeftReview =
     user &&
-    reviews &&
+    Array.isArray(reviews) &&
     reviews.some((review) => {
       return review?.userId === user.id && review?.companyId === companyId;
     });
