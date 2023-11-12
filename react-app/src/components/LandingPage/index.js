@@ -121,7 +121,8 @@ const LandingPage = () => {
             .map((review) => (
               <li key={review.id} className="review-item">
                 <p className="review-name">
-                  {review?.firstname} {review?.lastname.charAt(0)}.
+                  {review?.firstname}{" "}
+                  {review?.lastname ? review.lastname.charAt(0) : ""}.
                 </p>
                 <p className="review-time">
                   {calculateTimeAgo(review?.createdAt)} ago
