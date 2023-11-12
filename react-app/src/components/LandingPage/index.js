@@ -21,8 +21,6 @@ const LandingPage = () => {
   const { setModalContent } = useModal();
   const { closeModal } = useModal();
 
-  console.log("reviews", reviews);
-
   const hasLeftReview =
     user &&
     Array.isArray(reviews) &&
@@ -70,6 +68,10 @@ const LandingPage = () => {
 
   const updatedStarRating = calculateStarRating();
   const numReviews = reviews.length;
+  const sortedReviews = reviews.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+  console.log("sorted Reviews", sortedReviews);
 
   useEffect(() => {
     dispatch(fetchImageById(imageId)).then(() =>
@@ -118,54 +120,52 @@ const LandingPage = () => {
           />
         )}
         <ul className="reviews-list">
-          {reviews
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .map((review) => (
-              <li key={review.id} className="review-item">
-                <p className="review-name">
-                  {review?.firstname}{" "}
-                  {review?.lastname ? review.lastname.charAt(0) : ""}.
-                </p>
-                <p className="review-time">
-                  {calculateTimeAgo(review?.createdAt)} ago
-                </p>
-                <p className="review-rating">{review?.stars} Stars</p>
-                <p className="review-content">{review?.review}</p>
-                {user?.id === review?.userId && (
-                  <button
-                    onClick={() => handleEditReview(review)}
-                    className="edit-review-button"
-                  >
-                    Edit Your Review
-                  </button>
-                )}
-                {user?.id === review?.userId && (
-                  <OpenModalButton
-                    className="delete-review-button"
-                    buttonText="Delete Your Review"
-                    modalComponent={() => (
-                      <div className="delete-modal">
-                        <h3>Are you sure to delete this review?</h3>
-                        <div className="button-container">
-                          <button
-                            className="yes-button"
-                            onClick={() => {
-                              dispatch(deleteReviewById(review?.id, companyId));
-                              closeModal();
-                            }}
-                          >
-                            Yes
-                          </button>
-                          <button className="no-button" onClick={closeModal}>
-                            No
-                          </button>
-                        </div>
+          {sortedReviews.map((review) => (
+            <li key={review.id} className="review-item">
+              <p className="review-name">
+                {review?.firstname}{" "}
+                {review?.lastname ? review.lastname.charAt(0) : ""}.
+              </p>
+              <p className="review-time">
+                {calculateTimeAgo(review?.createdAt)} ago
+              </p>
+              <p className="review-rating">{review?.stars} Stars</p>
+              <p className="review-content">{review?.review}</p>
+              {user?.id === review?.userId && (
+                <button
+                  onClick={() => handleEditReview(review)}
+                  className="edit-review-button"
+                >
+                  Edit Your Review
+                </button>
+              )}
+              {user?.id === review?.userId && (
+                <OpenModalButton
+                  className="delete-review-button"
+                  buttonText="Delete Your Review"
+                  modalComponent={() => (
+                    <div className="delete-modal">
+                      <h3>Are you sure to delete this review?</h3>
+                      <div className="button-container">
+                        <button
+                          className="yes-button"
+                          onClick={() => {
+                            dispatch(deleteReviewById(review?.id, companyId));
+                            closeModal();
+                          }}
+                        >
+                          Yes
+                        </button>
+                        <button className="no-button" onClick={closeModal}>
+                          No
+                        </button>
                       </div>
-                    )}
-                  />
-                )}
-              </li>
-            ))}
+                    </div>
+                  )}
+                />
+              )}
+            </li>
+          ))}
         </ul>
       </div>
     </div>
