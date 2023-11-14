@@ -29,6 +29,10 @@
   margin: 0;
   padding: 10px;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .navigation-menu {
@@ -37,6 +41,7 @@
   justify-content: space-between;
   background-color: plum;
   border-bottom: solid 1px lightgray;
+  height: 70px;
 }
 
 .navigation-home {
@@ -176,6 +181,8 @@
   align-items: center;
   justify-content: center;
   background-color: plum;
+  top: 70px;
+  height: 30px;
 }
 
 .site-navigation li {
