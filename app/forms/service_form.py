@@ -35,7 +35,7 @@ def description_data(form, field):
 
 class ServiceForm(FlaskForm):
     type = SelectField('Type', validators=[DataRequired(), type_data], choices=[
-        'Skincare Treatments', 'Advanced Skin Care Treatments', 'Signature Skin Therapies', 'Injectable Treatments'
+        'Skincare Treatments', 'Advanced Skincare Treatments', 'Signature Skin Therapies', 'Injectable Treatments'
     ])
     name = StringField('Name', validators=[DataRequired(), name_data])
     price = IntegerField('Price', validators=[DataRequired(), price_data])
