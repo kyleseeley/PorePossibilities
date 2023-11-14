@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import SearchBar from "../SearchBar";
@@ -31,20 +31,82 @@ function Navigation({ isLoaded }) {
     }
   };
 
+  const serviceOptions = [
+    "Skincare Treatments",
+    "Advanced Skin Care Treatments",
+    "Signature Skin Therapies",
+    "Injectable Treatments",
+  ];
+
   return (
-    <ul className="navigation-menu">
-      <NavLink exact to="/" className="navigation-home">
-        <i className="fa-solid fa-spa"></i>
-        {"  "}
-        Pore Possibilities
-      </NavLink>
-      <li className="search-bar-container">
-        <SearchBar />
-      </li>
-      <li className="profile-button-container">
-        <ProfileButton user={sessionUser} />
-      </li>
-    </ul>
+    // <div>
+    //   <ul className="navigation-menu">
+    //     <NavLink exact to="/" className="navigation-home">
+    //       <i className="fa-solid fa-spa"></i>
+    //       {"  "}
+    //       Pore Possibilities
+    //     </NavLink>
+    //     <li className="search-bar-container">
+    //       <SearchBar />
+    //     </li>
+    //     <li className="profile-button-container">
+    //       <ProfileButton user={sessionUser} />
+    //     </li>
+    //   </ul>
+    //   {/* Dropdown for services */}
+    //   <div className="site-navigation">
+    //     <ul className="navigation-container">
+    //       <button className="services-dropdown-btn">Services</button>
+    //       <div className="services-dropdown-content">
+    //         {serviceOptions.map((option) => (
+    //           <Link
+    //             key={option}
+    //             to={`/services/${option.toLowerCase().replace(/\s/g, "-")}`}
+    //           >
+    //             {option}
+    //           </Link>
+    //         ))}
+    //       </div>
+    //     </ul>
+    //   </div>
+    // </div>
+
+    <div>
+      {/* First section */}
+      <ul className="navigation-menu">
+        <NavLink exact to="/" className="navigation-home">
+          <i className="fa-solid fa-spa"></i>
+          {"  "}
+          Pore Possibilities
+        </NavLink>
+        <li className="search-bar-container">
+          <SearchBar />
+        </li>
+        <li className="profile-button-container">
+          <ProfileButton user={sessionUser} />
+        </li>
+      </ul>
+
+      {/* Second section */}
+      <ul className="site-navigation">
+        <li className="services-dropdown">
+          <NavLink to="#" className="services-dropdown-link">
+            Services
+          </NavLink>
+          <div className="services-dropdown-content">
+            {serviceOptions.map((option) => (
+              <NavLink
+                key={option}
+                to={`/services/${option.toLowerCase().replace(/\s/g, "-")}`}
+                className="dropdown-option"
+              >
+                {option}
+              </NavLink>
+            ))}
+          </div>
+        </li>
+      </ul>
+    </div>
   );
 }
 
