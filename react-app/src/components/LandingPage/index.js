@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { authenticate } from "../../store/session";
 import { fetchImageById } from "../../store/images";
 import { fetchReviews, deleteReviewById } from "../../store/reviews";
@@ -18,8 +18,8 @@ const LandingPage = () => {
   const user = useSelector((state) => state.session.user);
   const companyId = 1;
   const reviews = useSelector((state) => state.reviews[companyId] || []);
-  const { setModalContent } = useModal();
-  const { closeModal } = useModal();
+  const { setModalContent, closeModal } = useModal();
+  const intervalIdRef = useRef(null);
 
   const hasLeftReview =
     user &&
@@ -78,10 +78,8 @@ const LandingPage = () => {
       dispatch(fetchReviews(companyId))
     );
     const intervalId = setInterval(() => {
-      setCurrentImageIndex(
-        (prevIndex) => (prevIndex + 1) % mainImageIds.length
-      );
-    }, 7950);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
+    }, 8000);
 
     return () => clearInterval(intervalId);
   }, [dispatch, imageId, mainImageIds, companyId]);
