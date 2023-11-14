@@ -85,7 +85,7 @@ const LandingPage = () => {
   }, [dispatch, imageId, mainImageIds, companyId]);
 
   return (
-    <div>
+    <div className="landing-page-container">
       <div className="separator-line-container">
         <div className="separator-line" />
       </div>

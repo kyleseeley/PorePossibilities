@@ -33,7 +33,7 @@ function Navigation({ isLoaded }) {
 
   const serviceOptions = [
     "Skincare Treatments",
-    "Advanced Skin Care Treatments",
+    "Advanced Skincare Treatments",
     "Signature Skin Therapies",
     "Injectable Treatments",
   ];
