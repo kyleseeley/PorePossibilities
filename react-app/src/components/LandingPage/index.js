@@ -19,7 +19,6 @@ const LandingPage = () => {
   const companyId = 1;
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
-  const intervalIdRef = useRef(null);
 
   const hasLeftReview =
     user &&
@@ -85,7 +84,7 @@ const LandingPage = () => {
   }, [dispatch, imageId, mainImageIds, companyId]);
 
   return (
-    <div className="landing-page-container">
+    <div className="page-container">
       <div className="separator-line-container">
         <div className="separator-line" />
       </div>

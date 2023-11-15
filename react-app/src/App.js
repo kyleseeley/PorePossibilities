@@ -6,31 +6,27 @@ import { Route, Switch } from "react-router-dom";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
+import AdvancedSkincareTreatments from "./components/Services/AdvancedSkincareTreatments";
 
 function App() {
   const dispatch = useDispatch();
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    // dispatch(authenticate()).then(() => setIsLoaded(true));
-    dispatch(authenticate());
+    dispatch(authenticate()).then(() => setIsLoaded(true));
+    // dispatch(authenticate());
   }, [dispatch]);
 
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && (
-        <Switch>
-          {/* <Route exact path="/login">
-            <LoginFormModal />
-          </Route> */}
-          {/* <Route exact path="/signup">
-            <SignupFormPage />
-          </Route> */}
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
-        </Switch>
-      )}
+      <Switch>
+        <Route exact path="/">
+          <LandingPage />
+        </Route>
+        <Route expact path="/services/advanced-skincare-treatments">
+          <AdvancedSkincareTreatments />
+        </Route>
+      </Switch>
     </>
   );
 }

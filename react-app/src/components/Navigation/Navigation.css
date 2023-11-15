@@ -32,7 +32,6 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
 }
 
 .navigation-menu {
@@ -42,6 +41,7 @@
   background-color: plum;
   border-bottom: solid 1px lightgray;
   height: 70px;
+  z-index: 1000;
 }
 
 .navigation-home {
@@ -183,6 +183,7 @@
   background-color: plum;
   top: 70px;
   height: 30px;
+  z-index: 999;
 }
 
 .site-navigation li {

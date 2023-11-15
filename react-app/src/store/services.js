@@ -38,7 +38,7 @@ export const fetchAllServicesThunk = () => async (dispatch) => {
   }
 
   const responseData = await response.json();
-  const services = responseData.Services;
+  const services = responseData.services;
 
   dispatch(fetchAllServices(services));
 };
@@ -112,7 +112,7 @@ const initialState = {};
 export default function serviceReducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_ALL_SERVICES:
-      return { ...action.services };
+      return { ...state, ...action.services };
     case FETCH_ONE_SERVICE:
       return {
         ...state,
