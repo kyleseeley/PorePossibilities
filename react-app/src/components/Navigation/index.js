@@ -11,6 +11,12 @@ function Navigation({ isLoaded }) {
   const [loading, setLoading] = useState(false);
 
   const sessionUser = useSelector((state) => state.session.user);
+  const cart = useSelector((state) => state.cart);
+
+  const cartItemCount = Object.values(cart).reduce(
+    (count, cartItem) => count + cartItem.quantity,
+    0
+  );
 
   const handleSearch = async () => {
     try {
@@ -50,6 +56,20 @@ function Navigation({ isLoaded }) {
         <li className="search-bar-container">
           <SearchBar />
         </li>
+        {sessionUser && (
+          <li className="ml-auto cart-icon-container">
+            <NavLink to="/cart" className="cart-icon-link">
+              <i class="fa-solid fa-cart-shopping">
+                {cartItemCount > 0 && (
+                  <span className="cart-item-count">{cartItemCount}</span>
+                )}
+                {cartItemCount === 0 && (
+                  <span className="cart-item-count">0</span>
+                )}
+              </i>
+            </NavLink>
+          </li>
+        )}
         <li className="profile-button-container">
           <ProfileButton user={sessionUser} />
         </li>

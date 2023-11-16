@@ -208,3 +208,22 @@
 .services-dropdown:hover .services-dropdown-content {
   display: block;
 }
+
+.cart-icon-link {
+  font-size: 35px;
+}
+
+.ml-auto {
+  margin-left: auto;
+  margin-right: 25px;
+  margin-top: 5px;
+}
+
+.cart-item-count {
+  position: absolute;
+  top: 42%;
+  right: 8.8%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+}
