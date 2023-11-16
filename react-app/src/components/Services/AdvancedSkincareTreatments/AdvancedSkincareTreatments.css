@@ -1,5 +1,6 @@
 .advanced-skincare-container {
   background-color: lavender;
+  height: 100%;
 }
 
 .feature-info {
@@ -12,9 +13,9 @@
 
 .image-container {
   padding-top: 200px;
+  margin-left: 9rem;
   position: relative;
   width: 55%;
-  overflow: hidden;
   height: 600px;
 }
 
@@ -41,6 +42,7 @@
 .text-container {
   max-width: 45%;
   padding-top: 180px;
+  padding-right: 15rem;
 }
 
 .advanced-skincare-title {
@@ -73,6 +75,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .service-image {
@@ -93,4 +96,14 @@
   font-size: 14px;
   display: flex;
   text-align: center;
+  padding: 0 45px;
+}
+
+.add-to-cart-button {
+  background-color: #30d5c8;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px 12px;
 }

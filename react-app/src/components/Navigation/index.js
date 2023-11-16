@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProfileButton from "./ProfileButton";
 import SearchBar from "../SearchBar";
+import { getCartThunk } from "../../store/cart";
 import "./Navigation.css";
 
 function Navigation({ isLoaded }) {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const sessionUser = useSelector((state) => state.session.user);
+  const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
+  console.log("cart", cart);
 
   const cartItemCount = Object.values(cart).reduce(
-    (count, cartItem) => count + cartItem.quantity,
+    (count, quantity) => count + quantity,
     0
   );
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getCartThunk(1, user.id));
+    }
+  }, [dispatch, user]);
 
   const handleSearch = async () => {
     try {
@@ -56,7 +65,7 @@ function Navigation({ isLoaded }) {
         <li className="search-bar-container">
           <SearchBar />
         </li>
-        {sessionUser && (
+        {user && (
           <li className="ml-auto cart-icon-container">
             <NavLink to="/cart" className="cart-icon-link">
               <i class="fa-solid fa-cart-shopping">
@@ -71,7 +80,7 @@ function Navigation({ isLoaded }) {
           </li>
         )}
         <li className="profile-button-container">
-          <ProfileButton user={sessionUser} />
+          <ProfileButton user={user} />
         </li>
       </ul>
 

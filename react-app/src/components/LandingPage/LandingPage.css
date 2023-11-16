@@ -1,6 +1,7 @@
 .main-image img {
   aspect-ratio: 16/9;
   width: 100%;
+  max-height: 87vh;
   animation: fade-out 8s infinite;
 }
 
@@ -36,11 +37,16 @@
   font-family: Didot;
   font-size: 40px;
   margin: 0;
-  color: thistle;
+  color: #30d5c8;
 }
 
 .company-details {
   margin-left: 2.2rem;
+  font-size: 18px;
+}
+
+.review-rating {
+  color: #30d5c8;
   font-size: 18px;
 }
 
@@ -81,7 +87,7 @@
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 6px 12px;
+
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
@@ -92,7 +98,7 @@
   background-color: red;
   color: #fff;
   border: none;
-  padding: 6px 12px;
+
   border-radius: 4px;
   cursor: pointer;
   margin-bottom: 10px;
@@ -105,7 +111,7 @@
 .leave-review-button,
 .edit-review-button,
 .delete-review-button {
-  padding: 10px 20px;
+  padding: 8px 12px;
 }
 
 .delete-modal {

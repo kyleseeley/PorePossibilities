@@ -127,7 +127,11 @@ const LandingPage = () => {
                 <p className="review-time">
                   {calculateTimeAgo(review?.createdAt)} ago
                 </p>
-                <p className="review-rating">{review?.stars} Stars</p>
+                <div className="review-rating">
+                  {Array.from({ length: review.stars }, (_, index) => (
+                    <i key={index} className="fa-solid fa-star" />
+                  ))}
+                </div>
                 <p className="review-content">{review?.review}</p>
                 {user?.id === review?.userId && (
                   <button

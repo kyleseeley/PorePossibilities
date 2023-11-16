@@ -6,6 +6,7 @@ import { fetchImageById } from "../../../store/images";
 import { useModal } from "../../../context/Modal";
 import { NavLink } from "react-router-dom";
 import OpenModalButton from "../../OpenModalButton";
+import { updateCartThunk } from "../../../store/cart";
 import "./AdvancedSkincareTreatments.css";
 
 const AdvancedSkincareTreatments = () => {
@@ -33,6 +34,15 @@ const AdvancedSkincareTreatments = () => {
     (state) => state.images[noPeelPeelImageId]
   );
 
+  const handleAddToCart = (service) => {
+    const companyId = 1;
+    const userId = user.id;
+    const serviceId = service.id;
+    const quantity = 1;
+
+    dispatch(updateCartThunk(companyId, userId, serviceId, quantity));
+  };
+
   useEffect(() => {
     dispatch(fetchAllServicesThunk())
       .then(() => dispatch(fetchImageById(mainImageId1)))
@@ -48,12 +58,6 @@ const AdvancedSkincareTreatments = () => {
     microneedleImageId,
     noPeelPeelImageId,
   ]);
-
-  const serviceImageMap = {
-    "Everything Laser": everythingLaserImage,
-    Microneedle: microneedleImage,
-    "No-Peel Peel": noPeelPeelImage,
-  };
 
   return (
     <div className="page-container">
@@ -108,6 +112,12 @@ const AdvancedSkincareTreatments = () => {
                   <p className="advanced-service-price">
                     Price: ${service.price}
                   </p>
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(service)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               )}
               {service.name === "Microneedle" && microneedleImage && (
@@ -124,6 +134,12 @@ const AdvancedSkincareTreatments = () => {
                   <p className="advanced-service-price">
                     Price: ${service.price}
                   </p>
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(service)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               )}
               {service.name === "No-Peel Peel" && noPeelPeelImage && (
@@ -140,6 +156,12 @@ const AdvancedSkincareTreatments = () => {
                   <p className="advanced-service-price">
                     Price: ${service.price}
                   </p>
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(service)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               )}
             </li>

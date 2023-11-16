@@ -211,6 +211,7 @@
 
 .cart-icon-link {
   font-size: 35px;
+  position: relative;
 }
 
 .ml-auto {
@@ -221,8 +222,8 @@
 
 .cart-item-count {
   position: absolute;
-  top: 42%;
-  right: 8.8%;
+  top: 30%;
+  right: 20%;
   transform: translate(-50%, -50%);
   color: white;
   font-size: 14px;
