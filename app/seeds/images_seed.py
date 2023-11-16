@@ -13,12 +13,12 @@ def seed_images():
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-30.jpg',
     )
     image3 = Image(
-        name='Advanced Skincare Treatments',
+        name='Advanced Skincare Treatments 1',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-90.jpg',
     )
     image4 = Image(
-        name='Microneedling',
-        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-55.jpg',
+        name="Advanced Skincare Treatments 2",
+        imageFile="https://skintheore.com/cdn/shop/files/SkinTheore-78.jpg"
     )
     image5 = Image(
         name='NanoGlow Renewel',
@@ -39,14 +39,21 @@ def seed_images():
     )
     image9 = Image(
         name='Laser Treatment',
-        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-88'
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-88.jpg'
     )
 
     image10 = Image(
         name='Everything Laser',
-        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-87'
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-87.jpg'
     )
-
+    image11 = Image(
+        name='Microneedling',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore_-_August_2023_-55.jpg',
+    )
+    image12 = Image(
+        name='No-Peel Peel',
+        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-96.jpg'
+    )
     
 
     db.session.add(image1)
@@ -59,6 +66,8 @@ def seed_images():
     db.session.add(image8)
     db.session.add(image9)
     db.session.add(image10)
+    db.session.add(image11)
+    db.session.add(image12)
     db.session.commit()
 
 

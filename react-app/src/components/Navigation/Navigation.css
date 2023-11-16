@@ -7,22 +7,6 @@
   display: none;
 }
 
-/* .navigation-menu {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  padding: 10px;
-  background-color: plum;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  box-sizing: border-box;
-} */
-
 .navigation-menu,
 .site-navigation {
   list-style: none;
@@ -38,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: plum;
+  background-color: thistle;
   border-bottom: solid 1px lightgray;
   height: 70px;
   z-index: 1000;
@@ -47,7 +31,7 @@
 .navigation-home {
   text-decoration: none;
   color: white;
-  font-family: Brush Script MT;
+  font-family: Didot;
   font-size: 40px;
   margin-left: 5px;
 }
@@ -160,27 +144,11 @@
   cursor: pointer;
 }
 
-/* .site-navigation {
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0;
-  padding: 10px;
-  background-color: plum;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
-  box-sizing: border-box;
-} */
-
 .site-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: plum;
+  background-color: thistle;
   top: 70px;
   height: 30px;
   z-index: 999;
@@ -189,6 +157,7 @@
 .site-navigation li {
   position: relative;
   margin-right: 15px;
+  font-family: Didot;
 }
 
 .services-dropdown-link {

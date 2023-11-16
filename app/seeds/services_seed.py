@@ -23,12 +23,17 @@ def seed_services():
         type='Advanced Skincare Treatments',
         name='Everything Laser',
         price=300,
-        description='This no-downtime laser facial is accomplished with the ADVA and is nothing short of an aesthetic treatment miracle. This zero downtime treatment delivers visible results in a single treatment while addressing several skin conditions. This gentle and effective laser treatment addresses: wrinkles, acne scarring, uneven skin texture, dark spots, melasma, rosacea, broken capillaries, redness, crepey skin, large pores, acne, oil production, and sun damage. Skin is left bright and healthier.')
+        description='This no-downtime laser facial is nothing short of an aesthetic treatment miracle. This gentle and effective laser treatment addresses: wrinkles, acne scarring, uneven skin texture, dark spots, melasma, rosacea, and more. Skin is left bright and healthier.')
     microneedle = Service(
         type='Advanced Skincare Treatments',
         name='Microneedle',
         price=300,
-        description='The aging process naturally slows our collagen and elastin production as we age. This leaves skin less plump, smooth, and peppered with surface lines and texture. Harness your own body’s ability to stimulate collagen and elastin production back to its old self. Microneedling naturally encourages healthier, smoother, brighter skin.')
+        description='The aging process naturally slows our collagen and elastin production as we age. Harness your own body’s ability to stimulate collagen and elastin production back to its old self. Microneedling naturally encourages healthier, smoother, brighter skin.')
+    noPeelPeel = Service(
+        type='Advanced Skincare Treatments',
+        name='No-Peel Peel',
+        price=300,
+        description='The latest innovation in skin resurfacing - a unique, painless peel that stimulates the production of collagen and elastin in the skin which revitalizes the skin. Zero downtime. Phenomenal results. Within a few days, your skin will appear brighter, smoother & plumper.')
     microneedleRF = Service(
         type='Signature Skin Therapies',
         name='Microneedle RF',
@@ -55,6 +60,7 @@ def seed_services():
     db.session.add(botanicalBeaute)
     db.session.add(everythingLaser)
     db.session.add(microneedle)
+    db.session.add(noPeelPeel)
     db.session.add(microneedleRF)
     db.session.add(nanoGlowRenewel)
     db.session.add(wrinkleRelax)
