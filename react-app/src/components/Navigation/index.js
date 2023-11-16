@@ -17,7 +17,7 @@ function Navigation({ isLoaded }) {
   console.log("cart", cart);
 
   const cartItemCount = Object.values(cart).reduce(
-    (count, quantity) => count + quantity,
+    (count, cartItem) => count + cartItem.quantity,
     0
   );
 

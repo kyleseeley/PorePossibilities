@@ -10,9 +10,9 @@ export const getCart = (cart) => ({
   cart,
 });
 
-export const updateCart = (serviceId) => ({
+export const updateCart = (cartItem) => ({
   type: UPDATE_CART,
-  serviceId,
+  cartItem,
 });
 
 export const removeItemFromCart = (serviceId) => ({
@@ -51,8 +51,8 @@ export const updateCartThunk =
       throw new Error("Error updating user's cart");
     }
 
-    // const updatedCartItem = await response.json();
-    dispatch(updateCart(serviceId));
+    const updatedCartItem = await response.json();
+    dispatch(updateCart(updatedCartItem));
   };
 
 export const removeItemFromCartThunk =
@@ -92,7 +92,7 @@ const cartReducer = (state = initialState, action) => {
     case UPDATE_CART:
       return {
         ...state,
-        [action.serviceId]: action.serviceId,
+        [action.cartItem.serviceId]: action.cartItem,
       };
     case REMOVE_ITEM_FROM_CART:
       const newState = { ...state };
