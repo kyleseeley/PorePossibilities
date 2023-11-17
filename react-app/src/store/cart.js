@@ -5,9 +5,9 @@ const UPDATE_CART = "session/UPDATE_CART";
 const REMOVE_ITEM_FROM_CART = "session/REMOVE_ITEM_FROM_CART";
 const DELETE_CART = "session/REMOVE_CART";
 
-export const getCart = (cartItems) => ({
+export const getCart = (cartItems, cartTotal) => ({
   type: GET_CART,
-  payload: cartItems,
+  payload: { cartItems, cartTotal },
 });
 
 export const updateCart = (cartItem) => ({
@@ -33,7 +33,7 @@ export const getCartThunk = (companyId, userId) => async (dispatch) => {
 
     const responseData = await response.json();
 
-    dispatch(getCart(responseData.cart_items));
+    dispatch(getCart(responseData.cart_items, responseData.cartTotal));
   } catch (error) {
     console.error("Error in getCartThunk:", error);
   }
@@ -97,7 +97,8 @@ const cartReducer = (state = initialState, action) => {
     case GET_CART:
       return {
         ...state,
-        cartItems: action.payload,
+        cartItems: action.payload.cartItems,
+        cartTotal: action.payload.cartTotal,
       };
     case UPDATE_CART:
       return {

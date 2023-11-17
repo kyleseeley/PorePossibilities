@@ -50,8 +50,10 @@ def get_user_cart(companyId, userId):
         cart_item_data = cart_item.to_dict()
         cart_item_data['service'] = service_data
         cart_items_data.append(cart_item_data)
+
+    cart_total = active_cart.calculate_cart_total()
         
-    return {'cart': active_cart.to_dict(), 'cart_items': cart_items_data}
+    return {'cart': active_cart.to_dict(), 'cart_items': cart_items_data, 'cartTotal': cart_total}
 
 
 @cart_routes.route('/<int:companyId>/<int:userId>/update', methods=['POST'])

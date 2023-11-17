@@ -60,19 +60,21 @@ function Navigation({ isLoaded }) {
           <SearchBar />
         </li>
         {user && (
-  <li className="ml-auto cart-icon-container">
-    <NavLink to="/cart" className="cart-icon-link">
-      <i className="fa-solid fa-cart-shopping">
-        {cart.cartItems.length > 0 && (
-          <span className="cart-item-count">{cart.cartItems.length}</span>
+          <li className="ml-auto cart-icon-container">
+            <NavLink to="/cart" className="cart-icon-link">
+              <i className="fa-solid fa-cart-shopping">
+                {cart.cartItems.length > 0 && (
+                  <span className="cart-item-count">
+                    {cart.cartItems.length}
+                  </span>
+                )}
+                {cart.cartItems.length === 0 && (
+                  <span className="cart-item-count">0</span>
+                )}
+              </i>
+            </NavLink>
+          </li>
         )}
-        {cart.cartItems.length === 0 && (
-          <span className="cart-item-count">0</span>
-        )}
-      </i>
-    </NavLink>
-  </li>
-)}
         <li className="profile-button-container">
           <ProfileButton user={user} />
         </li>
