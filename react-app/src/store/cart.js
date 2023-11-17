@@ -5,9 +5,9 @@ const UPDATE_CART = "session/UPDATE_CART";
 const REMOVE_ITEM_FROM_CART = "session/REMOVE_ITEM_FROM_CART";
 const DELETE_CART = "session/REMOVE_CART";
 
-export const getCart = (cart) => ({
+export const getCart = (cartItems) => ({
   type: GET_CART,
-  cart,
+  payload: cartItems,
 });
 
 export const updateCart = (cartItem) => ({
@@ -25,13 +25,18 @@ export const deleteCart = () => ({
 });
 
 export const getCartThunk = (companyId, userId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/cart/${companyId}/${userId}`);
-  if (!response.ok) {
-    throw new Error("Error fetching user's cart");
-  }
+  try {
+    const response = await csrfFetch(`/api/cart/${companyId}/${userId}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching user's cart. Status: ${response.status}`);
+    }
 
-  const data = await response.json();
-  dispatch(getCart(data.cart_items));
+    const responseData = await response.json();
+
+    dispatch(getCart(responseData.cart_items));
+  } catch (error) {
+    console.error("Error in getCartThunk:", error);
+  }
 };
 
 export const updateCartThunk =
@@ -83,23 +88,37 @@ export const deleteCartThunk = (companyId, userId) => async (dispatch) => {
   dispatch(deleteCart());
 };
 
-const initialState = {};
+const initialState = {
+  cartItems: {},
+};
 
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CART:
-      return action.cart;
+      return {
+        ...state,
+        cartItems: action.payload,
+      };
     case UPDATE_CART:
       return {
         ...state,
-        [action.cartItem.serviceId]: action.cartItem,
+        cartItems: {
+          ...state.cartItems,
+          [action.cartItem.id]: action.cartItem,
+        },
       };
     case REMOVE_ITEM_FROM_CART:
-      const newState = { ...state };
-      delete newState[action.serviceId];
-      return newState;
+      const newCartItems = { ...state.cartItems };
+      delete newCartItems[action.serviceId];
+      return {
+        ...state,
+        cartItems: newCartItems,
+      };
+
     case DELETE_CART:
-      return initialState;
+      const newState = { ...state };
+      delete newState[action.restaurantId];
+      return newState;
     default:
       return state;
   }

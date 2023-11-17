@@ -17,9 +17,8 @@ class Cart(db.Model):
         add_prefix_for_prod('users.id')))
     companyId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('companies.id')))
-    serviceId = db.Column(db.Integer(), db.ForeignKey(
-        add_prefix_for_prod('services.id')))
-    cartTotal = db.Column(db.Integer(), nullable=False)
+    cartTotal = db.Column(db.Integer(), default=0, nullable=False)
+    checkedOut = db.Column(db.Boolean, default=False, nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
         db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
@@ -28,16 +27,16 @@ class Cart(db.Model):
 
     company = db.relationship('Company', back_populates='cart')
 
-    cart_items = db.relationship('CartItem', back_populates='cart')
-
-    services = db.relationship('Service', back_populates='cart')
+    cart_items = db.relationship(
+        'CartItem', back_populates='cart', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {
             'id': self.id,
             'userId': self.userId,
             'companyId': self.companyId,
-            'cartTotal': self.calculate_cart_total()
+            'cartTotal': self.calculate_cart_total(),
+            'checkedOut': self.checkedOut
         }
 
     def calculate_cart_total(self):

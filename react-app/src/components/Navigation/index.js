@@ -14,18 +14,12 @@ function Navigation({ isLoaded }) {
 
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
-  console.log("cart", cart);
-
-  const cartItemCount = Object.values(cart).reduce(
-    (count, cartItem) => count + cartItem.quantity,
-    0
-  );
 
   useEffect(() => {
     if (user) {
       dispatch(getCartThunk(1, user.id));
     }
-  }, [dispatch, user]);
+  }, [dispatch, user, cart.cartItems.length]);
 
   const handleSearch = async () => {
     try {
@@ -66,19 +60,19 @@ function Navigation({ isLoaded }) {
           <SearchBar />
         </li>
         {user && (
-          <li className="ml-auto cart-icon-container">
-            <NavLink to="/cart" className="cart-icon-link">
-              <i class="fa-solid fa-cart-shopping">
-                {cartItemCount > 0 && (
-                  <span className="cart-item-count">{cartItemCount}</span>
-                )}
-                {cartItemCount === 0 && (
-                  <span className="cart-item-count">0</span>
-                )}
-              </i>
-            </NavLink>
-          </li>
+  <li className="ml-auto cart-icon-container">
+    <NavLink to="/cart" className="cart-icon-link">
+      <i className="fa-solid fa-cart-shopping">
+        {cart.cartItems.length > 0 && (
+          <span className="cart-item-count">{cart.cartItems.length}</span>
         )}
+        {cart.cartItems.length === 0 && (
+          <span className="cart-item-count">0</span>
+        )}
+      </i>
+    </NavLink>
+  </li>
+)}
         <li className="profile-button-container">
           <ProfileButton user={user} />
         </li>

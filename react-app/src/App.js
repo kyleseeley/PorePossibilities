@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { authenticate } from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
+import CartPage from "./components/CartPage";
 import AdvancedSkincareTreatments from "./components/Services/AdvancedSkincareTreatments";
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route expact path="/services/advanced-skincare-treatments">
           <AdvancedSkincareTreatments />
+        </Route>
+        <Route exact path="/cart">
+          <CartPage />
         </Route>
       </Switch>
     </>
