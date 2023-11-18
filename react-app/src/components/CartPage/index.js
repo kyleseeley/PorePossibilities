@@ -6,21 +6,89 @@ import {
   removeItemFromCartThunk,
 } from "../../store/cart";
 import { createAppointmentThunk } from "../../store/appointments";
+import { fetchAllEmployeesThunk } from "../../store/employees";
 import "./CartPage.css";
+
+const timeSlots = [
+  "9:00 AM",
+  "9:15 AM",
+  "9:30 AM",
+  "9:45 AM",
+  "10:00 AM",
+  "10:15 AM",
+  "10:30 AM",
+  "10:45 AM",
+  "11:00 AM",
+  "11:15 AM",
+  "11:30 AM",
+  "11:45 AM",
+  "12:00 PM",
+  "12:15 PM",
+  "12:30 PM",
+  "12:45 PM",
+  "1:00 PM",
+  "1:15 PM",
+  "1:30 PM",
+  "1:45 PM",
+  "2:00 PM",
+  "2:15 PM",
+  "2:30 PM",
+  "2:45 PM",
+  "3:00 PM",
+  "3:15 PM",
+  "3:30 PM",
+  "3:45 PM",
+  "4:00 PM",
+  "4:15 PM",
+  "4:30 PM",
+  "4:45 PM",
+  "5:00 PM",
+  "5:15 PM",
+  "5:30 PM",
+];
 
 const CartPage = () => {
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
+  const employees = useSelector((state) => state.employees);
   const dispatch = useDispatch();
-  console.log("cart", cart);
 
-  useEffect(() => {
-    if (user) {
-      dispatch(getCartThunk(1, user.id));
+  const [formData, setFormData] = useState({
+    employeeId: "",
+    appointmentDate: "",
+    appointmentTime: "",
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleCreateAppointment = (e) => {
+    e.preventDefault();
+    const { employeeId, appointmentDate, appointmentTime } = formData;
+    if (employeeId && appointmentDate && appointmentTime) {
+      dispatch(
+        createAppointmentThunk(
+          user.id,
+          employeeId,
+          appointmentDate,
+          appointmentTime
+        )
+      );
+      setFormData({
+        employeeId: "",
+        appointmentDate: "",
+        appointmentTime: "",
+      });
     }
-  }, [dispatch, user]);
+  };
 
   const cartItemsArray = Object.values(cart.cartItems);
+  const employeesArray = Object.values(employees?.employees || {});
 
   const handleQuantityChange = (serviceId, quantity) => {
     console.log("Updating quantity...", serviceId, quantity);
@@ -30,6 +98,14 @@ const CartPage = () => {
   const handleDeleteItem = (serviceId) => {
     dispatch(removeItemFromCartThunk(1, user.id, serviceId));
   };
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getCartThunk(1, user.id)).then(() =>
+        dispatch(fetchAllEmployeesThunk())
+      );
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="page-container">
@@ -66,6 +142,56 @@ const CartPage = () => {
           ))}
         </ul>
         <p className="cart-total">Total: ${cart.cartTotal}</p>
+      </div>
+      {/* Appointment Form */}
+      <div className="appointment-form-container">
+        <h2 className="appointment-form-title">Book an Appointment</h2>
+        <form onSubmit={handleCreateAppointment} className="appointment-form">
+          {/* Employee Dropdown */}
+          <label htmlFor="employeeId" className="select-employee">
+            Select Employee:{" "}
+          </label>
+          <select
+            name="employeeId"
+            value={formData.employeeId}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">-- Select Employee --</option>
+            {employeesArray.map((employee) => (
+              <option key={employee.id} value={employee.id}>
+                {employee?.firstname} {employee?.lastname[0]}.
+              </option>
+            ))}
+          </select>
+          <label htmlFor="appointmentDate" className="select-date">
+            Select Date:
+          </label>
+          <input
+            type="date"
+            name="appointmentDate"
+            value={formData.appointmentDate}
+            onChange={handleInputChange}
+            required
+          />
+          <label htmlFor="appointmentTime" className="select-time">
+            Select Time:
+          </label>
+          <select
+            name="appointmentTime"
+            defaultValue={null}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">-- Select Time --</option>
+            {timeSlots.map((time) => (
+              <option key={time} value={time}>
+                {time}
+              </option>
+            ))}
+          </select>
+          <button type="submit-appointment">Book Appointment</button>
+        </form>
       </div>
     </div>
   );

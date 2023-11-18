@@ -6,6 +6,7 @@ import imageReducer from "./images";
 import serviceReducer from "./services";
 import cartReducer from "./cart";
 import appointmentReducer from "./appointments";
+import employeeReducer from "./employees";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   services: serviceReducer,
   cart: cartReducer,
   appointments: appointmentReducer,
+  employees: employeeReducer,
 });
 
 let enhancer;

@@ -1,4 +1,5 @@
-.cart-container {
+.cart-container,
+.appointment-form-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -43,4 +44,25 @@
 
 .cart-total {
   font-size: 24px;
+}
+
+.appointment-form-title {
+  font-family: Didot;
+  text-align: center;
+  font-size: 32px;
+  color: #30d5c8;
+}
+
+.appointment-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style: none;
+  width: 100%;
+  text-align: center;
+}
+
+.select-employee,
+.select-date,
+.select-time {
 }
