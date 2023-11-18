@@ -20,6 +20,31 @@ def get_one_appointment(appointmentId):
     return appointment.to_dict()
 
 
+@appointment_routes.route('/', methods=['POST'])
+@login_required
+def create_appointment():
+    form = AppointmentForm()
+
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    if form.validate_on_submit():
+        data = form.data
+        new_appointment = Appointment(
+            userId=data['userId'],
+            companyId=data['companyId'],
+            employeeId=data['employeeId'],
+            appointmentDate=data['appointmentDate'],
+            appointmentTime=datetime.strptime(data['appointmentTime'], '%I:%M %p').time()
+        )
+
+        db.session.add(new_appointment)
+        db.session.commit()
+
+        return new_appointment.to_dict(), 201
+    else:
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+
 @appointment_routes.route('/<int:appointmentId>', methods=['PUT'])
 @login_required
 def update_appointment(appointmentId):

@@ -20,8 +20,9 @@ export const removeItemFromCart = (serviceId) => ({
   serviceId,
 });
 
-export const deleteCart = () => ({
+export const deleteCart = (cartId) => ({
   type: DELETE_CART,
+  cartId,
 });
 
 export const getCartThunk = (companyId, userId) => async (dispatch) => {
@@ -41,6 +42,13 @@ export const getCartThunk = (companyId, userId) => async (dispatch) => {
 
 export const updateCartThunk =
   (companyId, userId, serviceId, quantity) => async (dispatch) => {
+    console.log(
+      "updateCartThunk called with",
+      companyId,
+      userId,
+      serviceId,
+      quantity
+    );
     const response = await csrfFetch(
       `/api/cart/${companyId}/${userId}/update`,
       {
@@ -51,12 +59,13 @@ export const updateCartThunk =
         body: JSON.stringify({ serviceId, quantity }),
       }
     );
-
+    console.log("response", response);
     if (!response.ok) {
       throw new Error("Error updating user's cart");
     }
 
     const updatedCartItem = await response.json();
+    console.log("updatedCartItem", updatedCartItem);
     dispatch(updateCart(updatedCartItem));
   };
 
@@ -118,7 +127,7 @@ const cartReducer = (state = initialState, action) => {
 
     case DELETE_CART:
       const newState = { ...state };
-      delete newState[action.restaurantId];
+      delete newState[action.cartId];
       return newState;
     default:
       return state;

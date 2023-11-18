@@ -72,7 +72,7 @@ def update_cart(companyId, userId):
         return {'error': 'Please provide both serviceId and quantity'}, 400
 
     serviceId = data['serviceId']
-    quantity = data['quantity']
+    quantity = int(data['quantity'])
 
     if not isinstance(quantity, int) or quantity <= 0:
         return {'error': 'Invalid quantity provided'}, 400
@@ -80,6 +80,8 @@ def update_cart(companyId, userId):
     service = Service.query.get(serviceId)
     if not service:
         return {'error': 'Service not found'}, 404
+    
+    print(f"serviceId: {serviceId}, quantity: {quantity}")
 
     cart_item = CartItem.query.filter(
         CartItem.cartId == cart.id, CartItem.serviceId == serviceId).first()
@@ -102,13 +104,12 @@ def update_cart(companyId, userId):
         db.session.add(cart_item)
 
     db.session.add(cart_item)
-    db.session.commit()
 
     cart.cartTotal = cart.calculate_cart_total()
 
     db.session.commit()
 
-    return cart_item.to_dict()
+    return cart.to_dict()
 
 
 @cart_routes.route('/<int:companyId>/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])

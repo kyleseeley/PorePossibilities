@@ -22,11 +22,12 @@ const CartPage = () => {
   const cartItemsArray = Object.values(cart.cartItems);
 
   const handleQuantityChange = (serviceId, quantity) => {
+    console.log("Updating quantity...", serviceId, quantity);
     dispatch(updateCartThunk(1, user.id, serviceId, quantity));
   };
 
   const handleDeleteItem = (serviceId) => {
-    dispatch(removeItemFromCartThunk(1, serviceId, user.id));
+    dispatch(removeItemFromCartThunk(1, user.id, serviceId));
   };
 
   return (
@@ -39,12 +40,14 @@ const CartPage = () => {
         <ul className="cart-items-container">
           {cartItemsArray.map((item) => (
             <li key={item.id} className="cart-items">
-              <p className="cart-service">{item.service.name}</p>
+              <p className="cart-service">{item?.service?.name}</p>
               <label htmlFor={`quantity-${item.id}`}>Quantity:</label>
               <select
                 value={item.quantity}
                 className="cart-quantity"
-                onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                onChange={(e) =>
+                  handleQuantityChange(item.service.id, e.target.value)
+                }
               >
                 {[1, 2, 3, 4, 5].map((value) => (
                   <option key={value} value={value}>
@@ -54,7 +57,7 @@ const CartPage = () => {
               </select>
               <p className="cart-price">Price: ${item.price}</p>
               <div className="cart-item-actions">
-                <button onClick={() => handleDeleteItem(item.id)}>
+                <button onClick={() => handleDeleteItem(item.service.id)}>
                   Delete
                 </button>
               </div>
