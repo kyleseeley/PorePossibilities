@@ -5,6 +5,7 @@ import {
   updateCartThunk,
   removeItemFromCartThunk,
 } from "../../store/cart";
+import { createAppointmentThunk } from "../../store/appointments";
 import "./CartPage.css";
 
 const CartPage = () => {

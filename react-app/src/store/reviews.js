@@ -12,7 +12,7 @@ export const companyReviews = (companyId, reviews) => ({
   reviews,
 });
 
-export const createReview = (review, reviewCount) => ({
+export const createReview = (review) => ({
   type: CREATE_REVIEW,
   review,
 });

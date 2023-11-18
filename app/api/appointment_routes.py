@@ -9,6 +9,15 @@ from datetime import datetime
 appointment_routes = Blueprint('appointments', __name__)
 
 
+@appointment_routes.route('')
+@login_required
+def all_appointments():
+    appointments = Appointment.query.all()
+    if not appointments:
+        return {'error': 'No appointments found'}, 404
+    
+    return {'appointments': [appointment.to_dict() for appointment in appointments]}
+
 @appointment_routes.route('/<int:appointmentId>')
 @login_required
 def get_one_appointment(appointmentId):

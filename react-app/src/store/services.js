@@ -109,7 +109,7 @@ export const deleteServiceThunk = (serviceId) => async (dispatch) => {
 
 const initialState = {};
 
-export default function serviceReducer(state = initialState, action) {
+const serviceReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ALL_SERVICES:
       return { ...state, ...action.services };
@@ -135,4 +135,6 @@ export default function serviceReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default serviceReducer;

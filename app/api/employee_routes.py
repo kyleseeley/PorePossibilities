@@ -107,9 +107,9 @@ def edit_employee(employeeId):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        data.firstname = data['firstname'],
-        data.lastname = data['lastname'],
-        data.email = data['email'],
+        data.firstname = data['firstname']
+        data.lastname = data['lastname']
+        data.email = data['email']
         data.authorized = data['authorized'],
         employee.monday_start = datetime.strptime(
             data['monday_start'], '%I:%M %p').time() if data['monday_start'] else None

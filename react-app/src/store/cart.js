@@ -42,13 +42,6 @@ export const getCartThunk = (companyId, userId) => async (dispatch) => {
 
 export const updateCartThunk =
   (companyId, userId, serviceId, quantity) => async (dispatch) => {
-    console.log(
-      "updateCartThunk called with",
-      companyId,
-      userId,
-      serviceId,
-      quantity
-    );
     const response = await csrfFetch(
       `/api/cart/${companyId}/${userId}/update`,
       {
@@ -59,13 +52,11 @@ export const updateCartThunk =
         body: JSON.stringify({ serviceId, quantity }),
       }
     );
-    console.log("response", response);
     if (!response.ok) {
       throw new Error("Error updating user's cart");
     }
 
     const updatedCartItem = await response.json();
-    console.log("updatedCartItem", updatedCartItem);
     dispatch(updateCart(updatedCartItem));
   };
 
