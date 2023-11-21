@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import {
   getCartThunk,
   updateCartThunk,
   removeItemFromCartThunk,
+  clearCart,
 } from "../../store/cart";
 import { createAppointmentThunk } from "../../store/appointments";
 import { fetchAllEmployeesThunk } from "../../store/employees";
@@ -52,6 +54,7 @@ const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -67,23 +70,31 @@ const CartPage = () => {
     });
   };
 
-  const handleCreateAppointment = (e) => {
+  const handleCreateAppointment = async (e) => {
     e.preventDefault();
     const { employeeId, appointmentDate, appointmentTime } = formData;
+    const companyId = 1;
     if (employeeId && appointmentDate && appointmentTime) {
-      dispatch(
+      await dispatch(
         createAppointmentThunk(
           user.id,
+          companyId,
           employeeId,
           appointmentDate,
           appointmentTime
         )
       );
+
+      await dispatch(clearCart());
+      console.log("cart cleared");
+      await dispatch(getCartThunk(companyId, user.id));
+
       setFormData({
         employeeId: "",
         appointmentDate: "",
         appointmentTime: "",
       });
+      history.push("/");
     }
   };
 
@@ -91,13 +102,30 @@ const CartPage = () => {
   const employeesArray = Object.values(employees?.employees || {});
 
   const handleQuantityChange = (serviceId, quantity) => {
-    console.log("Updating quantity...", serviceId, quantity);
     dispatch(updateCartThunk(1, user.id, serviceId, quantity));
   };
 
   const handleDeleteItem = (serviceId) => {
     dispatch(removeItemFromCartThunk(1, user.id, serviceId));
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const { employeeId, appointmentDate, appointmentTime } = formData;
+
+  //   if (employeeId && appointmentDate && appointmentTime) {
+  //     await dispatch(
+  //       createAppointmentThunk(
+  //         user.id,
+  //         employeeId,
+  //         appointmentDate,
+  //         appointmentTime
+  //       )
+  //     );
+  //     history.push("/");
+  //   }
+  // };
 
   useEffect(() => {
     if (user) {
@@ -190,7 +218,13 @@ const CartPage = () => {
               </option>
             ))}
           </select>
-          <button type="submit-appointment">Book Appointment</button>
+          <button
+            type="submit"
+            className="submit-appointment"
+            onSubmit={handleCreateAppointment}
+          >
+            Book Appointment
+          </button>
         </form>
       </div>
     </div>

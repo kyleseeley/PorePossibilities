@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Appointment, Employee, User, db
+from app.models import Appointment, Employee, Company, db
 from app.forms import AppointmentForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -29,24 +29,30 @@ def get_one_appointment(appointmentId):
     return appointment.to_dict()
 
 
-@appointment_routes.route('/', methods=['POST'])
+@appointment_routes.route('/<int:companyId>', methods=['POST'])
 @login_required
-def create_appointment():
+def create_appointment(companyId):
     form = AppointmentForm()
+    company = Company.query.filter(Company.id == companyId).first()
+
+    if not company:
+        return {'error': 'Company not found'}, 404
 
     form['csrf_token'].data = request.cookies['csrf_token']
 
     if form.validate_on_submit():
         data = form.data
+        print("data", data)
         new_appointment = Appointment(
-            userId=data['userId'],
-            companyId=data['companyId'],
+            userId=current_user.id,
+            companyId=companyId,
             employeeId=data['employeeId'],
             appointmentDate=data['appointmentDate'],
             appointmentTime=datetime.strptime(data['appointmentTime'], '%I:%M %p').time()
         )
 
         db.session.add(new_appointment)
+        print("new appointment", new_appointment)
         db.session.commit()
 
         return new_appointment.to_dict(), 201

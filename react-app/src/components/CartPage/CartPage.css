@@ -55,7 +55,8 @@
 
 .appointment-form {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  flex-direction: column;
   align-items: center;
   list-style: none;
   width: 100%;
@@ -65,4 +66,18 @@
 .select-employee,
 .select-date,
 .select-time {
+  padding: 20px;
+}
+
+.submit-appointment {
+  margin-top: 20px;
+  max-width: 200px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 200px;
+  margin-bottom: 20px;
 }

@@ -4,6 +4,7 @@ const GET_CART = "session/GET_CART";
 const UPDATE_CART = "session/UPDATE_CART";
 const REMOVE_ITEM_FROM_CART = "session/REMOVE_ITEM_FROM_CART";
 const DELETE_CART = "session/REMOVE_CART";
+const CLEAR_CART = "session/CLEAR_CART";
 
 export const getCart = (cartItems, cartTotal) => ({
   type: GET_CART,
@@ -23,6 +24,10 @@ export const removeItemFromCart = (serviceId) => ({
 export const deleteCart = (cartId) => ({
   type: DELETE_CART,
   cartId,
+});
+
+export const clearCart = () => ({
+  type: CLEAR_CART,
 });
 
 export const getCartThunk = (companyId, userId) => async (dispatch) => {
@@ -120,6 +125,12 @@ const cartReducer = (state = initialState, action) => {
       const newState = { ...state };
       delete newState[action.cartId];
       return newState;
+    case CLEAR_CART:
+      console.log("clearing cart");
+      return {
+        ...state,
+        cartItems: {},
+      };
     default:
       return state;
   }

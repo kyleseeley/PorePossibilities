@@ -70,7 +70,6 @@ const LandingPage = () => {
   const sortedReviews = reviews.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
-  console.log("sorted Reviews", sortedReviews);
 
   useEffect(() => {
     dispatch(fetchImageById(imageId)).then(() =>
