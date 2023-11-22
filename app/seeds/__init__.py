@@ -8,6 +8,8 @@ from flask.cli import AppGroup
 from .users_seed import seed_users, undo_users
 from .employee_seed import seed_employees, undo_employees
 from .appointments_seed import seed_appointments, undo_appointments
+from .carts_seed import seed_cart, undo_cart
+from .cartitems_seed import seed_cart_items, undo_cart_items
 
 
 # Creates a seed group to hold our commands
@@ -31,6 +33,8 @@ def seed():
         undo_reviews()
         undo_blogposts()
         undo_images()
+        undo_cart()
+        undo_cart_items()
 
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
@@ -48,6 +52,10 @@ def seed():
             f"TRUNCATE table {SCHEMA}.blogposts RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.carts RESTART IDENTITY CASCADE;")
+        db.session.execute(
+            f"TRUNCATE table {SCHEMA}.cartitems RESTART IDENTITY CASCADE;")
 
         db.session.commit()
 
@@ -59,6 +67,8 @@ def seed():
     seed_reviews()
     seed_blogposts()
     seed_images()
+    seed_cart()
+    seed_cart_items()
     # Add other seed functions here
 
 
@@ -73,4 +83,6 @@ def undo():
     undo_reviews()
     undo_blogposts()
     undo_images()
+    undo_cart()
+    undo_cart_items()
     # Add other undo functions here

@@ -4,11 +4,11 @@ const GET_CART = "session/GET_CART";
 const UPDATE_CART = "session/UPDATE_CART";
 const REMOVE_ITEM_FROM_CART = "session/REMOVE_ITEM_FROM_CART";
 const DELETE_CART = "session/REMOVE_CART";
-const CLEAR_CART = "session/CLEAR_CART";
+// const CLEAR_CART = "session/CLEAR_CART";
 
-export const getCart = (cartItems, cartTotal) => ({
+export const getCart = (cartId, cartItems, cartTotal) => ({
   type: GET_CART,
-  payload: { cartItems, cartTotal },
+  payload: { cartId, cartItems, cartTotal },
 });
 
 export const updateCart = (cartItem) => ({
@@ -26,9 +26,9 @@ export const deleteCart = (cartId) => ({
   cartId,
 });
 
-export const clearCart = () => ({
-  type: CLEAR_CART,
-});
+// export const clearCart = () => ({
+//   type: CLEAR_CART,
+// });
 
 export const getCartThunk = (companyId, userId) => async (dispatch) => {
   try {
@@ -39,16 +39,16 @@ export const getCartThunk = (companyId, userId) => async (dispatch) => {
 
     const responseData = await response.json();
 
-    dispatch(getCart(responseData.cart_items, responseData.cartTotal));
+    dispatch(getCart(responseData.cartId, responseData.cart_items, responseData.cartTotal));
   } catch (error) {
     console.error("Error in getCartThunk:", error);
   }
 };
 
 export const updateCartThunk =
-  (companyId, userId, serviceId, quantity) => async (dispatch) => {
+  (cartId, companyId, userId, serviceId, quantity) => async (dispatch) => {
     const response = await csrfFetch(
-      `/api/cart/${companyId}/${userId}/update`,
+      `/api/cart/${cartId}/${companyId}/${userId}/update`,
       {
         method: "POST",
         headers: {
@@ -66,9 +66,9 @@ export const updateCartThunk =
   };
 
 export const removeItemFromCartThunk =
-  (companyId, userId, serviceId) => async (dispatch) => {
+  (cartId, companyId, userId, serviceId) => async (dispatch) => {
     const response = await csrfFetch(
-      `/api/cart/${companyId}/${userId}/remove/${serviceId}`,
+      `/api/cart/${cartId}/${companyId}/${userId}/remove/${serviceId}`,
       {
         method: "DELETE",
       }
@@ -81,8 +81,8 @@ export const removeItemFromCartThunk =
     dispatch(removeItemFromCart(serviceId));
   };
 
-export const deleteCartThunk = (companyId, userId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/cart/${companyId}/${userId}`, {
+export const deleteCartThunk = (cartId, companyId, userId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/cart/${cartId}/${companyId}/${userId}`, {
     method: "DELETE",
   });
 
@@ -102,10 +102,12 @@ const cartReducer = (state = initialState, action) => {
     case GET_CART:
       return {
         ...state,
+        cartId: action.payload.cartId,
         cartItems: action.payload.cartItems,
         cartTotal: action.payload.cartTotal,
       };
     case UPDATE_CART:
+      console.log("updating cart");
       return {
         ...state,
         cartItems: {
@@ -125,12 +127,12 @@ const cartReducer = (state = initialState, action) => {
       const newState = { ...state };
       delete newState[action.cartId];
       return newState;
-    case CLEAR_CART:
-      console.log("clearing cart");
-      return {
-        ...state,
-        cartItems: {},
-      };
+    // case CLEAR_CART:
+    //   console.log("clearing cart");
+    //   return {
+    //     ...state,
+    //     cartItems: {},
+    //   };
     default:
       return state;
   }

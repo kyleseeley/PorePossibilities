@@ -17,6 +17,8 @@ const AdvancedSkincareTreatments = () => {
     (service) => service.type === "Advanced Skincare Treatments"
   );
   const user = useSelector((state) => state.session.user);
+  const cart = useSelector((state) => state.cart)
+  console.log("cart", cart)
   const mainImageId1 = 3;
   const mainImageId2 = 4;
   const everythingLaserImageId = 10;
@@ -35,12 +37,13 @@ const AdvancedSkincareTreatments = () => {
   );
 
   const handleAddToCart = (service) => {
+    const cartId = cart.cartId;
     const companyId = 1;
     const userId = user.id;
     const serviceId = service.id;
     const quantity = 1;
 
-    dispatch(updateCartThunk(companyId, userId, serviceId, quantity));
+    dispatch(updateCartThunk(cartId, companyId, userId, serviceId, quantity));
   };
 
   useEffect(() => {

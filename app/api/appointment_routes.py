@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Appointment, Employee, Company, db
+from app.models import Appointment, Cart, Company, db
 from app.forms import AppointmentForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -52,8 +52,15 @@ def create_appointment(companyId):
         )
 
         db.session.add(new_appointment)
-        print("new appointment", new_appointment)
         db.session.commit()
+
+        user_cart = Cart.query.filter(
+            Cart.userId == current_user.id, Cart.companyId == companyId, Cart.checkedOut == False
+        ).first()
+
+        if user_cart:
+            user_cart.checkedOut = True
+            db.session.commit()
 
         return new_appointment.to_dict(), 201
     else:

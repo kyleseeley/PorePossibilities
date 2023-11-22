@@ -72,9 +72,7 @@ export const createAppointmentThunk =
     if (!response.ok) {
       throw new Error("Error creating appointment");
     }
-    console.log("response", response);
     const responseData = await response.json();
-    console.log("responseData", responseData);
     dispatch(createAppointment(responseData));
   };
 

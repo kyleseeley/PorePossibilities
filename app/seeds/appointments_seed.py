@@ -12,7 +12,7 @@ def seed_appointments():
         appointmentTimeStr="9:00 AM",
     )
 
-    service_ids_for_appointment1 = [1, 2, 3]
+    service_ids_for_appointment1 = [4, 5, 6]
     services_for_appointment1 = Service.query.filter(
         Service.id.in_(service_ids_for_appointment1)).all()
 

@@ -85,8 +85,7 @@ const CartPage = () => {
         )
       );
 
-      await dispatch(clearCart());
-      console.log("cart cleared");
+      // await dispatch(clearCart());
       await dispatch(getCartThunk(companyId, user.id));
 
       setFormData({

@@ -8,10 +8,11 @@ from .auth_routes import validation_errors_to_error_messages
 cart_routes = Blueprint('carts', __name__)
 
 
-@cart_routes.route('/<int:companyId>/<int:userId>', methods=['DELETE'])
+@cart_routes.route('/<int:cartId>/<int:companyId>/<int:userId>', methods=['DELETE'])
 @login_required
-def delete_cart(companyId, userId):
+def delete_cart(cartId, companyId, userId):
     active_cart = Cart.query.filter(
+        Cart.id == cartId,
         Cart.companyId == companyId,
         Cart.userId == userId,
         Cart.checkedOut == False
@@ -19,7 +20,7 @@ def delete_cart(companyId, userId):
     if not active_cart:
         return {'error': 'No active cart found for deletion'}, 404
 
-    if active_cart.userId != current_user.id or active_cart.companyId != companyId:
+    if active_cart.id != cartId or active_cart.userId != current_user.id or active_cart.companyId != companyId:
         return {'error': 'Unauthorized'}, 401
 
     db.session.delete(active_cart)
@@ -32,6 +33,7 @@ def delete_cart(companyId, userId):
 @login_required
 def get_user_cart(companyId, userId):
     active_cart = Cart.query.filter(
+        # Cart.id == active_cart.id,
         Cart.companyId == companyId,
         Cart.userId == userId,
         Cart.checkedOut == False
@@ -52,18 +54,19 @@ def get_user_cart(companyId, userId):
         cart_items_data.append(cart_item_data)
 
     cart_total = active_cart.calculate_cart_total()
-        
-    return {'cart': active_cart.to_dict(), 'cart_items': cart_items_data, 'cartTotal': cart_total}
+
+    return {'cart': active_cart.to_dict(), 'cartId': active_cart.id, 'cart_items': cart_items_data, 'cartTotal': cart_total}
 
 
-@cart_routes.route('/<int:companyId>/<int:userId>/update', methods=['POST'])
+@cart_routes.route('/<int:cartId>/<int:companyId>/<int:userId>/update', methods=['POST'])
 @login_required
-def update_cart(companyId, userId):
-    cart = Cart.query.filter(Cart.companyId == companyId,
+def update_cart(cartId, companyId, userId):
+    cart = Cart.query.filter(Cart.id == cartId,
+                             Cart.companyId == companyId,
                              Cart.userId == userId).first()
 
     if not cart:
-        cart = Cart(companyId=companyId, userId=userId)
+        cart = Cart(cartId=cart.id, companyId=companyId, userId=userId)
         db.session.add(cart)
         db.session.commit()
 
@@ -80,8 +83,6 @@ def update_cart(companyId, userId):
     service = Service.query.get(serviceId)
     if not service:
         return {'error': 'Service not found'}, 404
-    
-    print(f"serviceId: {serviceId}, quantity: {quantity}")
 
     cart_item = CartItem.query.filter(
         CartItem.cartId == cart.id, CartItem.serviceId == serviceId).first()
@@ -112,10 +113,11 @@ def update_cart(companyId, userId):
     return cart.to_dict()
 
 
-@cart_routes.route('/<int:companyId>/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])
+@cart_routes.route('/<int:cartId>/<int:companyId>/<int:userId>/remove/<int:serviceId>', methods=['DELETE'])
 @login_required
-def remove_from_cart(companyId, userId, serviceId):
-    cart = Cart.query.filter(Cart.companyId == companyId,
+def remove_from_cart(cartId, companyId, userId, serviceId):
+    cart = Cart.query.filter(Cart.id == cartId,
+                             Cart.companyId == companyId,
                              Cart.userId == userId).first()
     if not cart:
         return {'error': 'No cart associated with this user'}, 404
@@ -138,9 +140,9 @@ def remove_from_cart(companyId, userId, serviceId):
     return {'message': 'Item removed from the cart'}
 
 
-@cart_routes.route('/<int:companyId>/<int:userId>/add', methods=['POST'])
+@cart_routes.route('/<int:cartId>/<int:companyId>/<int:userId>/add', methods=['POST'])
 @login_required
-def add_to_cart(companyId, userId):
+def add_to_cart(cartId, companyId, userId):
     user = User.query.get(userId)
     if not user:
         return {'error': 'User does not exist'}, 404
@@ -162,11 +164,13 @@ def add_to_cart(companyId, userId):
     service_price = service.price
     service_total = service_price * quantity
 
-    cart = Cart.query.filter_by(userId=current_user.id).first()
+    cart = Cart.query.filter_by(
+        Cart.id == cartId, userId=current_user.id).first()
     if cart is None:
         company = Company.query.get(companyId)
         if company:
-            cart = Cart(companyId=company.id,
+            cart = Cart(cartId=cart.id,
+                        companyId=company.id,
                         userId=current_user.id, cartTotal=0)
             db.session.add(cart)
         else:

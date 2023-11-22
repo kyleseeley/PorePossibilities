@@ -14,12 +14,13 @@ function Navigation({ isLoaded }) {
 
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
+  console.log("cart", cart)
 
   useEffect(() => {
     if (user) {
       dispatch(getCartThunk(1, user.id));
     }
-  }, [dispatch, user, cart.cartItems.length]);
+  }, [dispatch, user, cart.cartItems.length, cart.cartId]);
 
   const handleSearch = async () => {
     try {
