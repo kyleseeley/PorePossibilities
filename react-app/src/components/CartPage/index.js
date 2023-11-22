@@ -64,6 +64,40 @@ const CartPage = () => {
     appointmentTime: "",
   });
 
+  const getInitialDate = () => {
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+
+    // Check if the current time is before the last time slot
+    const lastTimeSlot = timeSlots[timeSlots.length - 1];
+    const lastTimeSlotDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      parseInt(lastTimeSlot.split(":")[0]),
+      parseInt(lastTimeSlot.split(":")[1]),
+      0
+    );
+
+    const timeDifference = lastTimeSlotDate.getTime() - now.getTime();
+    const timeThreshold = 59 * 60 * 1000; // 59 minutes threshold
+
+    // If the current time is after the last time slot, set the initial date to tomorrow
+    if (timeDifference < timeThreshold) {
+      return formatDate(new Date(now.setDate(now.getDate() + 1)));
+    }
+
+    // Otherwise, set the initial date to one hour later
+    return formatDate(oneHourLater);
+  };
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -215,6 +249,7 @@ const CartPage = () => {
             type="date"
             name="appointmentDate"
             value={formData.appointmentDate}
+            min={getInitialDate()}
             onChange={handleInputChange}
             required
           />

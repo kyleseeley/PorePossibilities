@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models import Service, db
+from app.models import Service, Image, db
 from app.forms import ServiceForm
 from flask_login import current_user, login_required
 from .auth_routes import validation_errors_to_error_messages
@@ -32,6 +32,7 @@ def create_new_service():
         return {'error': 'Only the owner can create a new service'}, 403
 
     form = ServiceForm()
+    form.imageId.choices = [(image.id, image.name) for image in Image.query.all()]
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
@@ -39,11 +40,14 @@ def create_new_service():
             type=data['type'],
             name=data['name'],
             price=data['price'],
-            description=data['description']
+            description=data['description'],
+            duration=data['duration'],
+            imageId=data['imageId']
         )
 
         db.session.add(new_service)
         db.session.commit()
+        
         return new_service.to_dict()
 
     else:
@@ -67,6 +71,7 @@ def edit_service(serviceId):
         service.name = data['name']
         service.price = data['price']
         service.description = data['description']
+        service.duration = data['duration']
 
         db.session.commit()
         return service.to_dict()

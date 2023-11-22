@@ -56,7 +56,7 @@ export const fetchOneServiceThunk = (serviceId) => async (dispatch) => {
 };
 
 export const createNewServiceThunk =
-  (type, name, price, description) => async (dispatch) => {
+  (type, name, price, description, duration) => async (dispatch) => {
     const response = await csrfFetch("/api/services", {
       method: "POST",
       headers: {
@@ -67,6 +67,7 @@ export const createNewServiceThunk =
         name,
         price,
         description,
+        duration
       }),
     });
     if (!response.ok) {

@@ -17,8 +17,8 @@ const AdvancedSkincareTreatments = () => {
     (service) => service.type === "Advanced Skincare Treatments"
   );
   const user = useSelector((state) => state.session.user);
-  const cart = useSelector((state) => state.cart)
-  console.log("cart", cart)
+  const cart = useSelector((state) => state.cart);
+  console.log("cart", cart);
   const mainImageId1 = 3;
   const mainImageId2 = 4;
   const everythingLaserImageId = 10;
@@ -98,7 +98,7 @@ const AdvancedSkincareTreatments = () => {
             </p>
           </div>
         </div>
-        <ul className="advanced-skincare-list">
+        {/* <ul className="advanced-skincare-list">
           {advancedSkincareTreatments.map((service) => (
             <li key={service.id} className="advanced-individual-service">
               {service.name === "Everything Laser" && everythingLaserImage && (
@@ -167,6 +167,35 @@ const AdvancedSkincareTreatments = () => {
                   </button>
                 </div>
               )}
+            </li>
+          ))}
+        </ul> */}
+        <ul className="advanced-skincare-list">
+          {advancedSkincareTreatments.map((service) => (
+            <li key={service.id} className="advanced-individual-service">
+              <div className="advanced-skincare-service-container">
+                {/* Check if the service has an associated image */}
+                {service.image && (
+                  <img
+                    src={service.image.imageFile}
+                    alt={service.image.name}
+                    className="service-image"
+                  />
+                )}
+                <p className="advanced-service-name">{service.name}</p>
+                <p className="advanced-service-description">
+                  {service.description}
+                </p>
+                <p className="advanced-service-price">
+                  Price: ${service.price}
+                </p>
+                <button
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(service)}
+                >
+                  Add to Cart
+                </button>
+              </div>
             </li>
           ))}
         </ul>

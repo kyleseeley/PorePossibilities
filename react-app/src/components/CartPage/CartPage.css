@@ -37,9 +37,23 @@
   padding: 0 20px;
 }
 
-.cart-item-delete,
+.cart-item-delete {
+  background-color: red;
+  color: #fff;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .delete-entire-cart-button {
   background-color: red;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .cart-service {

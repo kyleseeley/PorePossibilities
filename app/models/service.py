@@ -17,8 +17,10 @@ class Service(db.Model):
     name = db.Column(db.String(), nullable=False)
     price = db.Column(db.Integer(), nullable=False)
     description = db.Column(db.String(), nullable=False)
+    duration = db.Column(db.Integer(), nullable=False)
     appointmentId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod('appointments.id')))
+    imageId = db.Column(db.Integer(), db.ForeignKey(add_prefix_for_prod('images.id')))
     createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
         db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
@@ -28,13 +30,17 @@ class Service(db.Model):
 
     cart_items = db.relationship('CartItem', back_populates='service')
 
+    image = db.relationship('Image', back_populates='service')
+
     def to_dict(self):
         return {
             'id': self.id,
             'type': self.type,
             'name': self.name,
             'price': self.price,
-            'description': self.description
+            'description': self.description,
+            'duration': self.duration,
+            'imageId': self.imageId
         }
 
     def get_appointments(self):
@@ -48,3 +54,5 @@ class Service(db.Model):
             return [cart_item.to_dict() for cart_item in self.cart_items]
         else:
             return []
+    
+    # def get_image(self):

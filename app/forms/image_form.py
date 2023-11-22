@@ -23,7 +23,7 @@ def validate_image(form, field):
         if data.startswith("http://") or data.startswith("https://"):
             return
         filename = data
-        allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif'}
+        allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
         if not any(filename.lower().endswith(ext) for ext in allowed_extensions):
             raise ValidationError("Invalid image file extension.")
 

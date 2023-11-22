@@ -18,6 +18,8 @@ class Image(db.Model):
     createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
         db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
+    
+    service = db.relationship('Service', back_populates='image', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

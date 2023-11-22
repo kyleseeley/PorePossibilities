@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: f59f210a57ee
+Revision ID: 633a8fa62190
 Revises: 
-Create Date: 2023-11-18 11:38:56.802755
+Create Date: 2023-11-21 22:11:32.048817
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from app.models import environment, SCHEMA
 
 
 # revision identifiers, used by Alembic.
-revision = 'f59f210a57ee'
+revision = '633a8fa62190'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -157,11 +157,14 @@ def upgrade():
                     sa.Column('name', sa.String(), nullable=False),
                     sa.Column('price', sa.Integer(), nullable=False),
                     sa.Column('description', sa.String(), nullable=False),
+                    sa.Column('duration', sa.Integer(), nullable=False),
                     sa.Column('appointmentId', sa.Integer(), nullable=True),
+                    sa.Column('imageId', sa.Integer(), nullable=True),
                     sa.Column('createdAt', sa.DateTime(), nullable=True),
                     sa.Column('updatedAt', sa.DateTime(), nullable=True),
                     sa.ForeignKeyConstraint(
                         ['appointmentId'], ['appointments.id'], ),
+                    sa.ForeignKeyConstraint(['imageId'], ['images.id'], ),
                     sa.PrimaryKeyConstraint('id')
                     )
     op.create_table('cartitems',
