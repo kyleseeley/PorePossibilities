@@ -5,7 +5,7 @@ import {
   getCartThunk,
   updateCartThunk,
   removeItemFromCartThunk,
-  clearCart,
+  deleteCartThunk,
 } from "../../store/cart";
 import { createAppointmentThunk } from "../../store/appointments";
 import { fetchAllEmployeesThunk } from "../../store/employees";
@@ -53,8 +53,10 @@ const CartPage = () => {
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
+  const companyId = 1;
   const dispatch = useDispatch();
   const history = useHistory();
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -73,7 +75,12 @@ const CartPage = () => {
   const handleCreateAppointment = async (e) => {
     e.preventDefault();
     const { employeeId, appointmentDate, appointmentTime } = formData;
-    const companyId = 1;
+
+    if (Object.keys(cart.cartItems).length === 0) {
+      setError("A service is required to book an appointment.");
+      return;
+    }
+
     if (employeeId && appointmentDate && appointmentTime) {
       await dispatch(
         createAppointmentThunk(
@@ -85,7 +92,6 @@ const CartPage = () => {
         )
       );
 
-      // await dispatch(clearCart());
       await dispatch(getCartThunk(companyId, user.id));
 
       setFormData({
@@ -93,6 +99,9 @@ const CartPage = () => {
         appointmentDate: "",
         appointmentTime: "",
       });
+
+      setError(null);
+
       history.push("/");
     }
   };
@@ -101,34 +110,26 @@ const CartPage = () => {
   const employeesArray = Object.values(employees?.employees || {});
 
   const handleQuantityChange = (serviceId, quantity) => {
-    dispatch(updateCartThunk(1, user.id, serviceId, quantity));
+    dispatch(
+      updateCartThunk(cart.cartId, companyId, user.id, serviceId, quantity)
+    );
   };
 
   const handleDeleteItem = (serviceId) => {
-    dispatch(removeItemFromCartThunk(1, user.id, serviceId));
+    dispatch(
+      removeItemFromCartThunk(cart.cartId, companyId, user.id, serviceId)
+    );
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const { employeeId, appointmentDate, appointmentTime } = formData;
-
-  //   if (employeeId && appointmentDate && appointmentTime) {
-  //     await dispatch(
-  //       createAppointmentThunk(
-  //         user.id,
-  //         employeeId,
-  //         appointmentDate,
-  //         appointmentTime
-  //       )
-  //     );
-  //     history.push("/");
-  //   }
-  // };
+  const handleDeleteCart = () => {
+    dispatch(deleteCartThunk(cart.cartId, companyId, user.id)).then(() =>
+      dispatch(getCartThunk(companyId, user.id))
+    );
+  };
 
   useEffect(() => {
     if (user) {
-      dispatch(getCartThunk(1, user.id)).then(() =>
+      dispatch(getCartThunk(companyId, user.id)).then(() =>
         dispatch(fetchAllEmployeesThunk())
       );
     }
@@ -141,38 +142,54 @@ const CartPage = () => {
       </div>
       <div className="cart-container">
         <h2 className="cart-title">Your Cart</h2>
-        <ul className="cart-items-container">
-          {cartItemsArray.map((item) => (
-            <li key={item.id} className="cart-items">
-              <p className="cart-service">{item?.service?.name}</p>
-              <label htmlFor={`quantity-${item.id}`}>Quantity:</label>
-              <select
-                value={item.quantity}
-                className="cart-quantity"
-                onChange={(e) =>
-                  handleQuantityChange(item.service.id, e.target.value)
-                }
-              >
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </select>
-              <p className="cart-price">Price: ${item.price}</p>
-              <div className="cart-item-actions">
-                <button onClick={() => handleDeleteItem(item.service.id)}>
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        {cartItemsArray.length > 0 ? (
+          <ul className="cart-items-container">
+            {cartItemsArray.map((item) => (
+              <li key={item.id} className="cart-items">
+                <p className="cart-service">{item?.service?.name}</p>
+                <label htmlFor={`quantity-${item.id}`}>Quantity:</label>
+                <select
+                  value={item.quantity}
+                  className="cart-quantity"
+                  onChange={(e) =>
+                    handleQuantityChange(item.service.id, e.target.value)
+                  }
+                >
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <option key={value} value={value}>
+                      {value}
+                    </option>
+                  ))}
+                </select>
+                <p className="cart-price">Price: ${item.price}</p>
+                <div>
+                  <button
+                    className="cart-item-delete"
+                    onClick={() => handleDeleteItem(item.service.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Your Cart is Empty</p>
+        )}
         <p className="cart-total">Total: ${cart.cartTotal}</p>
+        {cartItemsArray.length > 0 && (
+          <button
+            className="delete-entire-cart-button"
+            onClick={() => handleDeleteCart()}
+          >
+            Delete Entire Cart
+          </button>
+        )}
       </div>
       {/* Appointment Form */}
       <div className="appointment-form-container">
         <h2 className="appointment-form-title">Book an Appointment</h2>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleCreateAppointment} className="appointment-form">
           {/* Employee Dropdown */}
           <label htmlFor="employeeId" className="select-employee">

@@ -37,6 +37,11 @@
   padding: 0 20px;
 }
 
+.cart-item-delete,
+.delete-entire-cart-button {
+  background-color: red;
+}
+
 .cart-service {
   font-size: 18px;
   font-weight: bold;
