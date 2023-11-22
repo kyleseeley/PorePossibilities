@@ -14,7 +14,6 @@ function Navigation({ isLoaded }) {
 
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
-  console.log("cart", cart)
 
   useEffect(() => {
     if (user) {

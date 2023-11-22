@@ -18,23 +18,11 @@ const AdvancedSkincareTreatments = () => {
   );
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
-  console.log("cart", cart);
+  const images = useSelector((state) => state.images);
   const mainImageId1 = 3;
   const mainImageId2 = 4;
-  const everythingLaserImageId = 10;
-  const microneedleImageId = 11;
-  const noPeelPeelImageId = 12;
   const mainImage1 = useSelector((state) => state.images[mainImageId1]);
   const mainImage2 = useSelector((state) => state.images[mainImageId2]);
-  const everythingLaserImage = useSelector(
-    (state) => state.images[everythingLaserImageId]
-  );
-  const microneedleImage = useSelector(
-    (state) => state.images[microneedleImageId]
-  );
-  const noPeelPeelImage = useSelector(
-    (state) => state.images[noPeelPeelImageId]
-  );
 
   const handleAddToCart = (service) => {
     const cartId = cart.cartId;
@@ -50,17 +38,25 @@ const AdvancedSkincareTreatments = () => {
     dispatch(fetchAllServicesThunk())
       .then(() => dispatch(fetchImageById(mainImageId1)))
       .then(() => dispatch(fetchImageById(mainImageId2)))
-      .then(() => dispatch(fetchImageById(everythingLaserImageId)))
-      .then(() => dispatch(fetchImageById(microneedleImageId)))
-      .then(() => dispatch(fetchImageById(noPeelPeelImageId)));
   }, [
     dispatch,
     mainImageId1,
     mainImageId2,
-    everythingLaserImageId,
-    microneedleImageId,
-    noPeelPeelImageId,
   ]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      for (const service of advancedSkincareTreatments) {
+        const imageId = service.imageId;
+        if (imageId && !images[imageId]) {
+          await dispatch(fetchImageById(imageId));
+        }
+      }
+    };
+    if (advancedSkincareTreatments.length > 0 && Object.keys(images).length > 0) {
+      fetchImages();
+    }
+  }, [dispatch, advancedSkincareTreatments, images]);
 
   return (
     <div className="page-container">
@@ -98,87 +94,15 @@ const AdvancedSkincareTreatments = () => {
             </p>
           </div>
         </div>
-        {/* <ul className="advanced-skincare-list">
-          {advancedSkincareTreatments.map((service) => (
-            <li key={service.id} className="advanced-individual-service">
-              {service.name === "Everything Laser" && everythingLaserImage && (
-                <div className="advanced-skincare-service-container">
-                  <img
-                    src={everythingLaserImage.imageFile}
-                    alt={everythingLaserImage.name}
-                    className="service-image"
-                  />
-                  <p className="advanced-service-name">{service.name}</p>
-                  <p className="advanced-service-description">
-                    {service.description}
-                  </p>
-                  <p className="advanced-service-price">
-                    Price: ${service.price}
-                  </p>
-                  <button
-                    className="add-to-cart-button"
-                    onClick={() => handleAddToCart(service)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              )}
-              {service.name === "Microneedle" && microneedleImage && (
-                <div className="advanced-skincare-service-container">
-                  <img
-                    src={microneedleImage.imageFile}
-                    alt={microneedleImage.name}
-                    className="service-image"
-                  />
-                  <p className="advanced-service-name">{service.name}</p>
-                  <p className="advanced-service-description">
-                    {service.description}
-                  </p>
-                  <p className="advanced-service-price">
-                    Price: ${service.price}
-                  </p>
-                  <button
-                    className="add-to-cart-button"
-                    onClick={() => handleAddToCart(service)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              )}
-              {service.name === "No-Peel Peel" && noPeelPeelImage && (
-                <div className="advanced-skincare-service-container">
-                  <img
-                    src={noPeelPeelImage.imageFile}
-                    alt={noPeelPeelImage.name}
-                    className="service-image"
-                  />
-                  <p className="advanced-service-name">{service.name}</p>
-                  <p className="advanced-service-description">
-                    {service.description}
-                  </p>
-                  <p className="advanced-service-price">
-                    Price: ${service.price}
-                  </p>
-                  <button
-                    className="add-to-cart-button"
-                    onClick={() => handleAddToCart(service)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul> */}
         <ul className="advanced-skincare-list">
           {advancedSkincareTreatments.map((service) => (
             <li key={service.id} className="advanced-individual-service">
               <div className="advanced-skincare-service-container">
                 {/* Check if the service has an associated image */}
-                {service.image && (
+                {service.imageId && images[service.imageId] && (
                   <img
-                    src={service.image.imageFile}
-                    alt={service.image.name}
+                    src={images[service.imageId].imageFile}
+                    alt={images[service.imageId].name}
                     className="service-image"
                   />
                 )}
