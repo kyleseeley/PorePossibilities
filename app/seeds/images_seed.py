@@ -95,7 +95,7 @@ def seed_images():
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-109_965d90a6-e226-4cfa-8f26-0b64aefe321f.jpg'
     )
     image23 = Image(
-        name='Injectable Treatments 1',
+        name='Injectable Treatments 2',
         imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-102_23b3fe76-9d5f-407d-bdeb-87f46f9eee0a.jpg'
     )
     image24 = Image(

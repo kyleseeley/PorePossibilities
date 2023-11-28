@@ -16,7 +16,7 @@ function Navigation({ isLoaded }) {
   const cart = useSelector((state) => state.cart);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
       dispatch(getCartThunk(1, user.id));
     }
   }, [dispatch, user, cart.cartItems.length, cart.cartId]);

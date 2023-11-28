@@ -97,9 +97,9 @@
   width: 100%;
 }
 
-.login-button {
+/* .login-button {
   width: 40px;
-}
+} */
 
 .hidden {
   display: none;
@@ -227,4 +227,27 @@
   transform: translate(-50%, -50%);
   color: white;
   font-size: 14px;
+}
+
+.login-button,
+.signup-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  transition: background-color 0.3s;
+  width: 100%;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.login-dropdown {
+  width: 100%;
+}
+
+.login-button:hover {
+  background-color: blue;
+}
+
+.signup-button:hover {
+  background-color: green;
 }

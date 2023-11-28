@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { useModal } from "../../context/Modal";
-import { signUp } from "../../store/session";
+import { signUp, login } from "../../store/session";
 import "./SignupForm.css";
 
 const states = [
@@ -60,7 +60,7 @@ const states = [
 
 function SignupFormModal() {
   const dispatch = useDispatch();
-  const sessionUser = useSelector((state) => state.session.user);
+  const user = useSelector((state) => state.session.user);
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastNAme] = useState("");
   const [email, setEmail] = useState("");
@@ -88,11 +88,11 @@ function SignupFormModal() {
     username.length < 4 ||
     password.length < 6;
 
-  if (sessionUser) return <Redirect to="/" />;
+  if (user) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
+    if (password === confirmPassword && password.length > 5) {
       const data = await dispatch(
         signUp(
           firstname,
@@ -106,11 +106,14 @@ function SignupFormModal() {
           password
         )
       );
-      if (data) {
-        setErrors(data);
-      } else {
+      if (data && data.id) {
+        await dispatch(login(email, password));
         closeModal();
+      } else {
+        setErrors(data);
       }
+    } else if (password.length < 6) {
+      setErrors({ password: "Password must be 6 characters or more" });
     } else {
       setErrors([
         "Confirm Password field must be the same as the Password field",
@@ -128,144 +131,150 @@ function SignupFormModal() {
           ))}
         </ul> */}
         <div className="input-container">
-          <label className="signup-input-label">
-            First Name
-            <input
-              className="signup-input"
-              type="text"
-              value={firstname}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.firstname && (
-            <p className="error-message">{errors.firstname}</p>
-          )}
-          <label className="signup-input-label">
-            Last Name
-            <input
-              className="signup-input"
-              type="text"
-              value={lastname}
-              onChange={(e) => setLastNAme(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.lastname && (
-            <p className="error-message">{errors.lastname}</p>
-          )}
-          <label className="signup-input-label">
-            Email
-            <input
-              className="signup-input"
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.email && <p className="error-message">{errors.email}</p>}
-          <label className="signup-input-label">
-            Phone Number
-            <input
-              className="signup-input"
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.phone && <p className="error-message">{errors.phone}</p>}
-          <label className="signup-input-label">
-            Username
-            <input
-              className="signup-input"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.username && (
-            <p className="error-message">{errors.username}</p>
-          )}
-          <label className="signup-input-label">
-            Address
-            <input
-              className="signup-input"
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.address && <p className="error-message">{errors.address}</p>}
-          <label className="signup-input-label">
-            City
-            <input
-              className="signup-input"
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.city && <p className="error-message">{errors.city}</p>}
-          <label className="signup-input-label">
-            State
-            <select
-              className="signup-input"
-              defaultValue=""
-              onChange={(e) => {
-                setState(e.target.value);
-              }}
-              required
-            >
-              <option value="" disabled>
-                Please select an option...
-              </option>
-              {states.map((state) => (
-                <option key={state} value={state}>
-                  {state}
+          <div className="column1">
+            <label className="signup-input-label">
+              First Name
+              <input
+                className="signup-input"
+                type="text"
+                value={firstname}
+                onChange={(e) => setFirstName(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.firstname && (
+              <p className="error-message">{errors.firstname}</p>
+            )}
+            <label className="signup-input-label">
+              Last Name
+              <input
+                className="signup-input"
+                type="text"
+                value={lastname}
+                onChange={(e) => setLastNAme(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.lastname && (
+              <p className="error-message">{errors.lastname}</p>
+            )}
+            <label className="signup-input-label">
+              Email
+              <input
+                className="signup-input"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.email && <p className="error-message">{errors.email}</p>}
+            <label className="signup-input-label">
+              Phone Number
+              <input
+                className="signup-input"
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.phone && <p className="error-message">{errors.phone}</p>}
+            <label className="signup-input-label">
+              Username
+              <input
+                className="signup-input"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.username && (
+              <p className="error-message">{errors.username}</p>
+            )}
+          </div>
+          <div className="column2">
+            <label className="signup-input-label">
+              Address
+              <input
+                className="signup-input"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.address && (
+              <p className="error-message">{errors.address}</p>
+            )}
+            <label className="signup-input-label">
+              City
+              <input
+                className="signup-input"
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.city && <p className="error-message">{errors.city}</p>}
+            <label className="signup-input-label">
+              State
+              <select
+                className="signup-input"
+                defaultValue=""
+                onChange={(e) => {
+                  setState(e.target.value);
+                }}
+                required
+              >
+                <option value="" disabled>
+                  Please select an option...
                 </option>
-              ))}
-            </select>
-          </label>
-          {errors?.state && <p className="error-message">{errors.state}</p>}
-          <label className="signup-input-label">
-            Password
-            <input
-              className="signup-input"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.password && (
-            <p className="error-message">{errors.password}</p>
-          )}
-          <label className="signup-input-label">
-            Confirm Password
-            <input
-              className="signup-input"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </label>
-          {errors?.confirmPassword && (
-            <p className="error-message">{errors.confirmPassword}</p>
-          )}
-          <button
-            type="submit"
-            className="submit-button"
-            // disabled={isButtonDisabled}
-          >
-            Sign Up
-          </button>
+                {states.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
+            </label>
+            {errors?.state && <p className="error-message">{errors.state}</p>}
+            <label className="signup-input-label">
+              Password
+              <input
+                className="signup-input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.password && (
+              <p className="error-message">{errors.password}</p>
+            )}
+            <label className="signup-input-label">
+              Confirm Password
+              <input
+                className="signup-input"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </label>
+            {errors?.confirmPassword && (
+              <p className="error-message">{errors.confirmPassword}</p>
+            )}
+          </div>
         </div>
+        <button
+          type="submit"
+          className="submit-button"
+          disabled={isButtonDisabled}
+        >
+          Sign Up
+        </button>
       </form>
     </div>
   );

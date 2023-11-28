@@ -34,6 +34,35 @@
   text-align: center;
 }
 
+.signup-container {
+  background-color: lightsteelblue;
+  padding: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-height: 30%;
+  overflow-y: auto;
+  z-index: 100;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.column1 {
+  width: 48%; /* Adjust as needed */
+}
+
+.column2 {
+  width: 48%; /* Adjust as needed */
+}
+
 /* Submit button */
 .submit-button {
   background-color: #007bff;
@@ -44,28 +73,11 @@
   cursor: pointer;
   transition: background-color 0.3s;
   width: 80%;
-  margin: 0 auto;
+  margin: 10px auto;
   display: block;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 
 .submit-button:hover {
   background-color: #0056b3;
-}
-
-.signup-container {
-  /* text-align: center;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column; */
-  background-color: lightsteelblue;
-  padding: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  width: 200px;
-  text-align: center;
-  max-height: 30%;
-  overflow-y: auto;
-  z-index: 100;
-  border-radius: 20px;
 }
