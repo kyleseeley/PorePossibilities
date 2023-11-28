@@ -128,7 +128,7 @@ def seed_images():
     )
     image31 = Image(
         name='Lindsay Face Shot',
-        imageFile='https://scontent-den4-1.xx.fbcdn.net/v/t1.6435-9/155861024_10158876862659890_3677374401456024319_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=7f8c78&_nc_ohc=4hFAPzMAaNoAX92CwJi&_nc_ht=scontent-den4-1.xx&oh=00_AfBP4A5CFzTdyQ2uKyaEYk3sWcL2CfDgXJv3fFXrZI2GXA&oe=6584F286'
+        imageFile='https://scontent-den4-1.xx.fbcdn.net/v/t1.6435-9/155861024_10158876862659890_3677374401456024319_n.jpg'
     )
 
     db.session.add(image1)
