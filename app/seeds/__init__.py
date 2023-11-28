@@ -61,12 +61,12 @@ def seed():
 
     seed_users()
     seed_employees()
+    seed_images()
     seed_company()
     seed_services()
     seed_appointments()
     seed_reviews()
     seed_blogposts()
-    seed_images()
     seed_cart()
     seed_cart_items()
     # Add other seed functions here
