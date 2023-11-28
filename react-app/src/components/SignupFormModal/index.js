@@ -106,8 +106,7 @@ function SignupFormModal() {
           password
         )
       );
-      if (data && data.id) {
-        await dispatch(login(email, password));
+      if (data) {
         closeModal();
       } else {
         setErrors(data);
