@@ -43,6 +43,8 @@ def seed():
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.companies RESTART IDENTITY CASCADE;")
         db.session.execute(
+            f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
+        db.session.execute(
             f"TRUNCATE table {SCHEMA}.services RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.appointments RESTART IDENTITY CASCADE;")
@@ -50,8 +52,6 @@ def seed():
             f"TRUNCATE table {SCHEMA}.reviews RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.blogposts RESTART IDENTITY CASCADE;")
-        db.session.execute(
-            f"TRUNCATE table {SCHEMA}.images RESTART IDENTITY CASCADE;")
         db.session.execute(
             f"TRUNCATE table {SCHEMA}.carts RESTART IDENTITY CASCADE;")
         db.session.execute(
