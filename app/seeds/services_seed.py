@@ -10,7 +10,7 @@ def seed_services():
         price=0,
         description='Let\'s chat! After getting better acquainted with you and your skin health goals, we will educate you on the best treatments and skin care. We will get you on a skin health plan that will work with your goals, schedule, and budget. This appointment is complimentary.',
         duration=30,
-        imageId="")
+        imageId=None)
     signature = Service(
         type='Skincare Treatments',
         name='Pore Possibilities Signature',
