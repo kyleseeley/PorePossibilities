@@ -85,7 +85,7 @@ class SignUpForm(FlaskForm):
                            DataRequired(), lastname_data, Length(min=2)])
     email = StringField('Email', validators=[
                         DataRequired(), validate_email, user_exists])
-    phone = StringField('Phone', validators=[DataRequired()])
+    phone = StringField('Phone', validators=[DataRequired(), phone_data])
     username = StringField(
         'Username', validators=[DataRequired(), username_exists])
     address = StringField('Address', validators=[DataRequired(), address_data])

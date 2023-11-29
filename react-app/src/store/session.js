@@ -85,41 +85,57 @@ export const signUp =
     password
   ) =>
   async (dispatch) => {
-    const response = await csrfFetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firstname,
-        lastname,
-        email,
-        phone,
-        username,
-        address,
-        city,
-        state,
-        password,
-      }),
-    });
+    try {
+      const response = await csrfFetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstname,
+          lastname,
+          email,
+          phone,
+          username,
+          address,
+          city,
+          state,
+          password,
+        }),
+      });
+      const data = await response.json();
+      console.log("data", data);
 
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(setUser(data));
-      dispatch(login(email, password));
-      return null;
-    } else if (response.status < 500) {
-      const data = await response.json();
-      if (data.errors) {
+      if (!response.ok) {
+        // dispatch(setUser(data));
+        // dispatch(login(email, password));
+        // return null;
+        console.log("Form errors from server:", data.errors);
         const formattedErrors = {};
         for (const err of data.errors) {
           const splitErr = err.split(" : ");
           formattedErrors[splitErr[0]] = splitErr[1];
         }
+        console.log("Formatted errors:", formattedErrors);
         return formattedErrors;
+      } else {
+        dispatch(setUser(data));
+        dispatch(login(email, password));
+        return null;
       }
-    } else {
-      return ["An error occurred. Please try again."];
+
+      // Handle non-OK responses
+      // console.log("Form errors from server:", data.errors);
+      // const formattedErrors = {};
+      // for (const err of data.errors) {
+      //   const splitErr = err.split(" : ");
+      //   formattedErrors[splitErr[0]] = splitErr[1];
+      // }
+      // console.log("Formatted errors:", formattedErrors);
+      // return formattedErrors;
+    } catch (error) {
+      console.error("Error during signup:", error);
+      return { errors: ["An error occurred. Please try again."] };
     }
   };
 

@@ -92,7 +92,8 @@ function SignupFormModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === confirmPassword && password.length > 5) {
+    try {
+      console.log("Before dispatch");
       const data = await dispatch(
         signUp(
           firstname,
@@ -106,19 +107,25 @@ function SignupFormModal() {
           password
         )
       );
-      if (data) {
+      console.log("After dispatch data", data);
+
+      // Handle successful submission
+      if (!data.errors) {
         closeModal();
-      } else {
-        setErrors(data);
       }
-    } else if (password.length < 6) {
-      setErrors({ password: "Password must be 6 characters or more" });
-    } else {
-      setErrors([
-        "Confirm Password field must be the same as the Password field",
-      ]);
+    } catch (error) {
+      console.log("error during form submission", error);
+      setErrors(error.message);
     }
   };
+  // else {
+  // throw new Error("Confirm Password field must be the same as the Password field");
+  // setErrors((prevErrors) => ({
+  //   ...prevErrors,
+  //   confirmPassword:
+  //     "Confirm Password field must be the same as the Password field",
+  // }));
+  // }
 
   return (
     <div className="signup-container">
