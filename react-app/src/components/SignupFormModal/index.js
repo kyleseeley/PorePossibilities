@@ -62,7 +62,7 @@ function SignupFormModal() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const [firstname, setFirstName] = useState("");
-  const [lastname, setLastNAme] = useState("");
+  const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [username, setUsername] = useState("");
@@ -71,7 +71,7 @@ function SignupFormModal() {
   const [state, setState] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
   const isButtonDisabled =
@@ -85,57 +85,48 @@ function SignupFormModal() {
     !state ||
     !password ||
     !confirmPassword ||
-    username.length < 4 ||
-    password.length < 6;
+    username.length < 4;
 
   if (user) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      console.log("Before dispatch");
-      const data = await dispatch(
-        signUp(
-          firstname,
-          lastname,
-          email,
-          phone,
-          username,
-          address,
-          city,
-          state,
-          password
-        )
-      );
-      console.log("After dispatch data", data);
 
-      // Handle successful submission
-      if (!data.errors) {
-        closeModal();
+    if (password !== confirmPassword) {
+      setErrors({
+        confirmPassword: "Password and Confirm Password must match",
+      });
+      return;
+    }
+
+    if (password === confirmPassword) {
+      try {
+        const data = await dispatch(
+          signUp(
+            firstname,
+            lastname,
+            email,
+            phone,
+            username,
+            address,
+            city,
+            state,
+            password
+          )
+        );
+        if (!data || Object.keys(data).length === 0) {
+          closeModal();
+        }
+      } catch (error) {
+        setErrors({ error: error || { _error: "An unknown error occurred." } });
       }
-    } catch (error) {
-      console.log("error during form submission", error);
-      setErrors(error.message);
     }
   };
-  // else {
-  // throw new Error("Confirm Password field must be the same as the Password field");
-  // setErrors((prevErrors) => ({
-  //   ...prevErrors,
-  //   confirmPassword:
-  //     "Confirm Password field must be the same as the Password field",
-  // }));
-  // }
 
   return (
     <div className="signup-container">
       <h1 className="signup-title">Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        {/* <ul>
-          {errors.map((error, idx) => (
-            <li key={idx}>{error}</li>
-          ))}
-        </ul> */}
         <div className="input-container">
           <div className="column1">
             <label className="signup-input-label">
@@ -148,22 +139,40 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.firstname && (
-              <p className="error-message">{errors.firstname}</p>
-            )}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "firstname") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Last Name
               <input
                 className="signup-input"
                 type="text"
                 value={lastname}
-                onChange={(e) => setLastNAme(e.target.value)}
+                onChange={(e) => setLastName(e.target.value)}
                 required
               />
             </label>
-            {errors?.lastname && (
-              <p className="error-message">{errors.lastname}</p>
-            )}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "lastname") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Email
               <input
@@ -174,18 +183,47 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.email && <p className="error-message">{errors.email}</p>}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "email") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Phone Number
               <input
                 className="signup-input"
-                type="text"
+                type="tel"
                 value={phone}
+                inputMode="numeric"
+                pattern="[0-9]*"
                 onChange={(e) => setPhone(e.target.value)}
+                onKeyPress={(e) => {
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 required
               />
             </label>
-            {errors?.phone && <p className="error-message">{errors.phone}</p>}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "phone") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Username
               <input
@@ -196,9 +234,18 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.username && (
-              <p className="error-message">{errors.username}</p>
-            )}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "username") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
           </div>
           <div className="column2">
             <label className="signup-input-label">
@@ -211,9 +258,18 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.address && (
-              <p className="error-message">{errors.address}</p>
-            )}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "address") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               City
               <input
@@ -224,7 +280,18 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.city && <p className="error-message">{errors.city}</p>}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "city") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               State
               <select
@@ -245,7 +312,18 @@ function SignupFormModal() {
                 ))}
               </select>
             </label>
-            {errors?.state && <p className="error-message">{errors.state}</p>}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "state") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Password
               <input
@@ -256,9 +334,18 @@ function SignupFormModal() {
                 required
               />
             </label>
-            {errors?.password && (
-              <p className="error-message">{errors.password}</p>
-            )}
+            {errors?.error &&
+              errors.error.map((error, index) => {
+                const [fieldName, errorMessage] = error.split(" : ");
+                if (fieldName === "password") {
+                  return (
+                    <p key={index} className="error-message">
+                      {errorMessage}
+                    </p>
+                  );
+                }
+                return null;
+              })}
             <label className="signup-input-label">
               Confirm Password
               <input
@@ -277,7 +364,7 @@ function SignupFormModal() {
         <button
           type="submit"
           className="submit-button"
-          disabled={isButtonDisabled}
+          // disabled={isButtonDisabled}
         >
           Sign Up
         </button>

@@ -23,7 +23,7 @@ def user_exists(form, field):
 def username_exists(form, field):
     # Checking if username is already in use
     username = field.data
-    user = User.query.filter(User.username == username).first()
+    user = User.query.filter(User.username.ilike(username)).first()
     if user:
         raise ValidationError('Username is already in use.')
 
@@ -76,16 +76,27 @@ def phone_data(form, field):
 
     except phonenumbers.phonenumberutil.NumberParseException:
         raise ValidationError("Invalid phone number format")
+    
+def phone_data_input(form, field):
+    phone = field.data
+    if not phone.isdigit():
+        raise ValidationError("Phone number should only contain digits.")
+    
+def password_data(form, field):
+    password = field.data
+    if len(password) < 6:
+        raise ValidationError(
+            "Password must be at least 6 characters")
 
 
 class SignUpForm(FlaskForm):
     firstname = StringField('First Name', validators=[
-                            DataRequired(), firstname_data, Length(min=2)])
+                            DataRequired(), firstname_data])
     lastname = StringField('Last Name', validators=[
-                           DataRequired(), lastname_data, Length(min=2)])
+                           DataRequired(), lastname_data])
     email = StringField('Email', validators=[
                         DataRequired(), validate_email, user_exists])
-    phone = StringField('Phone', validators=[DataRequired(), phone_data])
+    phone = StringField('Phone', validators=[DataRequired(), phone_data, phone_data_input])
     username = StringField(
         'Username', validators=[DataRequired(), username_exists])
     address = StringField('Address', validators=[DataRequired(), address_data])
@@ -94,4 +105,4 @@ class SignUpForm(FlaskForm):
         'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
         'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
     ])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(), password_data])
