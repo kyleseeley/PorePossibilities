@@ -34,8 +34,6 @@ function LoginFormModal() {
 
   const isButtonDisabled = email.length < 4 || password.length < 6;
 
-  console.log("Errors:", errors);
-
   return (
     <div className="login-container">
       <h1 className="login-title">Log In</h1>
@@ -67,9 +65,10 @@ function LoginFormModal() {
         <div className="login-error-container">
           {errors.length > 0 && (
             <ul className="login-error-message">
-              {errors.map((error, idx) => (
-                <li key={idx}>{error}</li>
-              ))}
+              {errors.map((error, idx) => {
+                const errorMessage = error.split(":")[1].trim();
+                return <li key={idx}>{errorMessage}</li>;
+              })}
             </ul>
           )}
         </div>

@@ -22,8 +22,6 @@ def password_matches(form, field):
     user = User.query.filter(User.email == email).first()
     employee = Employee.query.filter(Employee.email == email).first()
 
-    if not user and not employee:
-        raise ValidationError('No such user exists.')
     if user and not user.check_password(password):
         raise ValidationError('Password was incorrect.')
     if employee and not employee.check_password(password):
