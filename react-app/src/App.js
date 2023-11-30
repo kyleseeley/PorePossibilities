@@ -11,6 +11,7 @@ import AdvancedSkincareTreatments from "./components/Services/AdvancedSkincareTr
 import SkincareTreatments from "./components/Services/SkincareTreatments";
 import SignatureSkinTherapies from "./components/Services/SignatureSkinTherapies";
 import InjectableTreatments from "./components/Services/InjectableTreatments";
+import Appointments from "./components/Appointments";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route expact path="/services/injectable-treatments">
           <InjectableTreatments />
+        </Route>
+        <Route expact path="/appointments">
+          <Appointments />
         </Route>
         <Route exact path="/cart">
           <CartPage />

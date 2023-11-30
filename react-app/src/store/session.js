@@ -47,7 +47,6 @@ export const login = (email, password) => async (dispatch) => {
       return null;
     } else if (response.status < 500) {
       const data = await response.json();
-      console.log("Login Error Data:", data);
       if (data.errors) {
         return data.errors;
       }
@@ -55,7 +54,6 @@ export const login = (email, password) => async (dispatch) => {
       return ["An error occurred. Please try again."];
     }
   } catch (error) {
-    console.log("Login Action Error:", error);
     return ["An error occurred. Please try again."];
   }
 };
@@ -102,7 +100,7 @@ export const signUp =
         password,
       }),
     });
-    console.log("response", response);
+
     const data = await response.json();
 
     if (response.ok) {

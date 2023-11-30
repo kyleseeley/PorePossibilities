@@ -69,8 +69,6 @@ def phone_data(form, field):
     phone = field.data
     try:
         parsed_phone = phonenumbers.parse(phone, "US")
-        print('parsed phone', parsed_phone)
-        print("valid or not", phonenumbers.is_valid_number(parsed_phone))
         if not phonenumbers.is_valid_number(parsed_phone):
             raise ValidationError("Invalid phone number")
 

@@ -39,7 +39,6 @@ export const fetchAllServicesThunk = () => async (dispatch) => {
 
   const responseData = await response.json();
   const services = responseData.services;
-  console.log("services", services)
 
   dispatch(fetchAllServices(services));
 };
@@ -68,7 +67,7 @@ export const createNewServiceThunk =
         name,
         price,
         description,
-        duration
+        duration,
       }),
     });
     if (!response.ok) {

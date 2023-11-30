@@ -42,7 +42,6 @@ def create_appointment(companyId):
 
     if form.validate_on_submit():
         data = form.data
-        print("data", data)
         new_appointment = Appointment(
             userId=current_user.id,
             companyId=companyId,

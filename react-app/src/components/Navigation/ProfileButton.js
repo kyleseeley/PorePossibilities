@@ -55,7 +55,11 @@ function ProfileButton({ user }) {
               {user.email}
             </li>
             <li className="my-appointments-link">
-              <Link className="my-appointments" to="" onClick={closeMenu}>
+              <Link
+                className="my-appointments"
+                to="/appointments"
+                onClick={closeMenu}
+              >
                 My Appointments
               </Link>
             </li>
