@@ -67,9 +67,9 @@ const LandingPage = () => {
 
   const updatedStarRating = calculateStarRating();
   const numReviews = reviews.length;
-  const sortedReviews = reviews.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+  const sortedReviews = Array.isArray(reviews)
+    ? reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    : [];
 
   useEffect(() => {
     dispatch(fetchImageById(imageId)).then(() =>
