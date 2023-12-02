@@ -29,10 +29,14 @@ login.login_view = 'auth.unauthorized'
 
 @login.user_loader
 def load_user(id):
+    print("Loading user with ID:", id)
     user_type = session.get('user_type')
 
     if user_type == 'user':
-        return User.query.get(int(id))
+        user = User.query.get(int(id))
+        print("Loaded user:", user)
+        return user
+        # return User.query.get(int(id))
     elif user_type == 'employee':
         return Employee.query.get(int(id))
 

@@ -75,11 +75,11 @@ const LandingPage = () => {
     dispatch(fetchImageById(imageId)).then(() =>
       dispatch(fetchReviews(companyId))
     );
-    const intervalId = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
-    }, 8000);
+    // const intervalId = setInterval(() => {
+    //   setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
+    // }, 8000);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
   }, [dispatch, imageId, mainImageIds, companyId]);
 
   return (

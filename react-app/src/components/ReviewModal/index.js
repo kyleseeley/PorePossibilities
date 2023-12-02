@@ -69,7 +69,7 @@ const ReviewModal = ({ companyId, onClose, editReview }) => {
   return (
     <div className="review-modal">
       <h2 className="modal-heading">
-        {editReview ? "Edit Your Review" : "How was the food?"}
+        {editReview ? "Edit Your Review" : "What did you think?"}
       </h2>
       <form onSubmit={handleSubmit}>
         <textarea

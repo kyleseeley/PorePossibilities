@@ -32,6 +32,7 @@ def delete_cart(cartId, companyId, userId):
 @cart_routes.route('/<int:companyId>/<int:userId>')
 @login_required
 def get_user_cart(companyId, userId):
+    print("Current user in cart route:", current_user.to_dict())
     active_cart = Cart.query.filter(
         # Cart.id == active_cart.id,
         Cart.companyId == companyId,

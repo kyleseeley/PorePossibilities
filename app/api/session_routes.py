@@ -12,11 +12,18 @@ session_routes = Blueprint('current', __name__)
 @session_routes.route('')
 @login_required
 def get_current_user():
-    if current_user.is_authenticated:
-        if isinstance(current_user, User):
-            return current_user.to_dict()
-        elif isinstance(current_user, Employee):
-            return current_user.to_dict()
+    print("current user in get current user", current_user)
+    user = User.query.get(current_user.id)
+    employee = Employee.query.get(current_user.id)
+    if user:
+        return user.to_dict()
+    elif employee:
+        return employee.to_dict()
+    # if current_user.is_authenticated:
+    #     if isinstance(current_user, User):
+    #         return current_user.to_dict()
+    #     elif isinstance(current_user, Employee):
+    #         return current_user.to_dict()
     else:
         return {'error': 'User not found'}, 404
 
@@ -34,6 +41,7 @@ def get_current_user_reviews():
 @session_routes.route('/cart')
 @login_required
 def get_current_user_cart():
+    print("Current user in session route:", current_user.to_dict())
     user = User.query.get(current_user.id)
     if user:
         return user.get_cart()

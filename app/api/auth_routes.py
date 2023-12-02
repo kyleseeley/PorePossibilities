@@ -19,6 +19,7 @@ def validation_errors_to_error_messages(validation_errors):
 
 @auth_routes.route('')
 def authenticate():
+    print("Current user in authenticate:", current_user.to_dict())
     if current_user.is_authenticated:
         if isinstance(current_user, User):
             return current_user.to_dict()
@@ -40,6 +41,7 @@ def login():
             Employee.email == form.data['email']).first()
 
         if user:
+            print("Logging in user:", user)
             session['user_type'] = 'user'
             login_user(user)
             return user.to_dict()
@@ -81,6 +83,7 @@ def sign_up():
         )
         db.session.add(user)
         db.session.commit()
+        session['user_type'] = 'user'
         login_user(user)
         return user.to_dict()
     else:

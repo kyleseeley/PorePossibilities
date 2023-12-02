@@ -100,12 +100,11 @@ export const signUp =
         password,
       }),
     });
-
+    console.log("response", response);
     const data = await response.json();
-
+    console.log("data", data);
     if (response.ok) {
       dispatch(setUser(data));
-      return null;
     } else {
       if (data.errors) {
         throw data.errors;

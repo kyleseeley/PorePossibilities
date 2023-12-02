@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { login } from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { getCartThunk } from "../../store/cart";
 import "./LoginForm.css";
 
 function LoginFormModal() {

@@ -15,6 +15,9 @@ function Navigation({ isLoaded }) {
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
 
+  console.log("user: ", user);
+  console.log("cart: ", cart);
+
   useEffect(() => {
     if (user && user.id) {
       dispatch(getCartThunk(1, user.id));
