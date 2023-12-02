@@ -15,8 +15,9 @@ def all_appointments():
     appointments = Appointment.query.all()
     if not appointments:
         return {'error': 'No appointments found'}, 404
-    
+
     return {'appointments': [appointment.to_dict() for appointment in appointments]}
+
 
 @appointment_routes.route('/<int:appointmentId>')
 @login_required
@@ -47,7 +48,8 @@ def create_appointment(companyId):
             companyId=companyId,
             employeeId=data['employeeId'],
             appointmentDate=data['appointmentDate'],
-            appointmentTime=datetime.strptime(data['appointmentTime'], '%I:%M %p').time()
+            appointmentTime=datetime.strptime(
+                data['appointmentTime'], '%I:%M %p').time()
         )
 
         db.session.add(new_appointment)
@@ -58,6 +60,10 @@ def create_appointment(companyId):
         ).first()
 
         if user_cart:
+            for cart_item in user_cart.cart_items:
+                new_appointment.services.append(cart_item.service)
+
+            # Mark the cart as checked out
             user_cart.checkedOut = True
             db.session.commit()
 
@@ -78,8 +84,8 @@ def update_appointment(appointmentId):
 
     if form.validate_on_submit():
         data = form.data
-        appointment.userId = data.get('userId', appointment.userId)
-        appointment.companyId = data.get('companyId', appointment.companyId)
+        # appointment.userId = data.get('userId', appointment.userId)
+        # appointment.companyId = data.get('companyId', appointment.companyId)
         appointment.employeeId = data.get('employeeId', appointment.employeeId)
         appointment.appointmentDate = data.get(
             'appointmentDate', appointment.appointmentDate)

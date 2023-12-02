@@ -21,9 +21,10 @@ const createAppointment = (appointment) => ({
   appointment,
 });
 
-const updateAppointment = (appointmentId) => ({
+const updateAppointment = (appointmentId, updatedAppointmentData) => ({
   type: UPDATE_APPOINTMENT,
   appointmentId,
+  updatedAppointmentData,
 });
 
 const deleteAppointment = (appointmentId) => ({
@@ -88,9 +89,11 @@ export const updateAppointmentThunk =
     if (!response.ok) {
       throw new Error("Error updating appointment");
     }
-
+    console.log("response", response);
     const responseData = await response.json();
-    dispatch(updateAppointment(responseData));
+    console.log("responseData", responseData);
+    dispatch(updateAppointment(appointmentId, responseData));
+    dispatch(fetchAllAppointmentsThunk());
   };
 
 export const deleteAppointmentThunk = (appointmentId) => async (dispatch) => {
@@ -103,6 +106,7 @@ export const deleteAppointmentThunk = (appointmentId) => async (dispatch) => {
   }
 
   dispatch(deleteAppointment(appointmentId));
+  dispatch(fetchAllAppointmentsThunk());
 };
 
 const initialState = {};
@@ -124,8 +128,15 @@ const appointmentReducer = (state = initialState, action) => {
     case UPDATE_APPOINTMENT:
       return {
         ...state,
-        [action.appointment.id]: action.appointment,
+        [action.appointmentId]: {
+          ...state[action.appointmentId],
+          ...action.updatedAppointmentData,
+        },
       };
+    // return {
+    //   ...state,
+    //   [action.appointment.id]: action.appointment,
+    // };
     case DELETE_APPOINTMENT:
       const newState = { ...state };
       delete newState[action.appointmentId];

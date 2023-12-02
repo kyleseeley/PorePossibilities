@@ -41,9 +41,10 @@ class Appointment(db.Model):
             'userId': self.userId,
             'companyId': self.companyId,
             'employeeId': self.employeeId,
-            'appointmentDate': self.appointmentDate,
-            'appointmentTime': self.appointmentTime.strftime('%I:%M %p'),
-            'services': [service.to_dict() for service in self.services]
+            'appointmentDate': self.appointmentDate.strftime('%b %d, %Y'),
+            'appointmentTime': self.appointmentTime.strftime('%I:%M %p').lstrip('0'),
+            'services': [service.to_dict() for service in self.services],
+            'employee': self.employee.to_dict() if self.employee else None
         }
 
     @property
