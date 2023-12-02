@@ -37,12 +37,8 @@ const AdvancedSkincareTreatments = () => {
   useEffect(() => {
     dispatch(fetchAllServicesThunk())
       .then(() => dispatch(fetchImageById(mainImageId1)))
-      .then(() => dispatch(fetchImageById(mainImageId2)))
-  }, [
-    dispatch,
-    mainImageId1,
-    mainImageId2,
-  ]);
+      .then(() => dispatch(fetchImageById(mainImageId2)));
+  }, [dispatch, mainImageId1, mainImageId2]);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -53,7 +49,10 @@ const AdvancedSkincareTreatments = () => {
         }
       }
     };
-    if (advancedSkincareTreatments.length > 0 && Object.keys(images).length > 0) {
+    if (
+      advancedSkincareTreatments.length > 0 &&
+      Object.keys(images).length > 0
+    ) {
       fetchImages();
     }
   }, [dispatch, advancedSkincareTreatments, images]);
@@ -113,12 +112,15 @@ const AdvancedSkincareTreatments = () => {
                 <p className="advanced-service-price">
                   Price: ${service.price}
                 </p>
-                <button
-                  className="add-to-cart-button"
-                  onClick={() => handleAddToCart(service)}
-                >
-                  Add to Cart
-                </button>
+
+                {user && (
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(service)}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </li>
           ))}

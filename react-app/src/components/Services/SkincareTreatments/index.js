@@ -105,12 +105,14 @@ const SkincareTreatments = () => {
                 <p className="skincare-service-price">
                   Price: ${service.price}
                 </p>
-                <button
-                  className="add-to-cart-button"
-                  onClick={() => handleAddToCart(service)}
-                >
-                  Add to Cart
-                </button>
+                {user && (
+                  <button
+                    className="add-to-cart-button"
+                    onClick={() => handleAddToCart(service)}
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </li>
           ))}
