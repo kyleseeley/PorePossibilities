@@ -1,0 +1,45 @@
+.our-story-container {
+  /* background-color: lavender; */
+}
+
+.our-information {
+  width: 50%; /* Set the width to 50% of the container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  padding: 20px; /* Add padding for better readability */
+  float: left; /* Float the container to the left */
+  padding-left: 8rem;
+  padding-right: 8rem;
+  padding-top: 10rem;
+}
+
+.first-heading {
+  color: indigo;
+  text-align: center;
+  font-family: Didot;
+}
+
+.second-heading {
+  color: indigo;
+  text-align: center;
+  font-family: Didot;
+}
+
+.our-story-paragraph {
+  text-align: justify; /* Justify text for better readability */
+  font-family: Didot;
+}
+
+.story-image {
+  flex: 1; /* Take up remaining space in the flex container */
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  padding-right: 5rem;
+}
+
+.story-image img {
+  aspect-ratio: 1/1;
+  height: 700px;
+  max-width: 100%;
+  max-height: 100%;
+}

@@ -12,6 +12,7 @@ import SkincareTreatments from "./components/Services/SkincareTreatments";
 import SignatureSkinTherapies from "./components/Services/SignatureSkinTherapies";
 import InjectableTreatments from "./components/Services/InjectableTreatments";
 import Appointments from "./components/Appointments";
+import OurStory from "./components/OurStory";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,9 @@ function App() {
         </Route>
         <Route exact path="/cart">
           <CartPage />
+        </Route>
+        <Route exact path="/about/our-story">
+          <OurStory />
         </Route>
       </Switch>
     </>

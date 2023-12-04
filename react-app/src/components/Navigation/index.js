@@ -50,6 +50,8 @@ function Navigation({ isLoaded }) {
     "Injectable Treatments",
   ];
 
+  const aboutOptions = ["Our Story", "Meet the Team"];
+
   return (
     <div>
       {/* Top section */}
@@ -85,6 +87,22 @@ function Navigation({ isLoaded }) {
 
       {/* Bottom section */}
       <ul className="site-navigation">
+        <li className="about-dropdown">
+          <NavLink to="#" className="about-dropdown-link">
+            About
+          </NavLink>
+          <div className="about-dropdown-content">
+            {aboutOptions.map((option) => (
+              <NavLink
+                key={option}
+                to={`/about/${option.toLowerCase().replace(/\s/g, "-")}`}
+                className="dropdown-option"
+              >
+                {option}
+              </NavLink>
+            ))}
+          </div>
+        </li>
         <li className="services-dropdown">
           <NavLink to="#" className="services-dropdown-link">
             Services

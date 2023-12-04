@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { authenticate } from "../../store/session";
 import { fetchImageById } from "../../store/images";
 import { fetchReviews, deleteReviewById } from "../../store/reviews";
@@ -12,6 +12,8 @@ import "./LandingPage.css";
 const LandingPage = () => {
   const dispatch = useDispatch();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lastUpdateTime, setLastUpdateTime] = useState(0);
+
   const mainImageIds = useMemo(() => [6, 7], []);
   const imageId = mainImageIds[currentImageIndex];
   const image = useSelector((state) => state.images[imageId]);
@@ -19,6 +21,7 @@ const LandingPage = () => {
   const companyId = 1;
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
+  const lastUpdateTimeRef = useRef(0);
 
   const hasLeftReview =
     user &&
@@ -71,16 +74,32 @@ const LandingPage = () => {
     ? reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     : [];
 
+  const updateImageIndex = useCallback(() => {
+    const currentTime = Date.now();
+    if (currentTime - lastUpdateTimeRef.current > 8000) {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
+      lastUpdateTimeRef.current = currentTime;
+    }
+    setTimeout(updateImageIndex, 8000); // Call itself again after 8000 milliseconds
+  }, [lastUpdateTimeRef, setCurrentImageIndex]);
+
+  // useEffect(() => {
+  //   dispatch(fetchImageById(imageId)).then(() =>
+  //     dispatch(fetchReviews(companyId))
+  //   );
+  //   const intervalId = setInterval(() => {
+  //     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
+  //   }, 8000);
+
+  //   return () => clearInterval(intervalId);
+  // }, [dispatch, imageId, mainImageIds, companyId]);
+
   useEffect(() => {
     dispatch(fetchImageById(imageId)).then(() =>
       dispatch(fetchReviews(companyId))
     );
-    // const intervalId = setInterval(() => {
-    //   setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
-    // }, 8000);
-
-    // return () => clearInterval(intervalId);
-  }, [dispatch, imageId, mainImageIds, companyId]);
+    setTimeout(updateImageIndex, 8000); // Initial call after 8000 milliseconds
+  }, [dispatch, imageId, companyId, updateImageIndex]);
 
   return (
     <div className="page-container">

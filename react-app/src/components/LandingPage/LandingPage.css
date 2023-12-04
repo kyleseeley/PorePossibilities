@@ -2,7 +2,7 @@
   aspect-ratio: 16/9;
   width: 100%;
   max-height: 85vh;
-  /* animation: fade-out 8s infinite; */
+  animation: fade-out 8s infinite;
 }
 
 @keyframes fade-out {
