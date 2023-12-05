@@ -13,6 +13,7 @@ import SignatureSkinTherapies from "./components/Services/SignatureSkinTherapies
 import InjectableTreatments from "./components/Services/InjectableTreatments";
 import Appointments from "./components/Appointments";
 import OurStory from "./components/OurStory";
+import MeetTheTeam from "./components/MeetTheTeam";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +50,9 @@ function App() {
         </Route>
         <Route exact path="/about/our-story">
           <OurStory />
+        </Route>
+        <Route exact path="/about/meet-the-team">
+          <MeetTheTeam />
         </Route>
       </Switch>
     </>

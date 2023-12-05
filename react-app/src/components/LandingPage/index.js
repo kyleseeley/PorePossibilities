@@ -7,6 +7,7 @@ import { fetchReviews, deleteReviewById } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 import ReviewModal from "../ReviewModal";
 import OpenModalButton from "../OpenModalButton";
+import { usePageVisibility } from "react-page-visibility";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -22,6 +23,7 @@ const LandingPage = () => {
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
   const lastUpdateTimeRef = useRef(0);
+  const isPageVisible = usePageVisibility();
 
   const hasLeftReview =
     user &&
@@ -76,12 +78,12 @@ const LandingPage = () => {
 
   const updateImageIndex = useCallback(() => {
     const currentTime = Date.now();
-    if (currentTime - lastUpdateTimeRef.current > 8000) {
+    if (currentTime - lastUpdateTimeRef.current > 8000 && isPageVisible) {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
       lastUpdateTimeRef.current = currentTime;
     }
-    setTimeout(updateImageIndex, 8000); // Call itself again after 8000 milliseconds
-  }, [lastUpdateTimeRef, setCurrentImageIndex]);
+    setTimeout(updateImageIndex, 8000);
+  }, [lastUpdateTimeRef, setCurrentImageIndex, isPageVisible]);
 
   // useEffect(() => {
   //   dispatch(fetchImageById(imageId)).then(() =>
@@ -98,7 +100,8 @@ const LandingPage = () => {
     dispatch(fetchImageById(imageId)).then(() =>
       dispatch(fetchReviews(companyId))
     );
-    setTimeout(updateImageIndex, 8000); // Initial call after 8000 milliseconds
+    setTimeout(updateImageIndex, 8000);
+    return () => clearTimeout(updateImageIndex);
   }, [dispatch, imageId, companyId, updateImageIndex]);
 
   return (
