@@ -1,5 +1,6 @@
 from app.models import db, Company, environment, SCHEMA
 from sqlalchemy.sql import text
+from datetime import datetime
 
 
 # Adds a demo user, you can add other users here if you want
@@ -14,7 +15,21 @@ def seed_company():
         state='CO',
         zipCode='80220',
         starRating=3.5,
-        numReviews=2
+        numReviews=2,
+        monday_open=None,
+        monday_close=None,
+        tuesday_open=datetime.strptime("9:30 AM", '%I:%M %p').time(),
+        tuesday_close=datetime.strptime("4:00 PM", '%I:%M %p').time(),
+        wednesday_open=datetime.strptime("10:00 AM", '%I:%M %p').time(),
+        wednesday_close=datetime.strptime("6:00 AM", '%I:%M %p').time(),
+        thursday_open=datetime.strptime("9:30 AM", '%I:%M %p').time(),
+        thursday_close=datetime.strptime("4:00 PM", '%I:%M %p').time(),
+        friday_open=datetime.strptime("9:30 AM", '%I:%M %p').time(),
+        friday_close=datetime.strptime("3:00 PM", '%I:%M %p').time(),
+        saturday_open=datetime.strptime("9:30 AM", '%I:%M %p').time(),
+        saturday_close=datetime.strptime("2:00 PM", '%I:%M %p').time(),
+        sunday_open=None,
+        sunday_close=None
     )
 
     db.session.add(company1)

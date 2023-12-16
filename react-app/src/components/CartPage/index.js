@@ -7,7 +7,10 @@ import {
   removeItemFromCartThunk,
   deleteCartThunk,
 } from "../../store/cart";
-import { createAppointmentThunk } from "../../store/appointments";
+import {
+  createAppointmentThunk,
+  fetchAllAppointmentsThunk,
+} from "../../store/appointments";
 import { fetchAllEmployeesThunk } from "../../store/employees";
 import "./CartPage.css";
 
@@ -53,6 +56,8 @@ const CartPage = () => {
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
+  console.log("employees", employees);
+  const appointments = useSelector((state) => state.appointments.appointments);
   const companyId = 1;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -92,9 +97,9 @@ const CartPage = () => {
   };
 
   const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, "0");
-    const day = `${date.getDate()}`.padStart(2, "0");
+    const year = date.getUTCFullYear();
+    const month = `${date.getUTCMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getUTCDate()}`.padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -105,6 +110,73 @@ const CartPage = () => {
       [name]: value,
     });
   };
+
+  // const getBookedTimeSlots = (employeeId, appointmentDate) => {
+  //   const bookedTimeSlots = [];
+
+  //   const employeeAppointments = appointments?.filter((appointment) => {
+  //     const formattedAppointmentDate = formatDate(
+  //       new Date(appointment.appointmentDate)
+  //     );
+  //     const formattedInputDate = formatDate(new Date(appointmentDate));
+
+  //     return (
+  //       String(appointment.employeeId) === String(employeeId) &&
+  //       formattedAppointmentDate === formattedInputDate
+  //     );
+  //   });
+
+  //   employeeAppointments?.forEach((appointment) => {
+  //     bookedTimeSlots.push(appointment.appointmentTime);
+  //   });
+  //   return bookedTimeSlots;
+  // };
+
+  const getBookedTimeSlots = (employeeId, appointmentDate) => {
+    const bookedTimeSlots = [];
+
+    const employeeAppointments = appointments?.filter((appointment) => {
+      const formattedAppointmentDate = formatDate(
+        new Date(appointment.appointmentDate)
+      );
+      const formattedInputDate = formatDate(new Date(appointmentDate));
+
+      return (
+        String(appointment.employeeId) === String(employeeId) &&
+        formattedAppointmentDate === formattedInputDate
+      );
+    });
+
+    employeeAppointments?.forEach((appointment) => {
+      // Calculate the total duration across all services
+      const totalDuration = appointment.services.reduce(
+        (acc, service) => acc + service.duration,
+        0
+      );
+
+      const startTime = appointment.appointmentTime;
+      const endTimeIndex =
+        timeSlots.indexOf(startTime) + Math.ceil(totalDuration / 15);
+
+      // Add the entire duration to the booked time slots
+      for (let i = timeSlots.indexOf(startTime); i < endTimeIndex; i++) {
+        bookedTimeSlots.push(timeSlots[i]);
+      }
+    });
+
+    return bookedTimeSlots;
+  };
+
+  const employeeId = formData.employeeId;
+  const appointmentDate = formData.appointmentDate;
+
+  // Get the list of already booked time slots
+  const bookedTimeSlots = getBookedTimeSlots(employeeId, appointmentDate);
+
+  // Filter out booked time slots from the available options
+  const availableTimeSlots = timeSlots.filter(
+    (timeSlot) => !bookedTimeSlots.includes(timeSlot)
+  );
 
   const handleCreateAppointment = async (e) => {
     e.preventDefault();
@@ -163,9 +235,9 @@ const CartPage = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getCartThunk(companyId, user.id)).then(() =>
-        dispatch(fetchAllEmployeesThunk())
-      );
+      dispatch(getCartThunk(companyId, user.id))
+        .then(() => dispatch(fetchAllEmployeesThunk()))
+        .then(() => dispatch(fetchAllAppointmentsThunk()));
     }
   }, [dispatch, user]);
 
@@ -261,9 +333,9 @@ const CartPage = () => {
             defaultValue={null}
             onChange={handleInputChange}
             required
+            size={8}
           >
-            <option value="">-- Select Time --</option>
-            {timeSlots.map((time) => (
+            {availableTimeSlots.map((time) => (
               <option key={time} value={time}>
                 {time}
               </option>

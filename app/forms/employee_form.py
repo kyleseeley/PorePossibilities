@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, SelectField, PasswordField, BooleanField
+from wtforms import StringField, SelectField, PasswordField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Length, Optional
 from app.models import Employee
 import re
@@ -58,6 +58,10 @@ class EmployeeForm(FlaskForm):
                         DataRequired(), validate_email, employee_exists])
     password = PasswordField('Password', validators=[DataRequired()])
     authorized = BooleanField('Authorized', validators=[
+        Optional()])
+    about = TextAreaField('About', validators=[
+        Optional()])
+    job_tite = StringField('Job Title', validators=[
         Optional()])
     monday_start = SelectField('Monday Start', validators=[
         Optional()], choices=time_slots)

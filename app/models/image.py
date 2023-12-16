@@ -21,6 +21,8 @@ class Image(db.Model):
     
     service = db.relationship('Service', back_populates='image', cascade="all, delete-orphan")
 
+    employee = db.relationship('Employee', back_populates='image', cascade="all, delete-orphan")
+
     def to_dict(self):
         return {
             'id': self.id,

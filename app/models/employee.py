@@ -19,6 +19,8 @@ class Employee(db.Model, UserMixin):
     lastname = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     authorized = db.Column(db.BOOLEAN(), nullable=False)
+    about = db.Column(db.String())
+    job_title = db.Column(db.String())
     monday_start = db.Column(db.Time)
     monday_end = db.Column(db.Time)
     tuesday_start = db.Column(db.Time)
@@ -35,15 +37,18 @@ class Employee(db.Model, UserMixin):
     sunday_end = db.Column(db.Time)
     hashed_password = db.Column(db.String(255), nullable=False)
     is_owner = db.Column(db.Boolean, nullable=False, default=False)
+    imageId = db.Column(db.Integer(), db.ForeignKey(add_prefix_for_prod('images.id')))
     createdAt = db.Column(db.DateTime, default=datetime.now(mountain_timezone))
     updatedAt = db.Column(
         db.DateTime, default=datetime.now(mountain_timezone), onupdate=datetime.now(mountain_timezone))
 
     appointments = db.relationship('Appointment', back_populates='employee')
 
-    blogpost = db.relationship("BlogPost", back_populates="employee")
+    blogpost = db.relationship('BlogPost', back_populates='employee')
 
-    companies = db.relationship("Company", back_populates='owner')
+    companies = db.relationship('Company', back_populates='owner')
+
+    image = db.relationship('Image', back_populates='employee')
 
     @property
     def password(self):
@@ -63,6 +68,8 @@ class Employee(db.Model, UserMixin):
             'lastname': self.lastname,
             'email': self.email,
             'authorized': self.authorized,
+            'about': self.about,
+            'job_title': self.job_title,
             'monday_start': self.monday_start.strftime('%I:%M %p') if self.monday_start else None,
             'monday_end': self.monday_end.strftime('%I:%M %p') if self.monday_end else None,
             'tuesday_start': self.tuesday_start.strftime('%I:%M %p') if self.tuesday_start else None,
@@ -77,5 +84,6 @@ class Employee(db.Model, UserMixin):
             'saturday_end': self.saturday_end.strftime('%I:%M %p') if self.saturday_end else None,
             'sunday_start': self.sunday_start.strftime('%I:%M %p') if self.sunday_start else None,
             'sunday_end': self.sunday_end.strftime('%I:%M %p') if self.sunday_end else None,
-            'is_owner': self.is_owner
+            'is_owner': self.is_owner,
+            'image': self.image.to_dict() if self.image else None
         }

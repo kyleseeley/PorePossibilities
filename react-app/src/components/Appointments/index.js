@@ -13,6 +13,7 @@ import OpenModalButton from "../OpenModalButton";
 const Appointments = () => {
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointments.appointments);
+  console.log("appointments", appointments);
 
   const user = useSelector((state) => state.session.user);
   const [showForm, setShowForm] = useState(false);
