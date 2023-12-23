@@ -1,0 +1,18 @@
+.blogpost-page-container {
+  text-align: center;
+  max-width: 600px; /* Adjust as needed */
+  margin: 0 auto; /* This centers the container horizontally */
+}
+
+.blogpost-page-title {
+  font-size: 24px;
+  margin-bottom: 16px; /* Adjust as needed */
+  font-family: Didot;
+}
+
+.blogpost-page-blog {
+  font-size: 16px;
+  line-height: 1.5;
+  /* Add any other styles for the blog content */
+  font-family: Didot;
+}

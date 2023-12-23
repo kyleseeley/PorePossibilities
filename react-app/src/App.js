@@ -14,6 +14,7 @@ import InjectableTreatments from "./components/Services/InjectableTreatments";
 import Appointments from "./components/Appointments";
 import OurStory from "./components/OurStory";
 import MeetTheTeam from "./components/MeetTheTeam";
+import Blogposts from "./components/Blogposts";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,9 @@ function App() {
         </Route>
         <Route exact path="/about/meet-the-team">
           <MeetTheTeam />
+        </Route>
+        <Route exact path="/blogposts/:blogpostId">
+          <Blogposts />
         </Route>
       </Switch>
     </>

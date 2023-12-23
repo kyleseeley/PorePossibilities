@@ -21,8 +21,7 @@ const LandingPage = () => {
   const image = useSelector((state) => state.images[imageId]);
   const user = useSelector((state) => state.session.user);
   const companyId = 1;
-  const blogposts = useSelector((state) => state.blogposts);
-  console.log("blogposts", blogposts);
+  const blogposts = useSelector((state) => state.blogposts.blogposts);
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
   const lastUpdateTimeRef = useRef(0);
@@ -202,12 +201,14 @@ const LandingPage = () => {
       <div className="blogposts-container">
         <h2 className="blogposts-title">Latest Blog Posts</h2>
         <ul className="blogposts-list">
-          {blogposts?.blogposts?.map((blogpost) => (
+          {blogposts?.map((blogpost) => (
             <li key={blogpost.id} className="blogpost-item">
-              <h3 className="blogpost-item-title">{blogpost.title}</h3>
-              <p className="blogpost-blurb">
-                {blogpost.blog.substring(0, 50) + "..."}
-              </p>
+              <Link to={`/blogposts/${blogpost.id}`}>
+                <h3 className="blogpost-item-title">{blogpost.title}</h3>
+                <p className="blogpost-blurb">
+                  {blogpost.blog.substring(0, 70) + "..."}
+                </p>
+              </Link>
             </li>
           ))}
         </ul>

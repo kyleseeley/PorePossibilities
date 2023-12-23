@@ -50,6 +50,7 @@ export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
   }
 
   const responseData = await response.json();
+  console.log("Blogpost API Response:", responseData);
 
   dispatch(fetchOneBlogpost(responseData));
 };
@@ -112,10 +113,12 @@ const blogpostReducer = (state = initialState, action) => {
     case FETCH_ONE_BLOGPOST:
     case CREATE_BLOGPOST:
     case UPDATE_BLOGPOST:
-      return {
-        ...state,
-        [action.blogpost.id]: action.blogpost,
-      };
+      return action.blogpost
+        ? {
+            ...state,
+            [action.blogpost.id]: action.blogpost,
+          }
+        : state;
     case DELETE_BLOGPOST:
       const newState = { ...state };
       delete newState[action.blogpostId];
