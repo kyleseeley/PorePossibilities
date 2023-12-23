@@ -25,7 +25,7 @@ def get_one_company(companyId):
     return company.to_dict()
 
 
-@company_routes.route('/', methods=['POST'])
+@company_routes.route('', methods=['POST'])
 @login_required
 def create_company():
     if not current_user.is_owner:
@@ -44,6 +44,20 @@ def create_company():
             city=data['city'],
             state=data['state'],
             zipCode=data['zipCode'],
+            monday_open=data['monday_open'],
+            monday_close=data['monday_close'],
+            tuesday_open=data['tuesday_open'],
+            tuesday_close=data['tuesday_close'],
+            wednesday_open=data['wednesday_open'],
+            wednesday_close=data['wednesday_close'],
+            thursday_open=data['thursday_open'],
+            thursday_close=data['thursday_close'],
+            friday_open=data['friday_open'],
+            friday_close=data['friday_close'],
+            saturday_open=data['saturday_open'],
+            saturday_close=data['saturday_close'],
+            sunday_open=data['sunday_open'],
+            sunday_close=data['sunday_close']
         )
 
         db.session.add(new_company)
@@ -75,6 +89,20 @@ def update_company(companyId):
         company.city = data['city']
         company.state = data['state']
         company.zipCode = data['zipCode']
+        company.monday_open=data['monday_open']
+        company.monday_close=data['monday_close']
+        company.tuesday_open=data['tuesday_open']
+        company.tuesday_close=data['tuesday_close']
+        company.wednesday_open=data['wednesday_open']
+        company.wednesday_close=data['wednesday_close']
+        company.thursday_open=data['thursday_open']
+        company.thursday_close=data['thursday_close']
+        company.friday_open=data['friday_open']
+        company.friday_close=data['friday_close']
+        company.saturday_open=data['saturday_open']
+        company.saturday_close=data['saturday_close']
+        company.sunday_open=data['sunday_open']
+        company.sunday_close=data['sunday_close']
 
         db.session.commit()
         return company.to_dict()

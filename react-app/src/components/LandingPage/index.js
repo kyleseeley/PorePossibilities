@@ -8,6 +8,7 @@ import { useModal } from "../../context/Modal";
 import ReviewModal from "../ReviewModal";
 import OpenModalButton from "../OpenModalButton";
 import { usePageVisibility } from "react-page-visibility";
+import { fetchAllBlogpostsThunk } from "../../store/blogposts";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -20,6 +21,8 @@ const LandingPage = () => {
   const image = useSelector((state) => state.images[imageId]);
   const user = useSelector((state) => state.session.user);
   const companyId = 1;
+  const blogposts = useSelector((state) => state.blogposts);
+  console.log("blogposts", blogposts);
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
   const lastUpdateTimeRef = useRef(0);
@@ -98,7 +101,9 @@ const LandingPage = () => {
 
   useEffect(() => {
     dispatch(fetchImageById(imageId)).then(() =>
-      dispatch(fetchReviews(companyId))
+      dispatch(fetchReviews(companyId)).then(() =>
+        dispatch(fetchAllBlogpostsThunk())
+      )
     );
     setTimeout(updateImageIndex, 8000);
     return () => clearTimeout(updateImageIndex);
@@ -192,6 +197,19 @@ const LandingPage = () => {
           ) : (
             <p>No reviews available</p>
           )}
+        </ul>
+      </div>
+      <div className="blogposts-container">
+        <h2 className="blogposts-title">Latest Blog Posts</h2>
+        <ul className="blogposts-list">
+          {blogposts?.blogposts?.map((blogpost) => (
+            <li key={blogpost.id} className="blogpost-item">
+              <h3 className="blogpost-item-title">{blogpost.title}</h3>
+              <p className="blogpost-blurb">
+                {blogpost.blog.substring(0, 50) + "..."}
+              </p>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

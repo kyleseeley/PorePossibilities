@@ -12,11 +12,10 @@ import {
   fetchAllAppointmentsThunk,
 } from "../../store/appointments";
 import { fetchAllEmployeesThunk } from "../../store/employees";
+import { fetchAllCompaniesThunk } from "../../store/company";
 import "./CartPage.css";
 
 const timeSlots = [
-  "9:00 AM",
-  "9:15 AM",
   "9:30 AM",
   "9:45 AM",
   "10:00 AM",
@@ -48,8 +47,6 @@ const timeSlots = [
   "4:30 PM",
   "4:45 PM",
   "5:00 PM",
-  "5:15 PM",
-  "5:30 PM",
 ];
 
 const CartPage = () => {
@@ -57,11 +54,14 @@ const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
   console.log("employees", employees);
+  const companies = useSelector((state) => state.companies);
+  console.log("companies", companies);
   const appointments = useSelector((state) => state.appointments.appointments);
   const companyId = 1;
   const dispatch = useDispatch();
   const history = useHistory();
   const [error, setError] = useState(null);
+  const [company, setCompany] = useState(null);
 
   const [formData, setFormData] = useState({
     employeeId: "",
@@ -97,6 +97,11 @@ const CartPage = () => {
   };
 
   const formatDate = (date) => {
+    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+      // Handle the case where the date is not valid
+      return "";
+    }
+
     const year = date.getUTCFullYear();
     const month = `${date.getUTCMonth() + 1}`.padStart(2, "0");
     const day = `${date.getUTCDate()}`.padStart(2, "0");
@@ -110,27 +115,6 @@ const CartPage = () => {
       [name]: value,
     });
   };
-
-  // const getBookedTimeSlots = (employeeId, appointmentDate) => {
-  //   const bookedTimeSlots = [];
-
-  //   const employeeAppointments = appointments?.filter((appointment) => {
-  //     const formattedAppointmentDate = formatDate(
-  //       new Date(appointment.appointmentDate)
-  //     );
-  //     const formattedInputDate = formatDate(new Date(appointmentDate));
-
-  //     return (
-  //       String(appointment.employeeId) === String(employeeId) &&
-  //       formattedAppointmentDate === formattedInputDate
-  //     );
-  //   });
-
-  //   employeeAppointments?.forEach((appointment) => {
-  //     bookedTimeSlots.push(appointment.appointmentTime);
-  //   });
-  //   return bookedTimeSlots;
-  // };
 
   const getBookedTimeSlots = (employeeId, appointmentDate) => {
     const bookedTimeSlots = [];
@@ -237,7 +221,8 @@ const CartPage = () => {
     if (user) {
       dispatch(getCartThunk(companyId, user.id))
         .then(() => dispatch(fetchAllEmployeesThunk()))
-        .then(() => dispatch(fetchAllAppointmentsThunk()));
+        .then(() => dispatch(fetchAllAppointmentsThunk()))
+        .then(() => dispatch(fetchAllCompaniesThunk()));
     }
   }, [dispatch, user]);
 
@@ -322,6 +307,7 @@ const CartPage = () => {
             name="appointmentDate"
             value={formData.appointmentDate}
             min={getInitialDate()}
+            max={formatDate(company?.saturday_close)} // Step 2: Set max based on company working hours
             onChange={handleInputChange}
             required
           />

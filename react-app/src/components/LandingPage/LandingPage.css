@@ -1,6 +1,6 @@
 .main-image img {
   aspect-ratio: 16/9;
-  width: 100%;
+  width: 70%;
   max-height: 85vh;
   animation: fade-out 8s infinite;
 }
@@ -139,4 +139,22 @@
 
 .button-container {
   text-align: center;
+}
+
+.blogposts-container {
+  width: 30%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  margin-top: 120px;
+  box-sizing: border-box;
+  /* background-color: lavender; */
+  max-height: 85vh;
+}
+
+/* Add this style to ensure the rest of the content doesn't overlap with the absolute positioned sidebar */
+.main-content {
+  margin-right: 30%;
+  width: 70%;
 }

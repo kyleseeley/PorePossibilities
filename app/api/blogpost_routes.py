@@ -25,7 +25,7 @@ def get_one_blogpost(blogpostId):
     return blogpost.to_dict()
 
 
-@blogPost_routes.route('/', methods=['POST'])
+@blogPost_routes.route('', methods=['POST'])
 @login_required
 def create_blogpost():
     if not current_user.authorized:

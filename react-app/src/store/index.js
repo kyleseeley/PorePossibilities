@@ -7,6 +7,8 @@ import serviceReducer from "./services";
 import cartReducer from "./cart";
 import appointmentReducer from "./appointments";
 import employeeReducer from "./employees";
+import companyReducer from "./company";
+import blogpostReducer from "./blogposts";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -16,6 +18,8 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   appointments: appointmentReducer,
   employees: employeeReducer,
+  companies: companyReducer,
+  blogposts: blogpostReducer,
 });
 
 let enhancer;
