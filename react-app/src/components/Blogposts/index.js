@@ -13,7 +13,7 @@ import "./Blogposts.css";
 const Blogposts = () => {
   const { blogpostId } = useParams();
   const blogpost = useSelector(
-    (state) => state.blogposts.blogposts[blogpostId]
+    (state) => state.blogposts.blogposts[blogpostId - 1]
   );
   console.log("blogpost", blogpost);
   const dispatch = useDispatch();

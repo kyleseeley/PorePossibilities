@@ -36,9 +36,9 @@
   margin-left: 5px;
 }
 
-.navigation-menu li a:hover {
+/* .navigation-menu li a:hover {
   color: #007bff;
-}
+} */
 
 .search-bar-container {
   position: absolute;
@@ -254,9 +254,9 @@
 }
 
 .login-button:hover {
-  background-color: blue;
+  background-color: indigo;
 }
 
 .signup-button:hover {
-  background-color: green;
+  background-color: violet;
 }
