@@ -47,19 +47,47 @@ const UpdateAppointmentModal = ({ appointment, setShowModal }) => {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
   const employeesArray = Object.values(employees?.employees || {});
+  const user = useSelector((state) => state.session.user);
+  const appointments = useSelector((state) => state.appointments.appointments);
   const companyId = 1;
   const [errors, setErrors] = useState({});
   const { closeModal, setModalContent } = useModal();
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  console.log("employeeId", appointment?.employeeId);
-  console.log("appointmentDate", appointment?.appointmentDate);
-  console.log("appointmentTime", appointment?.appointmentTime);
-
   const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, "0");
-    const day = `${date.getDate()}`.padStart(2, "0");
+    if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+      // Handle the case where the date is not valid
+      return "";
+    }
+
+    const year = date.getUTCFullYear();
+    const month = `${date.getUTCMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getUTCDate()}`.padStart(2, "0");
+
+    // If the date format is 'Nov 29, 2023', convert it to '2023-11-29'
+    if (date.toString().includes(",")) {
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const [monthStr, dayStr, yearStr] = date.toDateString().split(" ");
+      const monthNum = monthNames.indexOf(monthStr) + 1;
+      return `${yearStr}-${monthNum
+        .toString()
+        .padStart(2, "0")}-${dayStr.padStart(2, "0")}`;
+    }
+
+    // If the date format is already '2023-11-29', return it as is
     return `${year}-${month}-${day}`;
   };
 
@@ -121,6 +149,54 @@ const UpdateAppointmentModal = ({ appointment, setShowModal }) => {
     }
   };
 
+  const getBookedTimeSlots = (employeeId, appointmentDate) => {
+    const bookedTimeSlots = [];
+
+    const employeeAppointments = appointments?.filter((appointment) => {
+      const formattedAppointmentDate = formatDate(
+        new Date(appointment.appointmentDate)
+      );
+      const formattedInputDate = formatDate(new Date(appointmentDate));
+
+      return (
+        String(appointment.employeeId) === String(employeeId) &&
+        formattedAppointmentDate === formattedInputDate
+      );
+    });
+
+    employeeAppointments?.forEach((appointment) => {
+      // Calculate the total duration across all services
+      const totalDuration = appointment.services.reduce(
+        (acc, service) => acc + service.duration,
+        0
+      );
+
+      const startTime = appointment.appointmentTime;
+      const endTimeIndex =
+        timeSlots.indexOf(startTime) + Math.ceil(totalDuration / 15);
+
+      // Add the entire duration to the booked time slots
+      for (let i = timeSlots.indexOf(startTime); i < endTimeIndex; i++) {
+        bookedTimeSlots.push(timeSlots[i]);
+      }
+    });
+
+    return bookedTimeSlots;
+  };
+
+  const employeeId = formData.employeeId;
+  const appointmentDate = formData.appointmentDate;
+
+  const bookedTimeSlots = getBookedTimeSlots(employeeId, appointmentDate);
+
+  console.log("booked time slots", bookedTimeSlots);
+  console.log("employeeId", employeeId);
+  console.log("appointmentDate", appointmentDate);
+
+  const availableTimeSlots = timeSlots.filter(
+    (timeSlot) => !bookedTimeSlots.includes(timeSlot)
+  );
+
   return (
     <div className="update-appointment-modal">
       <h2 className="update-modal-heading">Update Appointment</h2>
@@ -164,7 +240,7 @@ const UpdateAppointmentModal = ({ appointment, setShowModal }) => {
         required
       >
         <option value="">-- Select Time --</option>
-        {timeSlots.map((time) => (
+        {availableTimeSlots.map((time) => (
           <option key={time} value={time}>
             {time}
           </option>

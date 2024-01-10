@@ -53,9 +53,7 @@ const CartPage = () => {
   const user = useSelector((state) => state.session.user);
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
-  console.log("employees", employees);
   const companies = useSelector((state) => state.companies);
-  console.log("companies", companies);
   const appointments = useSelector((state) => state.appointments.appointments);
   const companyId = 1;
   const dispatch = useDispatch();
