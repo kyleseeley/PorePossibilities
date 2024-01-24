@@ -17,14 +17,24 @@ def validation_errors_to_error_messages(validation_errors):
     return errorMessages
 
 
+# @auth_routes.route('')
+# def authenticate():
+#     print("Current user in authenticate:", current_user.to_dict())
+#     if current_user.is_authenticated:
+#         if isinstance(current_user, User):
+#             return current_user.to_dict()
+#         elif isinstance(current_user, Employee):
+#             return current_user.to_dict()
+#     return {'errors': ['Unauthorized']}, 403
 @auth_routes.route('')
 def authenticate():
     print("Current user in authenticate:", current_user.to_dict())
     if current_user.is_authenticated:
-        if isinstance(current_user, User):
-            return current_user.to_dict()
-        elif isinstance(current_user, Employee):
-            return current_user.to_dict()
+        user_type = session.get('user_type')
+        if user_type == 'user':
+            return {'user': current_user.to_dict(), 'user_type': 'user'}
+        elif user_type == 'employee':
+            return {'employee': current_user.to_dict(), 'user_type': 'employee'}
     return {'errors': ['Unauthorized']}, 403
 
 
@@ -41,15 +51,14 @@ def login():
             Employee.email == form.data['email']).first()
 
         if user:
-            print("Logging in user:", user)
             session['user_type'] = 'user'
             login_user(user)
-            return user.to_dict()
+            return {'user': user.to_dict(), 'user_type': 'user'}
 
         if employee:
             session['user_type'] = 'employee'
             login_user(employee)
-            return employee.to_dict()
+            return {'employee': employee.to_dict(), 'user_type': 'employee'}
 
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 

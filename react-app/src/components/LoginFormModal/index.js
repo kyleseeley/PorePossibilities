@@ -22,10 +22,21 @@ function LoginFormModal() {
     }
   };
 
-  const handleDemoUserLogIn = (e) => {
+  const handleDemoUserLogin = (e) => {
     e.preventDefault();
 
     dispatch(login("demo@aa.io", "password"))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) setErrors(data.errors);
+      });
+  };
+
+  const handleDemoEmployeeLogin = (e) => {
+    e.preventDefault();
+
+    dispatch(login("astrid@pore.com", "password"))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -81,8 +92,14 @@ function LoginFormModal() {
           Log In
         </button>
         <div>
-          <div className="demo-link-container" onClick={handleDemoUserLogIn}>
+          <div className="demo-link-container" onClick={handleDemoUserLogin}>
             <span className="demo-link">Demo User</span>
+          </div>
+          <div
+            className="demo-link-container"
+            onClick={handleDemoEmployeeLogin}
+          >
+            <span className="demo-link">Demo Employee</span>
           </div>
         </div>
       </form>

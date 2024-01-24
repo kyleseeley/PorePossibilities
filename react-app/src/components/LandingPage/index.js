@@ -20,19 +20,13 @@ const LandingPage = () => {
   const imageId = mainImageIds[currentImageIndex];
   const image = useSelector((state) => state.images[imageId]);
   const user = useSelector((state) => state.session.user);
+  const employee = useSelector((state) => state.employees.employee);
   const companyId = 1;
   const blogposts = useSelector((state) => state.blogposts.blogposts);
   const reviews = useSelector((state) => state.reviews[companyId] || []);
   const { setModalContent, closeModal } = useModal();
   const lastUpdateTimeRef = useRef(0);
   const isPageVisible = usePageVisibility();
-
-  const hasLeftReview =
-    user &&
-    Array.isArray(reviews) &&
-    reviews.some((review) => {
-      return review?.userId === user.id && review?.companyId === companyId;
-    });
 
   const handleEditReview = (review) => {
     setModalContent(
@@ -89,24 +83,32 @@ const LandingPage = () => {
 
   // useEffect(() => {
   //   dispatch(fetchImageById(imageId)).then(() =>
-  //     dispatch(fetchReviews(companyId))
+  //     dispatch(fetchReviews(companyId)).then(() =>
+  //       dispatch(fetchAllBlogpostsThunk())
+  //     )
   //   );
-  //   const intervalId = setInterval(() => {
-  //     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 2);
-  //   }, 8000);
+  //   setTimeout(updateImageIndex, 8000);
+  //   return () => clearTimeout(updateImageIndex);
+  // }, [dispatch, imageId, companyId, user, updateImageIndex]);
 
-  //   return () => clearInterval(intervalId);
-  // }, [dispatch, imageId, mainImageIds, companyId]);
+  const hasLeftReview =
+    user &&
+    Array.isArray(reviews) &&
+    reviews.some((review) => {
+      return review?.userId === user.id && review?.companyId === companyId;
+    });
 
-  useEffect(() => {
-    dispatch(fetchImageById(imageId)).then(() =>
-      dispatch(fetchReviews(companyId)).then(() =>
-        dispatch(fetchAllBlogpostsThunk())
-      )
-    );
-    setTimeout(updateImageIndex, 8000);
-    return () => clearTimeout(updateImageIndex);
-  }, [dispatch, imageId, companyId, updateImageIndex]);
+  // useEffect(() => {
+  //   dispatch(fetchImageById(imageId)).then(() =>
+  //     dispatch(fetchReviews(companyId)).then(() =>
+  //       dispatch(fetchAllBlogpostsThunk())
+  //     )
+  //   );
+
+  //   const timeoutId = setTimeout(updateImageIndex, 8000);
+
+  //   return () => clearTimeout(timeoutId);
+  // }, [dispatch, imageId, companyId, user, updateImageIndex]);
 
   return (
     <div className="page-container">
