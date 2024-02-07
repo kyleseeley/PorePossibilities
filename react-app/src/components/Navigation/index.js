@@ -14,8 +14,10 @@ function Navigation({ isLoaded }) {
 
   const user = useSelector((state) => state.session.user);
   console.log("user:", user);
-  const regularUser = user && "user" in user;
-  const employee = user && "employee" in user;
+  // const regularUser = user && "user" in user;
+  // const employee = user && "employee" in user;
+  const regularUser = user && user.user;
+  const employee = user && user.employee;
   const cart = useSelector((state) => state.cart);
 
   console.log("regularUser: ", regularUser);
@@ -23,10 +25,10 @@ function Navigation({ isLoaded }) {
   // console.log("cart: ", cart);
 
   useEffect(() => {
-    if (user && user.id) {
-      dispatch(getCartThunk(1, user.id));
+    if (user && user.user.id && regularUser) {
+      dispatch(getCartThunk(1, regularUser.id));
     }
-  }, [dispatch, user, cart.cartItems.length, cart.cartId]);
+  }, [dispatch, user, cart.cartItems.length, cart.cartId, regularUser]);
 
   const handleSearch = async () => {
     try {
@@ -68,7 +70,7 @@ function Navigation({ isLoaded }) {
         <li className="search-bar-container">
           <SearchBar />
         </li>
-        {user && (
+        {regularUser && (
           <li className="ml-auto cart-icon-container">
             <NavLink to="/cart" className="cart-icon-link">
               <i className="fa-solid fa-cart-shopping">
@@ -85,7 +87,7 @@ function Navigation({ isLoaded }) {
           </li>
         )}
         <li className="profile-button-container">
-          <ProfileButton user={user} />
+          <ProfileButton user={regularUser} />
         </li>
       </ul>
 
