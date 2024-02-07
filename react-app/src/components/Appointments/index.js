@@ -16,6 +16,10 @@ const Appointments = () => {
   console.log("appointments", appointments);
 
   const user = useSelector((state) => state.session.user);
+  const regularUser = user && user.user;
+  const employee = user && user.employee;
+  console.log("regularUser", regularUser);
+  console.log("employee", employee);
   const [showForm, setShowForm] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -24,9 +28,19 @@ const Appointments = () => {
   const upcomingAppointments = [];
   const pastAppointments = [];
 
-  for (const appointmentId in appointments) {
-    const appointment = appointments[appointmentId];
+  // for (const appointmentId in appointments) {
+  //   const appointment = appointments[appointmentId];
 
+  //   const isUpcoming = new Date(appointment.appointmentDate) > new Date();
+
+  //   if (isUpcoming) {
+  //     upcomingAppointments.push(appointment);
+  //   } else {
+  //     pastAppointments.push(appointment);
+  //   }
+  // }
+
+  for (const appointment of Object.values(appointments || {})) {
     const isUpcoming = new Date(appointment.appointmentDate) > new Date();
 
     if (isUpcoming) {
@@ -64,6 +78,9 @@ const Appointments = () => {
     );
   };
 
+  console.log("upcoming appointments", upcomingAppointments);
+  console.log("past appointments", pastAppointments);
+
   return (
     <div className="page-container">
       <div className="separator-line-container">
@@ -78,7 +95,7 @@ const Appointments = () => {
           ) : (
             upcomingAppointments.map(
               (appointment) =>
-                appointment.userId === user?.id && (
+                appointment.userId === (regularUser?.id || employee?.id) && (
                   <div key={appointment.id} className="appointment-info">
                     {/* Render individual appointment details */}
                     <p>Date: {appointment.appointmentDate}</p>
@@ -120,7 +137,7 @@ const Appointments = () => {
           ) : (
             pastAppointments.map(
               (appointment) =>
-                appointment.userId === user?.id && (
+                appointment.userId === (regularUser?.id || employee?.id) && (
                   <div key={appointment.id} className="appointment-info">
                     {/* Render individual appointment details */}
                     <p>Date: {appointment.appointmentDate}</p>

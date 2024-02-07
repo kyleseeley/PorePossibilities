@@ -13,16 +13,9 @@ function Navigation({ isLoaded }) {
   const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.session.user);
-  console.log("user:", user);
-  // const regularUser = user && "user" in user;
-  // const employee = user && "employee" in user;
   const regularUser = user && user.user;
   const employee = user && user.employee;
   const cart = useSelector((state) => state.cart);
-
-  console.log("regularUser: ", regularUser);
-  console.log("employee: ", employee);
-  // console.log("cart: ", cart);
 
   useEffect(() => {
     if (user && user.user && user.user.id && regularUser) {
