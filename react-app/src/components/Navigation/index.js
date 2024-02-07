@@ -25,8 +25,8 @@ function Navigation({ isLoaded }) {
   // console.log("cart: ", cart);
 
   useEffect(() => {
-    if (user && user.user.id && regularUser) {
-      dispatch(getCartThunk(1, regularUser.id));
+    if (user && user.user && user.user.id && regularUser) {
+      dispatch(getCartThunk(1, user.user.id));
     }
   }, [dispatch, user, cart.cartItems.length, cart.cartId, regularUser]);
 
@@ -87,7 +87,7 @@ function Navigation({ isLoaded }) {
           </li>
         )}
         <li className="profile-button-container">
-          <ProfileButton user={regularUser} />
+          <ProfileButton user={regularUser || employee} />
         </li>
       </ul>
 

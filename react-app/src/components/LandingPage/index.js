@@ -81,15 +81,15 @@ const LandingPage = () => {
     setTimeout(updateImageIndex, 8000);
   }, [lastUpdateTimeRef, setCurrentImageIndex, isPageVisible]);
 
-  // useEffect(() => {
-  //   dispatch(fetchImageById(imageId)).then(() =>
-  //     dispatch(fetchReviews(companyId)).then(() =>
-  //       dispatch(fetchAllBlogpostsThunk())
-  //     )
-  //   );
-  //   setTimeout(updateImageIndex, 8000);
-  //   return () => clearTimeout(updateImageIndex);
-  // }, [dispatch, imageId, companyId, user, updateImageIndex]);
+  useEffect(() => {
+    dispatch(fetchImageById(imageId)).then(() =>
+      dispatch(fetchReviews(companyId)).then(() =>
+        dispatch(fetchAllBlogpostsThunk())
+      )
+    );
+    setTimeout(updateImageIndex, 8000);
+    return () => clearTimeout(updateImageIndex);
+  }, [dispatch, imageId, companyId, user, updateImageIndex]);
 
   const hasLeftReview =
     user &&
