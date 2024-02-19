@@ -95,7 +95,8 @@ const Appointments = () => {
           ) : (
             upcomingAppointments.map(
               (appointment) =>
-                appointment.userId === (regularUser?.id || employee?.id) && (
+                ((regularUser && appointment.userId === regularUser.id) ||
+                  (employee && appointment.employeeId === employee.id)) && (
                   <div key={appointment.id} className="appointment-info">
                     {/* Render individual appointment details */}
                     <p>Date: {appointment.appointmentDate}</p>
@@ -137,7 +138,8 @@ const Appointments = () => {
           ) : (
             pastAppointments.map(
               (appointment) =>
-                appointment.userId === (regularUser?.id || employee?.id) && (
+                ((regularUser && appointment.userId === regularUser.id) ||
+                  (employee && appointment.employeeId === employee.id)) && (
                   <div key={appointment.id} className="appointment-info">
                     {/* Render individual appointment details */}
                     <p>Date: {appointment.appointmentDate}</p>
