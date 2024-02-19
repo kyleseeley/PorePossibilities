@@ -20,7 +20,8 @@ const LandingPage = () => {
   const imageId = mainImageIds[currentImageIndex];
   const image = useSelector((state) => state.images[imageId]);
   const user = useSelector((state) => state.session.user);
-  const employee = useSelector((state) => state.employees.employee);
+  const regularUser = user && user.user;
+  const employee = user && user.employee;
   const companyId = 1;
   const blogposts = useSelector((state) => state.blogposts.blogposts);
   const reviews = useSelector((state) => state.reviews[companyId] || []);
@@ -89,13 +90,15 @@ const LandingPage = () => {
     );
     setTimeout(updateImageIndex, 8000);
     return () => clearTimeout(updateImageIndex);
-  }, [dispatch, imageId, companyId, user, updateImageIndex]);
+  }, [dispatch, imageId, companyId, regularUser, updateImageIndex]);
 
   const hasLeftReview =
-    user &&
+    regularUser &&
     Array.isArray(reviews) &&
     reviews.some((review) => {
-      return review?.userId === user.id && review?.companyId === companyId;
+      return (
+        review?.userId === regularUser.id && review?.companyId === companyId
+      );
     });
 
   // useEffect(() => {
@@ -131,7 +134,7 @@ const LandingPage = () => {
             {numReviews} reviews)
           </b>
         </p>
-        {user && !hasLeftReview && (
+        {regularUser && !hasLeftReview && (
           <OpenModalButton
             className="leave-review-button"
             buttonText="Leave a Review"
@@ -160,7 +163,7 @@ const LandingPage = () => {
                   ))}
                 </div>
                 <p className="review-content">{review?.review}</p>
-                {user?.id === review?.userId && (
+                {regularUser?.id === review?.userId && (
                   <button
                     onClick={() => handleEditReview(review)}
                     className="edit-review-button"
@@ -168,7 +171,7 @@ const LandingPage = () => {
                     Edit Your Review
                   </button>
                 )}
-                {user?.id === review?.userId && (
+                {regularUser?.id === review?.userId && (
                   <OpenModalButton
                     className="delete-review-button"
                     buttonText="Delete Your Review"
