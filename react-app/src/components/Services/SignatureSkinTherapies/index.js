@@ -17,6 +17,7 @@ const SignatureSkinTherapies = () => {
     (service) => service.type === "Signature Skin Therapies"
   );
   const user = useSelector((state) => state.session.user);
+  const regularUser = user && user.user;
   const cart = useSelector((state) => state.cart);
   const images = useSelector((state) => state.images);
   const mainImageId1 = 10;
@@ -27,7 +28,7 @@ const SignatureSkinTherapies = () => {
   const handleAddToCart = (service) => {
     const cartId = cart.cartId;
     const companyId = 1;
-    const userId = user.id;
+    const userId = regularUser.id;
     const serviceId = service.id;
     const quantity = 1;
 
@@ -105,7 +106,7 @@ const SignatureSkinTherapies = () => {
                   {service.description}
                 </p>
                 <p className="signature-skin-price">Price: ${service.price}</p>
-                {user && (
+                {regularUser && (
                   <button
                     className="add-to-cart-button"
                     onClick={() => handleAddToCart(service)}
