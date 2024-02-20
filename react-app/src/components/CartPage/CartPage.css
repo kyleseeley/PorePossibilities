@@ -105,3 +105,15 @@
   max-height: 20px;
   overflow: hidden;
 } */
+
+.fa-github,
+.fa-linkedin {
+  padding: 1px;
+}
+
+.my-info {
+  padding-top: 15px;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}

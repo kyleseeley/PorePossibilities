@@ -191,3 +191,15 @@
   text-decoration: none; /* Remove the default underline for links */
   color: inherit; /* Inherit the color from the parent */
 }
+
+.fa-github,
+.fa-linkedin {
+  padding: 1px;
+}
+
+.my-info {
+  padding-top: 15px;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}

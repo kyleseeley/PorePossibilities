@@ -34,6 +34,17 @@ const MeetTheTeam = () => {
           <img src={ownerImage.imageFile} alt={ownerImage.name} />
         </div>
       )}
+      <div className="my-info">
+        <div>
+          <div>Kyle Seeley</div>
+          <a href="https://github.com/kyleseeley">
+            <i className="fa-brands fa-github" />
+          </a>
+          <a href="https://www.linkedin.com/in/kyle-seeley-6a856539/">
+            <i className="fa-brands fa-linkedin" />
+          </a>
+        </div>
+      </div>
     </div>
   );
 };

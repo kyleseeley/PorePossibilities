@@ -16,3 +16,14 @@
   /* Add any other styles for the blog content */
   font-family: Didot;
 }
+
+.fa-github,
+.fa-linkedin {
+  padding: 1px;
+}
+
+.my-info {
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}

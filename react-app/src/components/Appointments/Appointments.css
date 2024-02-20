@@ -46,3 +46,15 @@
   margin: 3px;
   padding: 5px 10px;
 }
+
+.fa-github,
+.fa-linkedin {
+  padding: 1px;
+}
+
+.my-info {
+  padding-top: 15px;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+}
