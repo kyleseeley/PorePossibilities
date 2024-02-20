@@ -17,6 +17,8 @@ const AdvancedSkincareTreatments = () => {
     (service) => service.type === "Advanced Skincare Treatments"
   );
   const user = useSelector((state) => state.session.user);
+  const regularUser = user && user.user;
+  console.log("regularUser", regularUser);
   const cart = useSelector((state) => state.cart);
   const images = useSelector((state) => state.images);
   const mainImageId1 = 3;
@@ -27,7 +29,7 @@ const AdvancedSkincareTreatments = () => {
   const handleAddToCart = (service) => {
     const cartId = cart.cartId;
     const companyId = 1;
-    const userId = user.id;
+    const userId = regularUser.id;
     const serviceId = service.id;
     const quantity = 1;
 
@@ -113,7 +115,7 @@ const AdvancedSkincareTreatments = () => {
                   Price: ${service.price}
                 </p>
 
-                {user && (
+                {regularUser && (
                   <button
                     className="add-to-cart-button"
                     onClick={() => handleAddToCart(service)}
