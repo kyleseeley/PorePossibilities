@@ -51,6 +51,7 @@ const timeSlots = [
 
 const CartPage = () => {
   const user = useSelector((state) => state.session.user);
+  const regularUser = user && user.user;
   const cart = useSelector((state) => state.cart);
   const employees = useSelector((state) => state.employees);
   const companies = useSelector((state) => state.companies);
@@ -172,7 +173,7 @@ const CartPage = () => {
     if (employeeId && appointmentDate && appointmentTime) {
       await dispatch(
         createAppointmentThunk(
-          user.id,
+          regularUser.id,
           companyId,
           employeeId,
           appointmentDate,
@@ -180,7 +181,7 @@ const CartPage = () => {
         )
       );
 
-      await dispatch(getCartThunk(companyId, user.id));
+      await dispatch(getCartThunk(companyId, regularUser.id));
 
       setFormData({
         employeeId: "",
@@ -199,30 +200,36 @@ const CartPage = () => {
 
   const handleQuantityChange = (serviceId, quantity) => {
     dispatch(
-      updateCartThunk(cart.cartId, companyId, user.id, serviceId, quantity)
+      updateCartThunk(
+        cart.cartId,
+        companyId,
+        regularUser.id,
+        serviceId,
+        quantity
+      )
     );
   };
 
   const handleDeleteItem = (serviceId) => {
     dispatch(
-      removeItemFromCartThunk(cart.cartId, companyId, user.id, serviceId)
+      removeItemFromCartThunk(cart.cartId, companyId, regularUser.id, serviceId)
     );
   };
 
   const handleDeleteCart = () => {
-    dispatch(deleteCartThunk(cart.cartId, companyId, user.id)).then(() =>
-      dispatch(getCartThunk(companyId, user.id))
+    dispatch(deleteCartThunk(cart.cartId, companyId, regularUser.id)).then(() =>
+      dispatch(getCartThunk(companyId, regularUser.id))
     );
   };
 
   useEffect(() => {
-    if (user) {
-      dispatch(getCartThunk(companyId, user.id))
+    if (regularUser) {
+      dispatch(getCartThunk(companyId, regularUser.id))
         .then(() => dispatch(fetchAllEmployeesThunk()))
         .then(() => dispatch(fetchAllAppointmentsThunk()))
         .then(() => dispatch(fetchAllCompaniesThunk()));
     }
-  }, [dispatch, user]);
+  }, [dispatch, regularUser]);
 
   return (
     <div className="page-container">
