@@ -4,26 +4,53 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchOneBlogpostThunk,
   fetchAllBlogpostsThunk,
+  deleteBlogpostThunk,
+  updateBlogpostThunk,
 } from "../../store/blogposts";
 // import { useModal } from "../../../context/Modal";
 // import { NavLink } from "react-router-dom";
 // import OpenModalButton from "../../OpenModalButton";
+import UpdateBlogpostModal from "../UpdateBlogpostModal";
+import { useModal } from "../../context/Modal";
+import OpenModalButton from "../OpenModalButton";
 import "./Blogposts.css";
 
 const Blogposts = () => {
   const { blogpostId } = useParams();
   const blogpost = useSelector(
-    (state) => state.blogposts.blogposts[blogpostId - 1]
+    (state) =>
+      state.blogposts?.blogposts && state.blogposts.blogposts[blogpostId - 1]
   );
-  console.log("blogpost", blogpost);
+  const user = useSelector((state) => state.session.user);
+  const employee = user && user.employee;
+  console.log("employee", employee);
   const dispatch = useDispatch();
+  const { setModalContent, openModal } = useModal();
   //   const { closeModal } = useModal();
   //   const blogposts = useSelector((state) => state.blogposts.blogposts);
 
   useEffect(() => {
-    console.log("Fetching blog post with ID:", blogpostId);
     dispatch(fetchAllBlogpostsThunk());
   }, [dispatch, blogpostId]);
+
+  const handleDelete = async () => {
+    try {
+      await dispatch(deleteBlogpostThunk(blogpostId));
+      // Redirect or navigate to another page after successful deletion
+    } catch (error) {
+      console.error("Error deleting blog post", error);
+    }
+  };
+
+  const handleEditBlogpost = () => {
+    // Open the modal with the UpdateBlogpostModal component
+    setModalContent(
+      <UpdateBlogpostModal
+        blogpost={blogpost}
+        onClose={() => setModalContent(null)}
+      />
+    );
+  };
 
   return (
     <div className="page-container">
@@ -34,6 +61,13 @@ const Blogposts = () => {
         <h2 className="blogpost-page-title">{blogpost?.title}</h2>
         <div className="blogpost-page-blog">{blogpost?.blog}</div>
       </div>
+      {/* Conditional rendering of buttons based on user authorization */}
+      {employee && employee.authorized && (
+        <div>
+          <button onClick={handleEditBlogpost}>Edit</button>
+          <button onClick={handleDelete}>Delete</button>
+        </div>
+      )}
       <div className="my-info">
         <div>
           <div>Kyle Seeley</div>
