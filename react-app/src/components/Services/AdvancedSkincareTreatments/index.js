@@ -18,7 +18,6 @@ const AdvancedSkincareTreatments = () => {
   );
   const user = useSelector((state) => state.session.user);
   const regularUser = user && user.user;
-  console.log("regularUser", regularUser);
   const cart = useSelector((state) => state.cart);
   const images = useSelector((state) => state.images);
   const mainImageId1 = 3;

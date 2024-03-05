@@ -62,9 +62,8 @@ def edit_blogpost(blogpostId):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
-        blogpost.employeeId = data['employeeId'],
-        blogpost.title = data['title'],
-        blogpost.blog = data['blog'],
+        blogpost.title = data['title']
+        blogpost.blog = data['blog']
 
         db.session.commit()
         return blogpost.to_dict()

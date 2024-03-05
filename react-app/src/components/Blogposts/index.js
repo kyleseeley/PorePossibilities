@@ -21,9 +21,9 @@ const Blogposts = () => {
     (state) =>
       state.blogposts?.blogposts && state.blogposts.blogposts[blogpostId - 1]
   );
+  console.log("Redux State:", blogpost);
   const user = useSelector((state) => state.session.user);
   const employee = user && user.employee;
-  console.log("employee", employee);
   const dispatch = useDispatch();
   const { setModalContent, openModal } = useModal();
   //   const { closeModal } = useModal();
@@ -31,7 +31,20 @@ const Blogposts = () => {
 
   useEffect(() => {
     dispatch(fetchAllBlogpostsThunk());
+    dispatch(fetchOneBlogpostThunk(blogpostId));
   }, [dispatch, blogpostId]);
+
+  useEffect(() => {
+    console.log("Component re-rendered with blogpostId:", blogpostId);
+    console.log("Redux state in useEffect:", blogpost);
+  }, [blogpostId, blogpost]);
+
+  // useEffect(() => {
+  //   if (blogpostId) {
+  //     console.log("one blogpost:", fetchOneBlogpostThunk(blogpostId));
+  //     dispatch(fetchOneBlogpostThunk(blogpostId));
+  //   }
+  // }, [dispatch, blogpostId]);
 
   const handleDelete = async () => {
     try {

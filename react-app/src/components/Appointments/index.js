@@ -18,8 +18,6 @@ const Appointments = () => {
   const user = useSelector((state) => state.session.user);
   const regularUser = user && user.user;
   const employee = user && user.employee;
-  console.log("regularUser", regularUser);
-  console.log("employee", employee);
   const [showForm, setShowForm] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);

@@ -14,16 +14,38 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
   );
   const [updatedTitle, setUpdatedTitle] = useState(blogpost?.title || "");
   const [updatedBlog, setUpdatedBlog] = useState(blogpost?.blog || "");
+  const user = useSelector((state) => state.session.user);
+  const employee = user && user.employee;
+
+  //   const handleUpdate = async () => {
+  //     try {
+  //       await dispatch(
+  //         updateBlogpostThunk(blogpostId, {
+  //           title: updatedTitle,
+  //           blog: updatedBlog,
+  //         })
+  //       );
+  //       await dispatch(fetchOneBlogpostThunk(blogpostId));
+  //       onClose();
+  //     } catch (error) {
+  //       console.error("Error updating blog post", error);
+  //     }
+  //   };
 
   const handleUpdate = async () => {
     try {
-      await dispatch(
+      const updateResponse = await dispatch(
         updateBlogpostThunk(blogpostId, {
           title: updatedTitle,
           blog: updatedBlog,
         })
       );
-      dispatch(fetchOneBlogpostThunk(blogpostId));
+
+      if (updateResponse) {
+        // Check if the response is not undefined before dispatching fetchOneBlogpostThunk
+        await dispatch(fetchOneBlogpostThunk(blogpostId));
+      }
+
       onClose();
     } catch (error) {
       console.error("Error updating blog post", error);
@@ -52,8 +74,12 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
         onChange={(e) => setUpdatedBlog(e.target.value)}
       />
 
-      <button onClick={handleUpdate}>Update</button>
-      <button onClick={onClose}>Cancel</button>
+      <button className="blogpost-update" onClick={handleUpdate}>
+        Update
+      </button>
+      <button className="blogpost-cancel" onClick={onClose}>
+        Cancel
+      </button>
     </div>
   );
 };

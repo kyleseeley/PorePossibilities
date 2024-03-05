@@ -44,7 +44,7 @@ class Employee(db.Model, UserMixin):
 
     appointments = db.relationship('Appointment', back_populates='employee')
 
-    blogpost = db.relationship('BlogPost', back_populates='employee')
+    # blogpost = db.relationship('BlogPost', back_populates='employee')
 
     companies = db.relationship('Company', back_populates='owner')
 
