@@ -10,7 +10,7 @@ import "./UpdateBlogpostModal.css";
 const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
   const dispatch = useDispatch();
   const blogpost = useSelector(
-    (state) => state.blogposts.blogposts[blogpostId]
+    (state) => state.blogposts.blogposts[blogpostId - 1]
   );
   const [updatedTitle, setUpdatedTitle] = useState(blogpost?.title || "");
   const [updatedBlog, setUpdatedBlog] = useState(blogpost?.blog || "");
@@ -32,8 +32,10 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
 
   return (
     <div className="update-blogpost-modal">
-      <h2>Update Blogpost</h2>
-      <label htmlFor="title">Title:</label>
+      <h2 className="blogpost-heading">Update Blogpost</h2>
+      <label className="blogpost-title" htmlFor="title">
+        Title:{" "}
+      </label>
       <input
         type="text"
         id="title"
@@ -41,7 +43,9 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
         onChange={(e) => setUpdatedTitle(e.target.value)}
       />
 
-      <label htmlFor="blog">Blog:</label>
+      <label className="blogpost-blog" htmlFor="blog">
+        Blog:
+      </label>
       <textarea
         id="blog"
         value={updatedBlog}

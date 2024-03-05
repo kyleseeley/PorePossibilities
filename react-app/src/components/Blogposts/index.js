@@ -46,7 +46,7 @@ const Blogposts = () => {
     // Open the modal with the UpdateBlogpostModal component
     setModalContent(
       <UpdateBlogpostModal
-        blogpost={blogpost}
+        blogpostId={blogpostId}
         onClose={() => setModalContent(null)}
       />
     );
