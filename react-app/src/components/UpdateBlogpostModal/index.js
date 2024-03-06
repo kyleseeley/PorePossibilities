@@ -4,11 +4,13 @@ import {
   fetchOneBlogpostThunk,
   updateBlogpostThunk,
 } from "../../store/blogposts";
+import { useHistory } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import "./UpdateBlogpostModal.css";
 
 const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const blogpost = useSelector(
     (state) => state.blogposts.blogposts[blogpostId - 1]
   );
@@ -17,36 +19,17 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
   const user = useSelector((state) => state.session.user);
   const employee = user && user.employee;
 
-  //   const handleUpdate = async () => {
-  //     try {
-  //       await dispatch(
-  //         updateBlogpostThunk(blogpostId, {
-  //           title: updatedTitle,
-  //           blog: updatedBlog,
-  //         })
-  //       );
-  //       await dispatch(fetchOneBlogpostThunk(blogpostId));
-  //       onClose();
-  //     } catch (error) {
-  //       console.error("Error updating blog post", error);
-  //     }
-  //   };
-
   const handleUpdate = async () => {
     try {
-      const updateResponse = await dispatch(
+      await dispatch(
         updateBlogpostThunk(blogpostId, {
           title: updatedTitle,
           blog: updatedBlog,
         })
       );
-
-      if (updateResponse) {
-        // Check if the response is not undefined before dispatching fetchOneBlogpostThunk
-        await dispatch(fetchOneBlogpostThunk(blogpostId));
-      }
-
+      await dispatch(fetchOneBlogpostThunk(blogpostId));
       onClose();
+      history.push(`/`);
     } catch (error) {
       console.error("Error updating blog post", error);
     }

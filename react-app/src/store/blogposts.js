@@ -57,6 +57,7 @@ export const fetchAllBlogpostsThunk = () => async (dispatch) => {
 
 export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
   try {
+    console.log("fetchOneBlogpostThunk is being called");
     const response = await csrfFetch(`/api/blogposts/${blogpostId}`);
 
     if (!response.ok) {
@@ -66,6 +67,7 @@ export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
     const responseData = await response.json();
 
     dispatch(fetchOneBlogpost(responseData));
+    console.log("one blogpost data", responseData);
 
     return responseData; // Return the response here
   } catch (error) {
@@ -129,8 +131,9 @@ export const updateBlogpostThunk =
       }
 
       const responseData = await response.json();
-      console.log("Update Blogpost Response:", responseData);
       dispatch(updateBlogpost(blogpostId, responseData));
+      console.log("updated blogpost", responseData);
+      dispatch(fetchOneBlogpost(blogpostId));
       return responseData;
     } catch (error) {
       console.error("Error updating blog post", error);
@@ -157,20 +160,13 @@ const blogpostReducer = (state = initialState, action) => {
       return { ...state, ...action.blogposts };
     case FETCH_ONE_BLOGPOST:
     case CREATE_BLOGPOST:
+    case UPDATE_BLOGPOST:
       return action.blogpost
         ? {
             ...state,
             [action.blogpost.id]: action.blogpost,
           }
         : state;
-    case UPDATE_BLOGPOST:
-      return {
-        ...state,
-        [action.blogpostId]: {
-          ...state[action.blogpostId],
-          ...action.updatedBlogpostData,
-        },
-      };
     case DELETE_BLOGPOST:
       const newState = { ...state };
       delete newState[action.blogpostId];

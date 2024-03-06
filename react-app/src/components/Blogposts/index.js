@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -17,11 +17,11 @@ import "./Blogposts.css";
 
 const Blogposts = () => {
   const { blogpostId } = useParams();
+  const history = useHistory();
   const blogpost = useSelector(
     (state) =>
       state.blogposts?.blogposts && state.blogposts.blogposts[blogpostId - 1]
   );
-  console.log("Redux State:", blogpost);
   const user = useSelector((state) => state.session.user);
   const employee = user && user.employee;
   const dispatch = useDispatch();
@@ -30,26 +30,21 @@ const Blogposts = () => {
   //   const blogposts = useSelector((state) => state.blogposts.blogposts);
 
   useEffect(() => {
-    dispatch(fetchAllBlogpostsThunk());
-    dispatch(fetchOneBlogpostThunk(blogpostId));
+    console.log("Current blogpostId:", blogpostId);
+    dispatch(fetchAllBlogpostsThunk())
+      .then(() => {
+        return dispatch(fetchOneBlogpostThunk(blogpostId));
+      })
+      .catch((error) => {
+        console.error("Error fetching blogposts", error);
+      });
   }, [dispatch, blogpostId]);
-
-  useEffect(() => {
-    console.log("Component re-rendered with blogpostId:", blogpostId);
-    console.log("Redux state in useEffect:", blogpost);
-  }, [blogpostId, blogpost]);
-
-  // useEffect(() => {
-  //   if (blogpostId) {
-  //     console.log("one blogpost:", fetchOneBlogpostThunk(blogpostId));
-  //     dispatch(fetchOneBlogpostThunk(blogpostId));
-  //   }
-  // }, [dispatch, blogpostId]);
 
   const handleDelete = async () => {
     try {
       await dispatch(deleteBlogpostThunk(blogpostId));
       // Redirect or navigate to another page after successful deletion
+      history.push("/");
     } catch (error) {
       console.error("Error deleting blog post", error);
     }
@@ -76,9 +71,13 @@ const Blogposts = () => {
       </div>
       {/* Conditional rendering of buttons based on user authorization */}
       {employee && employee.authorized && (
-        <div>
-          <button onClick={handleEditBlogpost}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
+        <div className="blogpost-buttons">
+          <button className="blogpost-edit" onClick={handleEditBlogpost}>
+            Edit
+          </button>
+          <button className="blogpost-delete" onClick={handleDelete}>
+            Delete
+          </button>
         </div>
       )}
       <div className="my-info">
