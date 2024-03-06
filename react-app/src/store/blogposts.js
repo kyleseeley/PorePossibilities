@@ -11,9 +11,10 @@ const fetchAllBlogposts = (blogposts) => ({
   blogposts,
 });
 
-const fetchOneBlogpost = (blogpostId) => ({
+const fetchOneBlogpost = (blogpostId, blogpost) => ({
   type: FETCH_ONE_BLOGPOST,
   blogpostId,
+  blogpost,
 });
 
 const createBlogpost = (blogpost) => ({
@@ -65,14 +66,13 @@ export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
     }
 
     const responseData = await response.json();
+    const parsedBlogpostId = parseInt(blogpostId, 10);
+    dispatch(fetchOneBlogpost(parsedBlogpostId, responseData));
 
-    dispatch(fetchOneBlogpost(responseData));
-    console.log("one blogpost data", responseData);
-
-    return responseData; // Return the response here
+    return responseData;
   } catch (error) {
     console.error("Error fetching blog post", error);
-    throw error; // Re-throw the error to be caught by the caller
+    throw error;
   }
 };
 
@@ -161,6 +161,8 @@ const blogpostReducer = (state = initialState, action) => {
     case FETCH_ONE_BLOGPOST:
     case CREATE_BLOGPOST:
     case UPDATE_BLOGPOST:
+      console.log("Current state:", state);
+      console.log("Action payload:", action);
       return action.blogpost
         ? {
             ...state,

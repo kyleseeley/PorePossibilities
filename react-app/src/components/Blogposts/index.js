@@ -17,11 +17,10 @@ import "./Blogposts.css";
 
 const Blogposts = () => {
   const { blogpostId } = useParams();
+  const blogpostIdInt = parseInt(blogpostId, 10);
   const history = useHistory();
-  const blogpost = useSelector(
-    (state) =>
-      state.blogposts?.blogposts && state.blogposts.blogposts[blogpostId - 1]
-  );
+  const blogposts = useSelector((state) => state.blogposts?.blogposts);
+  const blogpost = blogposts.find((post) => post.id === blogpostIdInt);
   const user = useSelector((state) => state.session.user);
   const employee = user && user.employee;
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const Blogposts = () => {
   //   const blogposts = useSelector((state) => state.blogposts.blogposts);
 
   useEffect(() => {
-    console.log("Current blogpostId:", blogpostId);
     dispatch(fetchAllBlogpostsThunk())
       .then(() => {
         return dispatch(fetchOneBlogpostThunk(blogpostId));

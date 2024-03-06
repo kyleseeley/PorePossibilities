@@ -19,6 +19,7 @@ def all_blogposts():
 @blogPost_routes.route('/<int:blogpostId>')
 def get_one_blogpost(blogpostId):
     blogpost = BlogPost.query.filter(BlogPost.id == blogpostId).first()
+    print("blogpostId", blogpostId)
     if not blogpost:
         return {'error': 'Blogpost not found'}, 404
 
