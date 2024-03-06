@@ -1,19 +1,21 @@
 .blogpost-page-container {
   text-align: center;
-  max-width: 600px; /* Adjust as needed */
-  margin: 0 auto; /* This centers the container horizontally */
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .blogpost-page-title {
   font-size: 24px;
-  margin-bottom: 16px; /* Adjust as needed */
+  margin-bottom: 16px;
   font-family: Didot;
 }
 
 .blogpost-page-blog {
   font-size: 16px;
   line-height: 1.5;
-  /* Add any other styles for the blog content */
   font-family: Didot;
 }
 
@@ -26,4 +28,31 @@
   text-align: center;
   align-items: center;
   align-content: center;
+}
+
+.blogpost-buttons {
+  gap: 10px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.edit-button {
+  padding: 10px;
+}
+
+.delete-button {
+  padding: 10px;
+}
+
+.blogpost-edit {
+  background-color: blue;
+  cursor: pointer;
+  width: 4%;
+  color: white;
+}
+.blogpost-delete {
+  background-color: red;
+  cursor: pointer;
+  width: 4%;
+  color: white;
 }

@@ -72,12 +72,16 @@ const Blogposts = () => {
       {/* Conditional rendering of buttons based on user authorization */}
       {employee && employee.authorized && (
         <div className="blogpost-buttons">
-          <button className="blogpost-edit" onClick={handleEditBlogpost}>
-            Edit
-          </button>
-          <button className="blogpost-delete" onClick={handleDelete}>
-            Delete
-          </button>
+          <div className="edit-button">
+            <button className="blogpost-edit" onClick={handleEditBlogpost}>
+              Edit
+            </button>
+          </div>
+          <div className="delete-button">
+            <button className="blogpost-delete" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
         </div>
       )}
       <div className="my-info">
