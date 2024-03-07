@@ -1,4 +1,4 @@
-.update-blogpost-modal {
+.create-blogpost-modal {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -6,21 +6,20 @@
   align-items: center;
 }
 
-.blogpost-heading {
+.create-blogpost-heading {
   text-align: center;
 }
 
 .blogpost-title,
-.blogpost-blog {
+.create-blogpost-blog {
   display: block;
-  /* margin-bottom: 5px; */
 }
 
 .create-text-area {
   height: 200px;
 }
 
-.blogpost-update,
+.blogpost-create,
 .blogpost-cancel {
   display: block;
   width: 100%;

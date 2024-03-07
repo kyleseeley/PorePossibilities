@@ -222,12 +222,16 @@ const LandingPage = () => {
             </li>
           ))}
         </ul>
-        <button
-          className="create-blogpost-button"
-          onClick={handleCreateBlogpost}
-        >
-          Create New Blogpost
-        </button>
+        <div className="create-blogpost-button-container">
+          {employee && employee.authorized && (
+            <button
+              className="create-blogpost-button"
+              onClick={handleCreateBlogpost}
+            >
+              Create New Blogpost
+            </button>
+          )}
+        </div>
       </div>
       <div className="my-info">
         <div>

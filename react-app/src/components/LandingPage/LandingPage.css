@@ -203,3 +203,21 @@
   align-items: center;
   align-content: center;
 }
+
+.create-blogpost-button-container {
+  text-align: center;
+  margin-top: 10px; /* Adjust the margin as needed */
+}
+
+.create-blogpost-button {
+  background-color: thistle;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  max-width: 200px;
+}
+
+.create-blogpost-button:hover {
+  background-color: #b38fca; /* Adjust the hover background color as needed */
+}
