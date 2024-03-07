@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlogpostThunk } from "../../store/blogposts";
+import {
+  createBlogpostThunk,
+  fetchAllBlogpostsThunk,
+} from "../../store/blogposts";
 import { useModal } from "../../context/Modal";
 import "./CreateBlogpostModal.css";
 
@@ -17,6 +20,7 @@ const CreateBlogpostModal = ({ onClose }) => {
     try {
       const employeeId = employee.id;
       await dispatch(createBlogpostThunk({ title: newTitle, blog: newBlog }));
+      await dispatch(fetchAllBlogpostsThunk());
       onClose();
     } catch (error) {
       console.error("Error creating blog post", error);

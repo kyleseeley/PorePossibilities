@@ -106,17 +106,9 @@ const LandingPage = () => {
     setModalContent(<CreateBlogpostModal onClose={closeModal} />);
   };
 
-  // useEffect(() => {
-  //   dispatch(fetchImageById(imageId)).then(() =>
-  //     dispatch(fetchReviews(companyId)).then(() =>
-  //       dispatch(fetchAllBlogpostsThunk())
-  //     )
-  //   );
-
-  //   const timeoutId = setTimeout(updateImageIndex, 8000);
-
-  //   return () => clearTimeout(timeoutId);
-  // }, [dispatch, imageId, companyId, user, updateImageIndex]);
+  const limitedBlogposts = blogposts
+    ? blogposts.slice().reverse().slice(0, 3)
+    : [];
 
   return (
     <div className="page-container">
@@ -211,7 +203,7 @@ const LandingPage = () => {
       <div className="blogposts-container">
         <h2 className="blogposts-title">Latest Blog Posts</h2>
         <ul className="blogposts-list">
-          {blogposts?.map((blogpost) => (
+          {limitedBlogposts?.map((blogpost) => (
             <li key={blogpost.id} className="blogpost-item">
               <Link to={`/blogposts/${blogpost.id}`}>
                 <h3 className="blogpost-item-title">{blogpost.title}</h3>
