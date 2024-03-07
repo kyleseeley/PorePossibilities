@@ -9,6 +9,7 @@ import ReviewModal from "../ReviewModal";
 import OpenModalButton from "../OpenModalButton";
 import { usePageVisibility } from "react-page-visibility";
 import { fetchAllBlogpostsThunk } from "../../store/blogposts";
+import CreateBlogpostModal from "../CreateBlogpostModal";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -100,6 +101,10 @@ const LandingPage = () => {
         review?.userId === regularUser.id && review?.companyId === companyId
       );
     });
+
+  const handleCreateBlogpost = () => {
+    setModalContent(<CreateBlogpostModal onClose={closeModal} />);
+  };
 
   // useEffect(() => {
   //   dispatch(fetchImageById(imageId)).then(() =>
@@ -217,6 +222,12 @@ const LandingPage = () => {
             </li>
           ))}
         </ul>
+        <button
+          className="create-blogpost-button"
+          onClick={handleCreateBlogpost}
+        >
+          Create New Blogpost
+        </button>
       </div>
       <div className="my-info">
         <div>

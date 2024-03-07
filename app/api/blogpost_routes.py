@@ -37,7 +37,6 @@ def create_blogpost():
     if form.validate_on_submit():
         data = form.data
         new_blogpost = BlogPost(
-            employeeId=data['employeeId'],
             title=data['title'],
             blog=data['blog'],
         )
@@ -47,7 +46,7 @@ def create_blogpost():
         return new_blogpost.to_dict()
 
     else:
-        return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+        return {'errors': validation_errors_to_error_messages(form.errors)}, 422
 
 
 @blogPost_routes.route('/<int:blogpostId>', methods=['PUT'])

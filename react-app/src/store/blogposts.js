@@ -76,44 +76,49 @@ export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
   }
 };
 
-export const createBlogpostThunk =
-  (employeeId, title, blog) => async (dispatch) => {
-    const response = await csrfFetch(`/api/blogposts`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        employeeId,
-        title,
-        blog,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error("Error create blogpost");
-    }
-
-    const responseData = await response.json();
-    dispatch(createBlogpost(responseData));
-  };
-
-// export const updateBlogpostThunk =
-//   (blogpostId, updatedBlogpostData) => async (dispatch) => {
-//     const response = await csrfFetch(`/api/blogposts/${blogpostId}`, {
-//       method: "PUT",
+// export const createBlogpostThunk =
+//   (employeeId, title, blog) => async (dispatch) => {
+//     const response = await csrfFetch(`/api/blogposts`, {
+//       method: "POST",
 //       headers: {
 //         "Content-Type": "application/json",
 //       },
-//       body: JSON.stringify(updatedBlogpostData),
+//       body: JSON.stringify({
+//         employeeId,
+//         title,
+//         blog,
+//       }),
 //     });
 //     if (!response.ok) {
-//       throw new Error("Error updating blogpost");
+//       const errorData = await response.json();
+//       console.error("Error creating blogpost", errorData);
+//       throw new Error("Error creating blogpost");
 //     }
 
 //     const responseData = await response.json();
-//     dispatch(updateBlogpost(blogpostId, responseData));
-//     dispatch(fetchOneBlogpost(blogpostId));
+//     console.log("responseData", responseData);
+//     dispatch(createBlogpost(responseData));
 //   };
+
+export const createBlogpostThunk = (blogpost) => async (dispatch) => {
+  const response = await csrfFetch(`/api/blogposts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(blogpost),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error creating blogpost", errorData);
+    throw new Error("Error creating blogpost");
+  }
+
+  const responseData = await response.json();
+  console.log("responseData", responseData);
+  dispatch(createBlogpost(responseData));
+};
 
 export const updateBlogpostThunk =
   (blogpostId, updatedBlogpostData) => async (dispatch) => {

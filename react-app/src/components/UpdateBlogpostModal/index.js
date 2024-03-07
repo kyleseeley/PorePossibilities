@@ -52,6 +52,7 @@ const UpdateBlogpostModal = ({ blogpostId, onClose }) => {
         Blog:
       </label>
       <textarea
+        className="update-text-area"
         id="blog"
         value={updatedBlog}
         onChange={(e) => setUpdatedBlog(e.target.value)}
