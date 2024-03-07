@@ -13,8 +13,6 @@ import OpenModalButton from "../OpenModalButton";
 const Appointments = () => {
   const dispatch = useDispatch();
   const appointments = useSelector((state) => state.appointments.appointments);
-  console.log("appointments", appointments);
-
   const user = useSelector((state) => state.session.user);
   const regularUser = user && user.user;
   const employee = user && user.employee;
@@ -75,9 +73,6 @@ const Appointments = () => {
       />
     );
   };
-
-  console.log("upcoming appointments", upcomingAppointments);
-  console.log("past appointments", pastAppointments);
 
   return (
     <div className="page-container">

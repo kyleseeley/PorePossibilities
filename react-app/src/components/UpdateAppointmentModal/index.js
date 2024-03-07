@@ -189,10 +189,6 @@ const UpdateAppointmentModal = ({ appointment, setShowModal }) => {
 
   const bookedTimeSlots = getBookedTimeSlots(employeeId, appointmentDate);
 
-  console.log("booked time slots", bookedTimeSlots);
-  console.log("employeeId", employeeId);
-  console.log("appointmentDate", appointmentDate);
-
   const availableTimeSlots = timeSlots.filter(
     (timeSlot) => !bookedTimeSlots.includes(timeSlot)
   );

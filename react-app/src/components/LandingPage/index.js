@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import { authenticate } from "../../store/session";
 import { fetchImageById } from "../../store/images";
 import { fetchReviews, deleteReviewById } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
@@ -15,7 +14,7 @@ import "./LandingPage.css";
 const LandingPage = () => {
   const dispatch = useDispatch();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [lastUpdateTime, setLastUpdateTime] = useState(0);
+  // const [lastUpdateTime, setLastUpdateTime] = useState(0);
 
   const mainImageIds = useMemo(() => [6, 7], []);
   const imageId = mainImageIds[currentImageIndex];

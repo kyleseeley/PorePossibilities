@@ -89,9 +89,7 @@ export const updateAppointmentThunk =
     if (!response.ok) {
       throw new Error("Error updating appointment");
     }
-    console.log("response", response);
     const responseData = await response.json();
-    console.log("responseData", responseData);
     dispatch(updateAppointment(appointmentId, responseData));
     dispatch(fetchAllAppointmentsThunk());
   };

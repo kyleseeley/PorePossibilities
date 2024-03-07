@@ -44,21 +44,8 @@ export const fetchAllBlogpostsThunk = () => async (dispatch) => {
   dispatch(fetchAllBlogposts(responseData));
 };
 
-// export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
-//   const response = await csrfFetch(`/api/blogposts/${blogpostId}`);
-//   if (!response.ok) {
-//     throw new Error("Error fetching blogpost");
-//   }
-
-//   const responseData = await response.json();
-//   console.log("Blogpost API Response:", responseData);
-
-//   dispatch(fetchOneBlogpost(responseData));
-// };
-
 export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
   try {
-    console.log("fetchOneBlogpostThunk is being called");
     const response = await csrfFetch(`/api/blogposts/${blogpostId}`);
 
     if (!response.ok) {
@@ -76,30 +63,6 @@ export const fetchOneBlogpostThunk = (blogpostId) => async (dispatch) => {
   }
 };
 
-// export const createBlogpostThunk =
-//   (employeeId, title, blog) => async (dispatch) => {
-//     const response = await csrfFetch(`/api/blogposts`, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         employeeId,
-//         title,
-//         blog,
-//       }),
-//     });
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       console.error("Error creating blogpost", errorData);
-//       throw new Error("Error creating blogpost");
-//     }
-
-//     const responseData = await response.json();
-//     console.log("responseData", responseData);
-//     dispatch(createBlogpost(responseData));
-//   };
-
 export const createBlogpostThunk = (blogpost) => async (dispatch) => {
   const response = await csrfFetch(`/api/blogposts`, {
     method: "POST",
@@ -116,7 +79,6 @@ export const createBlogpostThunk = (blogpost) => async (dispatch) => {
   }
 
   const responseData = await response.json();
-  console.log("responseData", responseData);
   dispatch(createBlogpost(responseData));
 };
 
@@ -137,7 +99,6 @@ export const updateBlogpostThunk =
 
       const responseData = await response.json();
       dispatch(updateBlogpost(blogpostId, responseData));
-      console.log("updated blogpost", responseData);
       dispatch(fetchOneBlogpost(blogpostId));
       return responseData;
     } catch (error) {
@@ -166,8 +127,6 @@ const blogpostReducer = (state = initialState, action) => {
     case FETCH_ONE_BLOGPOST:
     case CREATE_BLOGPOST:
     case UPDATE_BLOGPOST:
-      console.log("Current state:", state);
-      console.log("Action payload:", action);
       return action.blogpost
         ? {
             ...state,
