@@ -1,9 +1,10 @@
 .main-image img {
   aspect-ratio: 16/9;
-  width: 70%;
+  /* width: 70%; */
   max-height: 70vh;
   animation: fade-out 8s infinite;
   padding-left: 20px;
+  image-rendering: optimizeQuality;
 }
 
 @keyframes fade-out {
@@ -148,6 +149,7 @@
   top: 0;
   right: 0;
   padding: 20px;
+  margin-right: 80px;
   margin-top: 120px;
   box-sizing: border-box;
   /* background-color: lavender; */
