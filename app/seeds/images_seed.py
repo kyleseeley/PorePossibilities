@@ -26,12 +26,12 @@ def seed_images():
     )
     image6 = Image(
         name='Home Page 1',
-        imageFile='https://skintheore.com/cdn/shop/files/SkinTheore-96.jpg'
+        imageFile='https://www.plasticsurgery.org/images/Blog/top-quality-med-spa.jpg'
     )
 
     image7 = Image(
         name='Home Page 2',
-        imageFile='https://skintheore.com/cdn/shop/files/pexels-polina-kovaleva-6543620.jpg'
+        imageFile='https://www.beautetherapies.com/wp-content/uploads/2018/11/medical-spa.jpg'
     )
     image8 = Image(
         name='Astrid making bed',

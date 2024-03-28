@@ -1,6 +1,6 @@
 .main-image img {
   aspect-ratio: 16/9;
-  /* width: 70%; */
+  width: 65%;
   max-height: 70vh;
   animation: fade-out 8s infinite;
   padding-left: 20px;
